@@ -121,12 +121,12 @@ We welcome contributions to SmileMart! Please read [CONTRIBUTING.md](CONTRIBUTIN
 
 - **[Aruna Assija](https://github.com/arunaassijaqa)**
 - **[Brian Liam](https://github.com/brianlxm)**
-- **[Chikaosolu Amaechi]()**
+- **[Chikaosolu Amaechi](https://github.com/camaechi)**
 - **[Daniel Istre](https://github.com/danielri02)**
 - **[Gaetano Barreca](https://github.com/gaebar)**
 - **[James Ta](https://github.com/jhtwhb)**
 - **[Jeremy Eddy](https://github.com/illstar)**
-- **[John Rumrill](https://github.com/camaechi)**
+- **[John Rumrill](https://github.com/RumrillJ)**
 - **[Jonathan Tackett](https://github.com/JonCTack)**
 - **[Mcantony Benson Okey](https://github.com/CPTNTBS)**
 - **[Sidney Bowe](https://github.com/bowe1)**
