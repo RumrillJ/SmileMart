@@ -1,15 +1,6 @@
 # Compiled Java files
 *.class
 
-# Log files
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package files
 *.jar
 *.war
@@ -19,22 +10,24 @@
 *.tar.gz
 *.rar
 
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
 # Virtual machine crash logs
 hs_err_pid*
 replay_pid*
 
-# Mac OS folder attribute files
-.DS_Store
+# Environment variables file
+.env
 
 # Node modules folder used by Node.js
 node_modules/
-
-# React build output
-/build/
-
-# IntelliJ IDEA / Visual Studio Code local configuration
-.idea/
-.vscode/
 
 # Maven output directory
 target/
@@ -52,21 +45,28 @@ npm-debug.log
 package-lock.json
 yarn.lock
 
-# Environment variables file
-.env
+# IntelliJ IDEA / Visual Studio Code local configuration
+.idea/
+.vscode/
 
-# dependencies
+# Mac OS folder attribute files
+.DS_Store
+
+# React build output
+/build/
+
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
 
-# testing
+# Testing
 /coverage
 
-# production
+# Production
 /build
 
-# misc
+# Miscellaneous
 .DS_Store
 .env.local
 .env.development.local
@@ -75,3 +75,32 @@ yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Specific IDE Configurations
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Additional rules
+!**/src/main/**/target/
+!**/src/test/**/target/
