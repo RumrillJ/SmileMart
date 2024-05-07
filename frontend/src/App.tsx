@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Page } from './components/Pages/Page';
 import { UserContext } from './contexts/UserContext';
 
-export const backendUrl: string = "http://localhost:8080"
+export const backend = (path?: string) => "http://localhost:8080" + path ? "/" + path : ""
 
 function App() {
 	return (
@@ -13,7 +13,7 @@ function App() {
 			<header className="App-header"></header>
 
 			<BrowserRouter>
-				<UserContext.Provider value={null}>
+				<UserContext.Provider value={{user: null, setUser: null}}>
 					<Routes>
 						<Route
 							path=""
