@@ -1,8 +1,14 @@
 import axios from "axios";
 import { UserInterface } from "../interfaces/UserInterface";
 
-function setAxiosAuth() {
+function setAuth(jwt: string) {
 
+	axios.defaults.headers.common.Authorization = `Bearer ${jwt}`
+}
+
+function unsetAuth() {
+
+	delete axios.defaults.headers.common.Authorization
 }
 
 async function getAllUsers() { // : UserInterface[] : string {
