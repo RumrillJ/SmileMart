@@ -29,6 +29,8 @@ public class JwtService {
                 .parseSignedClaims(jwt)
                 .getPayload().getSubject();
     }
-}
 
-    //public boolean validateToken(String jwt, User user) {}
+    public boolean validateToken(String jwt, User user) {
+        return true;
+    }
+}
