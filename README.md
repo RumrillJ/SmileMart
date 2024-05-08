@@ -132,7 +132,7 @@ We welcome contributions to SmileMart! Please read [CONTRIBUTING.md](CONTRIBUTIN
 - **[Sidney Bowe](https://github.com/bowe1)**
 - **[ThomasHarding](https://github.com/ThomHarding)**
 - **[Ward Alhadid](https://github.com/wardalhadid)**
-- **[Yanyan Jiang]()**
+- **[Yanyan Jiang](https://github.com/Yanyan07)**
 
 
 ## License
