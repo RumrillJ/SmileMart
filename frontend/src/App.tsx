@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Page } from './components/Pages/Page';
 import { UserContext } from './contexts/UserContext';
+import { ProductDetail } from './components/Product/ProductDetail';
 
 export const backend = (path?: string) => "http://localhost:8080" + path ? "/" + path : ""
 
@@ -25,8 +26,16 @@ function App() {
 								</Page>
 							}
 						/>
+						<Route path="/register" />
+						<Route path="/login" />
 						<Route path="/products" />
-						<Route path="/user" />
+						<Route
+							path="/product/:productId"
+							element={<ProductDetail />}
+						/>
+						<Route path="/cart" />
+						<Route path="/checkout" />
+						<Route path="/profile" />
 					</Routes>
 				</UserContext.Provider>
 			</BrowserRouter>

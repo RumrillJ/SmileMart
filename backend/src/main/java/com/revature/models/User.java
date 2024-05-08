@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "users")
 @Component
 public class User {
 
