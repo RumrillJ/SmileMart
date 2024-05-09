@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -30,4 +31,6 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "statusId")
     private Status status;
+
+    private Date date;
 }
