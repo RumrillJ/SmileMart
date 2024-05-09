@@ -4,6 +4,7 @@ import com.revature.daos.UserDAO;
 import com.revature.models.User;
 import com.revature.models.dtos.UserRegistrationDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private UserDAO userDAO;
+
 
     // Dependency Injection
     @Autowired
@@ -25,8 +27,8 @@ public class AuthenticationService {
 
         // Checks if name is empty
         if (userRegistrationDTO.getName() == null || userRegistrationDTO.getName().isBlank()) {
-            log.warn("Username does not meet the requirements");
-            throw new IllegalArgumentException("Username cannot be blank!");
+            log.warn("Name does not meet the requirements");
+            throw new IllegalArgumentException("Name cannot be blank!");
         }
 
         // Ensures password is:
@@ -35,7 +37,7 @@ public class AuthenticationService {
         //    - At least one uppercase letter (A-Z)
         //    - At least one special character (*.!@#$%^&(){}[]:;<>,.?/~_+-=|\])
         //    - At least 8 characters long, but no more than 32
-        String passwordRegex = "(?=.*[a-z])(?=. *[A-Z])(?=. *[0-9])(?=. *[^A-Za-z0-9])(?=. {8,}) [3]";
+        String passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
 
         if (userRegistrationDTO.getPassword() == null || !(userRegistrationDTO.getPassword()).matches(passwordRegex)) {
             log.warn("Password did not meet the requirements");
@@ -54,6 +56,7 @@ public class AuthenticationService {
         user.setName(userRegistrationDTO.getName());
         user.setPassword(userRegistrationDTO.getPassword());
         user.setEmail(userRegistrationDTO.getEmail());
+        user.setRole(User.ROLE.USER);
 
         User newUser = userDAO.save(user);
         log.info("user with name {} was created!", newUser.getName());
