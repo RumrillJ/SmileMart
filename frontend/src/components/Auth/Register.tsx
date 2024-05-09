@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
-import './Auth.css'; // Assicurati che il percorso sia corretto
+import './Auth.css';
+import { FaUser, FaLock, FaEnvelope, FaHome, FaCity, FaFlag, FaPhone } from 'react-icons/fa';
+
 
 export const Register: React.FC = () => {
     const [userData, setUserData] = useState<RegistrationInterface>({
@@ -46,44 +48,56 @@ export const Register: React.FC = () => {
                 <h3>Please fill out the form to create an account.</h3>
             </div>
             <div className="input-container">
+                <FaUser />
                 <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} required />
             </div>
             <div className="input-container">
+                <FaUser />
                 <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} required />
             </div>
             <div className="input-container">
+                <FaUser />
                 <input type="text" name="username" placeholder="Username" onChange={handleChange} required />
             </div>
             <div className="input-container">
+                <FaLock />
                 <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
             </div>
             <div className="input-container">
+                <FaLock />
                 <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} required />
             </div>
             <div className="input-container">
+                <FaEnvelope />
                 <input type="text" name="email" placeholder="Email" onChange={handleChange} required />
             </div>
             <div className="input-container">
+                <FaHome />
                 <input type="text" name="address" placeholder="Address" onChange={handleChange} />
             </div>
             <div className="input-container">
+                <FaCity />
                 <input type="text" name="city" placeholder="City" onChange={handleChange} />
             </div>
             <div className="input-container">
+                <FaFlag />
                 <input type="text" name="state" placeholder="State" onChange={handleChange} />
             </div>
             <div className="input-container">
+                <FaFlag />
                 <input type="text" name="zip" placeholder="Zip" onChange={handleChange} />
             </div>
             <div className="input-container">
+                <FaFlag />
                 <input type="text" name="country" placeholder="Country" onChange={handleChange} />
             </div>
             <div className="input-container">
+                <FaPhone />
                 <input type="text" name="phoneNumber" placeholder="Phone Number" onChange={handleChange} />
             </div>
             <button className="login-button" onClick={handleRegister}>Register</button>
         </div>
     );
-};
-
+    
+}
 export default Register;
