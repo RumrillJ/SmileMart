@@ -17,9 +17,9 @@ export const Login: React.FC = () => {
     const login = async () => {
         try {
             const response = await axios.post("http://localhost:8080/users/login", user);
-            const { role, userId, username } = response.data;  // Assumi che tu riceva queste informazioni
-            // Logica per gestire il ruolo dell'utente e la navigazione
-            navigate("/dashboard");  // Modifica secondo la tua logica di navigazione
+            const { role, userId, username } = response.data;
+            // Logic to manage user role and navigation
+            navigate("/main-page"); // Edit according to your navigation logic
         } catch (error) {
             console.error("Login failed: ", error);
             alert("Login Failed!");
@@ -29,8 +29,8 @@ export const Login: React.FC = () => {
     return (
         <div className="login">
             <div className="text-container">
-                <h1>Welcome Back!</h1>
-                <h3>Sign in to continue</h3>
+            <h1>Welcome to SmileMart!</h1>
+            <h3>Sign in now and fill your cart with joy.</h3>
             </div>
             <div className="input-container">
                 <FaUser className="icon" />
@@ -41,6 +41,7 @@ export const Login: React.FC = () => {
                 <input type="password" placeholder="Password" name="password" onChange={handleChange} required />
             </div>
             <button className="login-button" onClick={login}>Login</button>
+            <p className="register-link">Don't have an account? <span onClick={() => navigate("/register")}>Sign up</span></p>
         </div>
     );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
 import './Auth.css';
@@ -21,6 +22,9 @@ export const Register: React.FC = () => {
         phoneNumber: ''
     });
 
+    const navigate = useNavigate();
+
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
@@ -35,6 +39,7 @@ export const Register: React.FC = () => {
             const response = await axios.post('http://localhost:8080/register', userData);
             alert('Registration successful!');
             console.log('Registered user:', response.data);
+            navigate("/login");
         } catch (error) {
             alert('Registration failed!');
             console.error(error);
@@ -95,7 +100,10 @@ export const Register: React.FC = () => {
                 <FaPhone />
                 <input type="text" name="phoneNumber" placeholder="Phone Number" onChange={handleChange} />
             </div>
-            <button className="login-button" onClick={handleRegister}>Register</button>
+            <button className="login-button" onClick={handleRegister}>Sign Up</button>
+            <p className="register-link">
+                Have an account? <span onClick={() => navigate("/login")}>Log in</span>
+            </p>
         </div>
     );
     
