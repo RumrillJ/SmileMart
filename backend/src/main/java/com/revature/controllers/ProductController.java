@@ -1,29 +1,34 @@
 package com.revature.controllers;
 
 import com.revature.daos.ProductDAO;
-import com.revature.daos.UserDAO;
 import com.revature.models.Product;
 //import com.revature.services.ProductService;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.revature.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+@RequestMapping(value = "/products")
+@RestController
 public class ProductController {
     private final ProductDAO productDAO;
+    private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductDAO productDAO) {
+    public ProductController(ProductDAO productDAO, ProductService productService) {
+
         this.productDAO = productDAO;
+        this.productService = productService;
     }
     @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        return ResponseEntity.ok().body("");
+    public ResponseEntity<List<Product>> getAllProducts() {
+
+
+            return ResponseEntity.ok().body(productService.getAllProducts());
+
     }
 
     @DeleteMapping("/{productId}")
@@ -38,4 +43,20 @@ public class ProductController {
         productDAO.deleteById(productId);
         return ResponseEntity.ok().body(product.getName() + " deleted from Products");
     }
+
+
+    @PostMapping("/{productId}")
+    public ResponseEntity<Object> addProduct(@PathVariable int productId, @RequestBody Product product) {
+
+        if (productService.addProduct(productId, product)) {
+
+            return ResponseEntity.ok().body(product.getName() + " has been added");
+        } else {
+
+            return ResponseEntity.status(404).body(product.getName() + " already exists");
+        }
+    }
+
+
+
 }
