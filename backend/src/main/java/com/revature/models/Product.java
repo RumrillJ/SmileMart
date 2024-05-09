@@ -26,6 +26,7 @@ public class Product {
     private double cost;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoryId")
     private Category category;
 
     // Constructors
