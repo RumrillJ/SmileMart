@@ -1,0 +1,113 @@
+/* Auth.css */
+
+.login {
+    width: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 5px;
+    border: none;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: 5% auto 0; /* Increased top margin */
+}
+
+.text-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-container {
+    height: 40px;
+    margin-bottom: 20px;
+    background-color: #F4F7F5;
+    border-radius: 15px;
+    padding: 8px 15px;
+    display: flex; /* Added to align icons with inputs */
+    align-items: center; /* Vertical center alignment for content */
+}
+
+input, select {
+    border: 2px solid #ccc; /* Added subtle border */
+    outline: none;
+    width: calc(100% - 30px); /* Adjust width to prevent overflow */
+    padding: 12px 10px; /* Increased padding for better text visibility */
+    font-size: 1rem; /* Increased font size for better readability */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* Subtle inner shadow */
+}
+
+input::placeholder {
+    color: #aaa; /* Lighter color for placeholder text */
+}
+
+input:focus, select:focus {
+    border-color: #32a852; /* Green border on focus, matching the button color */
+    box-shadow: 0 0 8px rgba(50, 168, 82, 0.2); /* Soft outer glow on focus */
+}
+
+.icon {
+    font-size: 1.2rem;
+    color: #666;
+    margin-right: 10px; /* Ensure spacing between icon and input */
+}
+
+.login-button {
+    background: #32a852;
+    color: white;
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 10px 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.login-button:hover {
+    cursor: pointer;
+    background-color: #278440;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.register-link span {
+    color: #32a852;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.register-link span:hover {
+    color: #278440;
+}
+
+
+@media (max-width: 600px) {
+    .login {
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .login-button {
+        padding: 8px 0;
+    }
+
+    .input-container {
+        margin-bottom: 15px;
+        padding: 4px 10px;
+    }
+
+    .icon {
+        font-size: 1rem; /* Slightly smaller icons on smaller screens */
+    }
+}
