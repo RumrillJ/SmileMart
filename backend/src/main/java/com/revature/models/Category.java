@@ -16,7 +16,7 @@ public class Category {
 
     private String description;
 
-    @OneToMany(mappedBy = "order_id")
+    @OneToMany(mappedBy = "productId")
     private List<Product> products;
 
     // Constructors

@@ -2,9 +2,11 @@ package com.revature.controllers;
 
 import com.revature.models.dtos.UserRegistrationDTO;
 import com.revature.services.AuthenticationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +23,7 @@ public class AuthenticationController {
 
     // Register user controller
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser (UserRegistrationDTO userRegistrationDTO) {
+    public ResponseEntity<String> registerUser (@RequestBody UserRegistrationDTO userRegistrationDTO) {
         try {
             String message = authenticationService.registerUser(userRegistrationDTO);
             return ResponseEntity.status(201).body(message);

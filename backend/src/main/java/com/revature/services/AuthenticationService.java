@@ -3,16 +3,18 @@ package com.revature.services;
 import com.revature.daos.UserDAO;
 import com.revature.models.User;
 import com.revature.models.dtos.UserRegistrationDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthenticationService {
 
     private UserDAO userDAO;
 
-    // Dependecy Injection
+    // Dependency Injection
     @Autowired
     public AuthenticationService(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -22,7 +24,8 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        if (userRegistrationDTO.getName().isBlank()) {
+        if (userRegistrationDTO.getName() == null || userRegistrationDTO.getName().isBlank()) {
+            log.warn("Username does not meet the requirements");
             throw new IllegalArgumentException("Username cannot be blank!");
         }
 
@@ -34,11 +37,13 @@ public class AuthenticationService {
         //    - At least 8 characters long, but no more than 32
         String passwordRegex = "(?=.*[a-z])(?=. *[A-Z])(?=. *[0-9])(?=. *[^A-Za-z0-9])(?=. {8,}) [3]";
 
-        if (!userRegistrationDTO.getPassword().matches(passwordRegex)) {
+        if (userRegistrationDTO.getPassword() == null || !(userRegistrationDTO.getPassword()).matches(passwordRegex)) {
+            log.warn("Password did not meet the requirements");
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        if (userRegistrationDTO.getEmail().isBlank()) {
+        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank()) {
+            log.warn("Email did not meet the requirements");
             throw new IllegalArgumentException("Email cannot be blank!");
         }
 
@@ -51,6 +56,7 @@ public class AuthenticationService {
         user.setEmail(userRegistrationDTO.getEmail());
 
         User newUser = userDAO.save(user);
+        log.info("user with name {} was created!", newUser.getName());
 
         return "User " + newUser.getName() + " was registered successfully!";
 
