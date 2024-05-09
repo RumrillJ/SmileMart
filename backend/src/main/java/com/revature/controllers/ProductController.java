@@ -1,9 +1,9 @@
 package com.revature.controllers;
 
-import com.revature.DAOs.ProductDAO;
-import com.revature.DAOs.UserDAO;
+import com.revature.daos.ProductDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.Product;
-import com.revature.services.ProductService;
+//import com.revature.services.ProductService;
 
 import java.util.Optional;
 
@@ -36,6 +36,6 @@ public class ProductController {
         Product product = b.get();
 
         productDAO.deleteById(productId);
-        return ResponseEntity.ok().body(product.name() + " deleted from Products");
+        return ResponseEntity.ok().body(product.getName() + " deleted from Products");
     }
 }
