@@ -39,6 +39,9 @@ public class SecurityConfig {
         // Probably lets not add this filter yet
                 //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
+        /* Most online stores allow you to browse without logging in.
+        *  Probably just require login for add to cart, checkout, etc */
+
         return http.build();
     }
 
