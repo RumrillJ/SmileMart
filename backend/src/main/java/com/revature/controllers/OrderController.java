@@ -1,7 +1,9 @@
 package com.revature.controllers;
 
 import com.revature.daos.OrderDAO;
+import com.revature.daos.StatusDAO;
 import com.revature.models.Order;
+import com.revature.models.Status;
 
 import java.util.Optional;
 
@@ -19,13 +21,14 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderDAO orderDAO;
+    private final StatusDAO statusDAO;
     private OrderService orderService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
-        this.orderService = orderService;
+        this.statusDAO = statusDAO;
     }
 
 
@@ -48,18 +51,24 @@ public class OrderController {
     //     return ResponseEntity.ok().body(order.getOrderId() + " deleted from Orders");
     // } maybe?
 
-    @PatchMapping("/{orderId}")
-    public ResponseEntity<Object> completeOrder(@RequestBody Order order, @PathVariable int orderId) {
+    @PatchMapping("/{orderId}/{orderStatus}")
+    public ResponseEntity<Object> completeOrder(@RequestBody Order order, @PathVariable int orderId, @PathVariable String orderStatus) {
+        Optional<Status> e = statusDAO.findByStatus(orderStatus);
         Optional<Order> b = orderDAO.findById(orderId);
         if (b.isEmpty()) {
             return ResponseEntity.badRequest().body("Order does not exist.");
         }
+        if (e.isEmpty()) {
+            return ResponseEntity.badRequest().body("Bad status on order.");
+        }
+        Status s = e.get();
         Order r = b.get();
-        r.setStatus(order.getStatus());
+        r.setStatus(s);
         r.setDate(order.getDate());
         orderDAO.save(r);
         return ResponseEntity.ok().body(r);
     }
+
 
     //get orders by User Id
     @GetMapping("/{userId}")
