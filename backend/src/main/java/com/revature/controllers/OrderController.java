@@ -61,7 +61,7 @@ public class OrderController {
     }
 
     //get orders by User Id
-    @GetMapping("/{userId")
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId, HttpSession session){
 
         //login check
