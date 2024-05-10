@@ -35,7 +35,7 @@ public class OrderService {
         List<OutgoingOrderDTO> outgoingOrderDTOList = new ArrayList<>();
 
         //list to hold orders from DB
-        List<Order> allOrdersByUser = orderDAO.findByUserUserId(userId).get();
+        List<Order> allOrdersByUser = orderDAO.findByUserUserId(userId);
 
         for(Order o : allOrdersByUser){
             OutgoingOrderDTO order = new OutgoingOrderDTO(
