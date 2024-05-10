@@ -63,6 +63,11 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Email cannot be blank!");
         }
 
+        // Checks if Email already exists
+        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
+        }
+
         // New user object
         User user = new User();
 
