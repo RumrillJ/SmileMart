@@ -27,7 +27,7 @@ public class Product {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)//cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryId")
     private Category category;
 

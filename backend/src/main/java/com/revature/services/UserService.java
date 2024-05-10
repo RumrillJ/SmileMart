@@ -12,7 +12,7 @@ public class UserService {
     private final UserDAO userDAO;
 
     @Autowired
-    public UserService(UserDAO userDAO, PasswordEncoder passwordEncoder){
+    public UserService(UserDAO userDAO){
         this.userDAO = userDAO;
     }
 

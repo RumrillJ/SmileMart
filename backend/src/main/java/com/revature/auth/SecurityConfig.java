@@ -24,8 +24,6 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
-    private PasswordEncoder passwordEncoder;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -37,10 +35,8 @@ public class SecurityConfig {
                         .anyRequest().permitAll()) // temporarily lets allow all requests
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                ;
-
-        // Probably lets not add this filter yet
-                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                // add the JWT filter to authenticate incoming requests
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         /* Most online stores allow you to browse without logging in.
         *  Probably just require login for add to cart, checkout, etc */
