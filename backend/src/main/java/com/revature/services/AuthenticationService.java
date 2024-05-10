@@ -33,7 +33,8 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        if (userRegistrationDTO.getName() == null || userRegistrationDTO.getName().isBlank()) {
+        if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
+            && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
             // Fail log
             log.warn("Name does not meet the requirements");
 
@@ -77,7 +78,8 @@ public class AuthenticationService {
         User user = new User();
 
         // Set user details from DTO using setters
-        user.setName(userRegistrationDTO.getName());
+        user.setFirstName(userRegistrationDTO.getFirstName());
+        user.setLastName(userRegistrationDTO.getLastName());
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setEmail(userRegistrationDTO.getEmail());
         user.setRole(User.ROLE.USER);
@@ -85,9 +87,9 @@ public class AuthenticationService {
         User newUser = userDAO.save(user);
 
         // Success log
-        log.info("user with name {} was created!", newUser.getName());
+        log.info("user with name {} was created!", newUser.getFirstName());
 
-        return "User " + newUser.getName() + " was registered successfully!";
+        return "User " + newUser.getFirstName() + " was registered successfully!";
     }
 
     // Login Service
