@@ -10,40 +10,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class Status {
 
+    /* PK can be a string and probably should be in this case so that it
+    ** is constrained unique and table joins arent needed
+    */
     @Id
-    private int statusId;
-
-    private String status;
+    private String statusId;
 
     public Status() {
     }
 
-    public Status(int statusId, String status) {
+    public Status(String statusId) {
         this.statusId = statusId;
-        this.status = status;
     }
 
-    public int getStatusId() {
+    public String getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(int statusId) {
+    public void setStatusId(String statusId) {
         this.statusId = statusId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     @java.lang.Override
     public java.lang.String toString() {
         return "Status{" +
                 "statusId=" + statusId +
-                ", status='" + status + '\'' +
                 '}';
     }
 }
