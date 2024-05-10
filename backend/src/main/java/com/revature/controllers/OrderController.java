@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.revature.services.OrderService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +62,13 @@ public class OrderController {
 
     //get orders by User Id
     @GetMapping("/{userId")
-    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId){
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId, HttpSession session){
+
+        //login check
+        if(session.getAttribute("userId") == null) {
+            return ResponseEntity.status(401).body("User not logged in!");
+        }
+
         return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 }
