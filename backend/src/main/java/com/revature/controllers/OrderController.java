@@ -5,8 +5,10 @@ import com.revature.daos.UserDAO;
 import com.revature.models.Order;
 //import com.revature.services.OrderService;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.revature.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderController {
+
     private final OrderDAO orderDAO;
+    private OrderService orderService;
 
     @Autowired
-    public OrderController(OrderDAO orderDAO) {
+    public OrderController(OrderDAO orderDAO, OrderService orderService) {
         this.orderDAO = orderDAO;
+        this.orderService = orderService;
     }
+
+
 
     @GetMapping
     public ResponseEntity<?> getAllOrders() {
@@ -50,5 +57,11 @@ public class OrderController {
         r.setDate(order.getDate());
         orderDAO.save(r);
         return ResponseEntity.ok().body(r);
+    }
+
+    //get orders by User Id
+    @GetMapping("/{userId")
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId){
+        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 }
