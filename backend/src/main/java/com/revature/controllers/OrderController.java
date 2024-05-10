@@ -3,8 +3,10 @@ package com.revature.controllers;
 import com.revature.daos.OrderDAO;
 import com.revature.models.Order;
 
+import java.util.Date;
 import java.util.Optional;
 
+import com.revature.models.Status;
 import com.revature.models.dtos.OrderProductDTO;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
@@ -49,14 +51,14 @@ public class OrderController {
     // } maybe?
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<Object> completeOrder(@RequestBody Order order, @PathVariable int orderId) {
+    public ResponseEntity<Object> completeOrder(@RequestBody String status, @PathVariable int orderId) {
         Optional<Order> b = orderDAO.findById(orderId);
         if (b.isEmpty()) {
             return ResponseEntity.badRequest().body("Order does not exist.");
         }
         Order r = b.get();
-        r.setStatus(order.getStatus());
-        r.setDate(order.getDate());
+        r.setStatus(new Status(status));
+        r.setDate(new Date(System.currentTimeMillis()));
         orderDAO.save(r);
         return ResponseEntity.ok().body(r);
     }

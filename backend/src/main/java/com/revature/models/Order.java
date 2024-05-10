@@ -34,7 +34,7 @@ public class Order {
     @JoinColumn(name = "statusId")
     private Status status;
 
-    private Date date;
+    private Date date = new Date(System.currentTimeMillis());
 
     // Constructors
     public Order() {
