@@ -47,6 +47,7 @@ public class ProductController {
 
     @PostMapping("/{productId}")
     public ResponseEntity<Object> addProduct(@PathVariable int productId, @RequestBody Product product) {
+        System.out.println(product);
 
         if (productService.addProduct(productId, product)) {
 

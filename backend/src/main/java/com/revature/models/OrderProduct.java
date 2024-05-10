@@ -30,6 +30,12 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
+    public OrderProduct(Order order, Product product, int quantity) {
+        this.order = order;
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     public OrderProduct() {
     }
 
