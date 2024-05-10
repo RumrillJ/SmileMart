@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Page } from './components/Pages/Page';
 import { UserContext } from './contexts/UserContext';
 import { ProductDetail } from './components/Product/ProductDetail';
+import { Checkout } from './components/Checkout/Checkout';
 
 export const backend = (path?: string) => "http://localhost:8080" + path ? "/" + path : ""
 
@@ -23,8 +24,11 @@ function App() {
 							element={
 								<Page>
 									<h2>Welcome</h2>
+									<h4>Click here to shop with us!</h4>
+									<h5>Click here to manage products.</h5>
+									{/* we should discuss if we want a landing page or just straight to products */}
 								</Page>
-							}
+							} 		
 						/>
 						<Route path="/register" />
 						<Route path="/login" />
@@ -34,7 +38,9 @@ function App() {
 							element={<ProductDetail />}
 						/>
 						<Route path="/cart" />
-						<Route path="/checkout" />
+						<Route 
+							path="/checkout" 
+							element={<Checkout/>}/>
 						<Route path="/profile" />
 					</Routes>
 				</UserContext.Provider>
