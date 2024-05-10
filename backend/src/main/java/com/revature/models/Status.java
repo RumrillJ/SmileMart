@@ -11,27 +11,39 @@ import org.springframework.stereotype.Component;
 public class Status {
 
     @Id
-    private String statusId;
+    private int statusId;
+
+    private String status;
 
     public Status() {
     }
 
-    public Status(String statusId) {
+    public Status(int statusId, String status) {
         this.statusId = statusId;
+        this.status = status;
     }
 
-    public String getStatusId() {
+    public int getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(String statusId) {
+    public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
 
-    @Override
-    public String toString() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
         return "Status{" +
-                "statusId='" + statusId + '\'' +
+                "statusId=" + statusId +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

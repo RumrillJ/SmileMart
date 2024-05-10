@@ -1,6 +1,9 @@
 package com.revature.services;
 
 import com.revature.daos.OrderDAO;
+import com.revature.daos.UserDAO;
+import com.revature.models.Order;
+import com.revature.models.dtos.OutgoingOrderDTO;
 import com.revature.daos.ProductDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.Order;
@@ -10,6 +13,9 @@ import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -32,6 +38,33 @@ public class OrderService {
         this.orderProductService = orderProductService;
     }
 
+    //get orders by user id
+    public List<OutgoingOrderDTO> getOrdersByUserId(int userId) throws IllegalArgumentException{
+
+        //check if user exists
+        if (userDAO.findById(userId).isEmpty()){
+            throw new IllegalArgumentException("User does not exist");
+        }
+
+        //list to hold return
+        List<OutgoingOrderDTO> outgoingOrderDTOList = new ArrayList<>();
+
+        //list to hold orders from DB
+        List<Order> allOrdersByUser = orderDAO.findByUserUserId(userId);
+
+        for(Order o : allOrdersByUser){
+            OutgoingOrderDTO order = new OutgoingOrderDTO(
+                    o.getOrderId(),
+                    o.getUser().getUserId(),
+                    o.getProducts(),
+                    o.getStatus(),
+                    o.getDate()
+            );
+            outgoingOrderDTOList.add(order);
+        }
+        return outgoingOrderDTOList;
+    }
+
     // Create an order, Requires only a user
     public Order addOrder(int userId) {
         // Check if valid user
@@ -43,7 +76,8 @@ public class OrderService {
 
         return orderDAO.save(new Order (
                 u,
-                new Status("SHOPPING"),
+                // TODO : Fix this >>
+                new Status(1, "SHOPPING"),
                 new Date()
 
         ));
@@ -71,8 +105,8 @@ public class OrderService {
         // Save user as u
         User u = optUser.get();
 
-        // Check if user has an open order
-        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(userId, "SHOPPING");
+        // Check if user has an open order TODO: Fix this >>>
+        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(userId, 1);
         if (userOrder == null) {
             // instead of throwing an error, we make a new order
             userOrder = addOrder(userId);

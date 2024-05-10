@@ -25,17 +25,20 @@ public class Product {
 
     private double cost;
 
+    private String description;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryId")
     private Category category;
 
     // Constructors
 
-    public Product(int productId, String name, double cost, Category category) {
+    public Product(int productId, String name, double cost, Category category, String description) {
         this.productId = productId;
         this.name = name;
         this.cost = cost;
         this.category = category;
+        this.description = description;
     }
 
     public Product(String name, double cost, Category category) {
@@ -81,6 +84,13 @@ public class Product {
         this.category = category;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     // To String
     @Override

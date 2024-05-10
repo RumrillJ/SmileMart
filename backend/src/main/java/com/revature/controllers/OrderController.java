@@ -1,14 +1,13 @@
 package com.revature.controllers;
 
 import com.revature.daos.OrderDAO;
-import com.revature.daos.UserDAO;
-import com.revature.models.*;
-//import com.revature.services.OrderService;
+import com.revature.models.Order;
 
-import java.util.Date;
 import java.util.Optional;
 
 import com.revature.models.dtos.OrderProductDTO;
+import com.revature.services.OrderService;
+import jakarta.servlet.http.HttpSession;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +17,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderController {
+
     private final OrderDAO orderDAO;
-    private final UserDAO userDAO;
     private OrderService orderService;
 
     @Autowired
-    public OrderController(OrderService orderService, UserDAO userDAO, OrderDAO orderDAO) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO) {
         this.orderService = orderService;
-        this.userDAO = userDAO;
         this.orderDAO = orderDAO;
+        this.orderService = orderService;
     }
+
+
 
     @GetMapping
     public ResponseEntity<?> getAllOrders() {
@@ -58,6 +59,18 @@ public class OrderController {
         r.setDate(order.getDate());
         orderDAO.save(r);
         return ResponseEntity.ok().body(r);
+    }
+
+    //get orders by User Id
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId, HttpSession session){
+
+        //login check
+        if(session.getAttribute("userId") == null) {
+            return ResponseEntity.status(401).body("User not logged in!");
+        }
+
+        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 
     /*  ================================
@@ -92,8 +105,8 @@ public class OrderController {
 
         // Try to catch errors
         try {
-            //Order o = orderService.addToOrder(orderProduct, (int)session.getAttribute("userId"));
-            Order o = orderService.addToOrder(orderProductDTO, 5);
+            //Order o = orderService.addToOrder(orderProductDTO, (int)session.getAttribute("userId"));
+            Order o = orderService.addToOrder(orderProductDTO, 1);
             return ResponseEntity.ok(o);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
