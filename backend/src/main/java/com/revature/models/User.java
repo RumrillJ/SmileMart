@@ -44,7 +44,7 @@ public class User {
     private String state;
 
     @Column(nullable = false)
-    private int zip;
+    private long zip;
 
     @Column(nullable = false)
     private String country;
@@ -55,7 +55,7 @@ public class User {
     // generate getters and setters and constructor
 
 
-    public User(int userId, String firstName, String lastName, ROLE role, String username, String password, String email, String address, String city, String state, int zip, String country, long phoneNumber) {
+    public User(int userId, String firstName, String lastName, ROLE role, String username, String password, String email, String address, String city, String state, long zip, String country, long phoneNumber) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -154,11 +154,11 @@ public class User {
         this.state = state;
     }
 
-    public int getZip() {
+    public long getZip() {
         return zip;
     }
 
-    public void setZip(int zip) {
+    public void setZip(long zip) {
         this.zip = zip;
     }
 
