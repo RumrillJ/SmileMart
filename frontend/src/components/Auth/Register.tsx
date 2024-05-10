@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
 import './Auth.css';
-import { FaUser, FaLock, FaEnvelope, FaHome, FaCity, FaFlag, FaPhone } from 'react-icons/fa';
+import { FaRegUserCircle, FaRegIdBadge, FaUser, FaLock, FaCheckDouble, FaEnvelope, FaHome, FaCity, FaEnvelopeOpenText, FaPhone, FaMapMarkerAlt, FaGlobeAmericas } from 'react-icons/fa';
 
 
 export const Register: React.FC = () => {
@@ -23,6 +23,24 @@ export const Register: React.FC = () => {
     });
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.body.style.backgroundImage = "url('/images/register-background.jpg')";
+        document.body.style.backgroundSize = "60%";
+        document.body.style.backgroundPosition = "left bottom";
+        document.body.style.backgroundRepeat = "no-repeat";
+        document.body.style.backgroundAttachment = "fixed";
+        return () => {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundSize = '';
+            document.body.style.backgroundPosition = '';
+            document.body.style.backgroundRepeat = '';
+            document.body.style.backgroundAttachment = '';
+        };
+    }, []);
+    
+    
+    
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,17 +65,18 @@ export const Register: React.FC = () => {
     };
 
     return (
-        <div className="login">
+        <div className="login register-form">
             <div className="text-container">
-                <h1>Register for an Account</h1>
-                <h3>Please fill out the form to create an account.</h3>
+                <h1>Create Your SmileMart Account
+</h1>
+                <h3>Sign up and start your journey to endless smiles and exclusive deals!</h3>
             </div>
             <div className="input-container">
-                <FaUser />
+                <FaRegUserCircle />
                 <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} required />
             </div>
             <div className="input-container">
-                <FaUser />
+                <FaRegIdBadge />
                 <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} required />
             </div>
             <div className="input-container">
@@ -69,7 +88,7 @@ export const Register: React.FC = () => {
                 <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
             </div>
             <div className="input-container">
-                <FaLock />
+                <FaCheckDouble />
                 <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} required />
             </div>
             <div className="input-container">
@@ -85,15 +104,15 @@ export const Register: React.FC = () => {
                 <input type="text" name="city" placeholder="City" onChange={handleChange} />
             </div>
             <div className="input-container">
-                <FaFlag />
+                <FaMapMarkerAlt />
                 <input type="text" name="state" placeholder="State" onChange={handleChange} />
             </div>
             <div className="input-container">
-                <FaFlag />
+                <FaEnvelopeOpenText />
                 <input type="text" name="zip" placeholder="Zip" onChange={handleChange} />
             </div>
             <div className="input-container">
-                <FaFlag />
+                <FaGlobeAmericas />
                 <input type="text" name="country" placeholder="Country" onChange={handleChange} />
             </div>
             <div className="input-container">
