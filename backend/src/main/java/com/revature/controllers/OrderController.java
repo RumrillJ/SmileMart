@@ -5,6 +5,7 @@ import com.revature.daos.StatusDAO;
 import com.revature.models.Order;
 import com.revature.models.Status;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.revature.models.dtos.OrderProductDTO;
@@ -31,13 +32,11 @@ public class OrderController {
         this.statusDAO = statusDAO;
     }
 
-
-
     @GetMapping
-    public ResponseEntity<?> getAllOrders() {
-        return ResponseEntity.ok().body("");
+    ResponseEntity<List<Order>> getAllOrders() {
+        System.out.println(orderDAO.findAll());
+        return ResponseEntity.ok().body(orderDAO.findAll());
     }
-
     // @DeleteMapping("/{orderId}")
     // public ResponseEntity<Object> deleteOrder (@PathVariable int orderId) {
     //     Optional<Order> b = orderDAO.findById(orderId);
@@ -53,7 +52,7 @@ public class OrderController {
 
     @PatchMapping("/{orderId}/{orderStatus}")
     public ResponseEntity<Object> completeOrder(@RequestBody Order order, @PathVariable int orderId, @PathVariable String orderStatus) {
-        Optional<Status> e = statusDAO.findByStatus(orderStatus);
+        Optional<Status> e = statusDAO.findByStatusId(orderStatus);
         Optional<Order> b = orderDAO.findById(orderId);
         if (b.isEmpty()) {
             return ResponseEntity.badRequest().body("Order does not exist.");

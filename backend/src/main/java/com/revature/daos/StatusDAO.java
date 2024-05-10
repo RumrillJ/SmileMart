@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StatusDAO extends JpaRepository<Status, String> {
-    public Optional<Status> findByStatus(String status);
+    public Optional<Status> findByStatusId(String status);
 }
