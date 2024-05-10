@@ -56,8 +56,9 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        // Checks if email is empty
-        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank()) {
+        // Checks if email is empty & is a valid email (something@email.***)
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
             log.warn("Email did not meet the requirements");
             throw new IllegalArgumentException("Email cannot be blank!");
