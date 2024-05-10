@@ -33,10 +33,10 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        // if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
-        //     && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
-        //     // Fail log
-        //     log.warn("Name does not meet the requirements");
+        if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
+            && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
+            // Fail log
+            log.warn("Name does not meet the requirements");
 
         //     throw new IllegalArgumentException("Name cannot be blank!");
         // }
@@ -78,8 +78,8 @@ public class AuthenticationService {
         User user = new User();
 
         // Set user details from DTO using setters
-        // user.setFirstName(userRegistrationDTO.getFirstName());
-        // user.setLastName(userRegistrationDTO.getLastName());
+        user.setFirstName(userRegistrationDTO.getFirstName());
+        user.setLastName(userRegistrationDTO.getLastName());
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setEmail(userRegistrationDTO.getEmail());
         user.setRole(User.ROLE.USER);

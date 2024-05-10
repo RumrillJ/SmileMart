@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Entity
-@Table( name = "category")
+@Table( name = "categories")
 @Component
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
 
     private String description;

@@ -7,6 +7,7 @@ import com.revature.models.Order;
 //import com.revature.services.OrderService;
 
 import java.util.List;
+import java.util.List;
 import java.util.Optional;
 
 import com.revature.models.Status;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderController {
+
     private final OrderDAO orderDAO;
     private final UserDAO userDAO;
     private final StatusDAO statusDAO;
@@ -63,5 +65,17 @@ public class OrderController {
         r.setDate(order.getDate());
         orderDAO.save(r);
         return ResponseEntity.ok().body(r);
+    }
+
+    //get orders by User Id
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId, HttpSession session){
+
+        //login check
+        if(session.getAttribute("userId") == null) {
+            return ResponseEntity.status(401).body("User not logged in!");
+        }
+
+        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 }
