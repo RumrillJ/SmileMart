@@ -33,9 +33,10 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        if (userRegistrationDTO.getName() == null || userRegistrationDTO.getName().isBlank()) {
+        if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
+            && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
             // Fail log
-            //log.warn("Name does not meet the requirements");
+            log.warn("Name does not meet the requirements");
 
             throw new IllegalArgumentException("Name cannot be blank!");
         }
@@ -51,23 +52,34 @@ public class AuthenticationService {
         // Checks password meets regex
         if (userRegistrationDTO.getPassword() == null || !(userRegistrationDTO.getPassword()).matches(passwordRegex)) {
             // Fail log
-            //log.warn("Password did not meet the requirements");
+            log.warn("Password did not meet the requirements");
 
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        // Checks if email is empty
-        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank()) {
+        // Checks if email is empty & is a valid email (something@email.***)
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
-            //log.warn("Email did not meet the requirements");
-            throw new IllegalArgumentException("Email cannot be blank!");
+            log.warn("Email did not meet the requirements");
+            throw new IllegalArgumentException("Invalid Email!");
+        }
+
+        // Checks if Email already exists
+        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+
+            // Fail log
+            log.warn("Email is already taken");
+            
+            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
         }
 
         // New user object
         User user = new User();
 
         // Set user details from DTO using setters
-        user.setName(userRegistrationDTO.getName());
+        user.setFirstName(userRegistrationDTO.getFirstName());
+        user.setLastName(userRegistrationDTO.getLastName());
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setEmail(userRegistrationDTO.getEmail());
         user.setRole(User.ROLE.USER);
@@ -75,9 +87,9 @@ public class AuthenticationService {
         User newUser = userDAO.save(user);
 
         // Success log
-        //log.info("user with name {} was created!", newUser.getName());
+        log.info("user with name {} was created!", newUser.getFirstName());
 
-        return "User " + newUser.getName() + " was registered successfully!";
+        return "User " + newUser.getFirstName() + " was registered successfully!";
     }
 
     // Login Service
@@ -91,19 +103,19 @@ public class AuthenticationService {
         if (optionalUser.isPresent()) {
             if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
                 // Success login log.
-                //log.info("{} logged in successfully!", userLoginDTO.getEmail());
+                log.info("{} logged in successfully!", userLoginDTO.getEmail());
 
                 return jwtService.generateToken(optionalUser.get());
             } else {
                 // Incorrect password log
-                //log.warn("Invalid password");
+                log.warn("Invalid password");
 
                 throw new NoSuchElementException("Incorrect Password!");
             }
         }
 
         // Failed login log.
-        //log.warn("No such user found");
+        log.warn("No such user found");
 
         // If optional user is not available throw an error.
         throw new NoSuchElementException("User was not found.");
