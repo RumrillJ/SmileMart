@@ -1,7 +1,6 @@
-package com.revature.DAOs;
+package com.revature.daos;
 
 import com.revature.models.Status;
-import com.revature.models.User;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.revature.DAOs;
+package com.revature.daos;
 
 import com.revature.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

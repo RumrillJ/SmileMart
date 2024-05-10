@@ -1,9 +1,8 @@
 package com.revature.controllers;
 
-import com.revature.models.DTOs.UserLoginDTO;
-import com.revature.models.DTOs.UserRegistrationDTO;
+import com.revature.models.dtos.UserLoginDTO;
+import com.revature.models.dtos.UserRegistrationDTO;
 import com.revature.services.AuthenticationService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

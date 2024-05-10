@@ -1,8 +1,8 @@
 package com.revature.controllers;
 
-import com.revature.DAOs.OrderDAO;
-import com.revature.DAOs.UserDAO;
-import com.revature.DAOs.StatusDAO;
+import com.revature.daos.OrderDAO;
+import com.revature.daos.UserDAO;
+import com.revature.daos.StatusDAO;
 import com.revature.models.Order;
 //import com.revature.services.OrderService;
 

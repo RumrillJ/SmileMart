@@ -1,7 +1,7 @@
 package com.revature.controllers;
 
-import com.revature.DAOs.UserDAO;
-import com.revature.models.DTOs.UserLoginDTO;
+import com.revature.daos.UserDAO;
+import com.revature.models.dtos.UserLoginDTO;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

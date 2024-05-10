@@ -1,16 +1,15 @@
 package com.revature.services;
 
-import com.revature.DAOs.UserDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.User;
-import com.revature.models.DTOs.UserLoginDTO;
-import com.revature.models.DTOs.UserRegistrationDTO;
+import com.revature.models.dtos.UserLoginDTO;
+import com.revature.models.dtos.UserRegistrationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Slf4j

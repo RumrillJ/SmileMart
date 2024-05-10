@@ -1,9 +1,9 @@
 package com.revature.services;
 
-import com.revature.DAOs.UserDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.User;
-import com.revature.models.DTOs.UserLoginDTO;
-import com.revature.models.DTOs.UserRegistrationDTO;
+import com.revature.models.dtos.UserLoginDTO;
+import com.revature.models.dtos.UserRegistrationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

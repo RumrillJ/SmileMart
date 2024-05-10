@@ -1,6 +1,6 @@
 package com.revature.controllers;
 
-import com.revature.DAOs.ProductDAO;
+import com.revature.daos.ProductDAO;
 import com.revature.models.Product;
 //import com.revature.services.ProductService;
 
