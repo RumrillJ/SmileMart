@@ -56,11 +56,21 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        // Checks if email is empty
-        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank()) {
+        // Checks if email is empty & is a valid email (something@email.***)
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
             log.warn("Email did not meet the requirements");
-            throw new IllegalArgumentException("Email cannot be blank!");
+            throw new IllegalArgumentException("Invalid Email!");
+        }
+
+        // Checks if Email already exists
+        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+
+            // Fail log
+            log.warn("Email is already taken");
+            
+            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
         }
 
         // New user object
