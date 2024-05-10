@@ -13,7 +13,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class SmileMartApplication {
 
 	public static void main(String[] args) {
+
+		System.out.println("Start smilemart app -------");
 		SpringApplication.run(SmileMartApplication.class, args);
+		System.out.println("--------------Start smilemart app -------");
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class OrderProduct {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "orderId")
+    @JsonIgnore
     private Order order;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -42,10 +44,12 @@ public class OrderProduct {
         this.orderProductId = orderProductId;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return order;
     }
 
+    @JsonIgnore
     public void setOrder(Order order) {
         this.order = order;
     }

@@ -41,4 +41,25 @@ public class ProductService {
     }
 
 
+    public List<Product> findAllByCategoryCategoryId(int  cId) {
+
+       return  productDAO.findAllByCategoryCategoryId(cId);
+    }
+
+
+
+    public List<Product>   findAllByProductName(String pname) {
+
+
+        return productDAO.findAllByName(pname);
+    }
+
+
+
+    public List<Product> showAllProductByPrice(double price) {
+
+        return productDAO.findAllByCostLessThan(price);
+
+
+    }
 }

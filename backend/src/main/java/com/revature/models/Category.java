@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class Category {
     private String description;
 
     @OneToMany(mappedBy = "productId")
+    @JsonIgnore
     private List<Product> products;
 
     // Constructors
@@ -47,10 +49,12 @@ public class Category {
         this.description = description;
     }
 
+    @JsonIgnore
     public List<Product> getProducts() {
         return products;
     }
 
+    @JsonIgnore
     public void setProducts(List<Product> products) {
         this.products = products;
     }

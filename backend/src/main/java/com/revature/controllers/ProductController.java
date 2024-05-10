@@ -11,6 +11,9 @@ import com.revature.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.*;
+
 @RequestMapping(value = "/products")
 @RestController
 public class ProductController {
@@ -31,7 +34,7 @@ public class ProductController {
 
     }
 
-    @DeleteMapping("/{productId}")
+    /*@DeleteMapping("/{productId}")
     public ResponseEntity<Object> deleteProduct (@PathVariable int productId) {
         Optional<Product> b = productDAO.findById(productId);
         if (b.isEmpty()) {
@@ -55,6 +58,31 @@ public class ProductController {
 
             return ResponseEntity.status(404).body(product.getName() + " already exists");
         }
+    }*/
+
+
+    @GetMapping(value ="/category/{cid}")
+    public ResponseEntity<List<Product>> filterAllProductsByCategory(@PathVariable int cid) {
+        System.out.println("inside filterAllProductsByCategory");
+
+        return ResponseEntity.ok().body(productService.findAllByCategoryCategoryId(cid));
+
+    }
+
+    @GetMapping(value ="/{pname}")
+    public ResponseEntity<List<Product>> filterAllProductsByName(@PathVariable String pname) {
+        System.out.println("inside filterAllProductsByCategory");
+
+        return ResponseEntity.ok().body(productService.findAllByProductName(pname));
+
+    }
+
+    @GetMapping(value ="/price/{pvalue}")
+    public ResponseEntity<List<Product>> filterAllProductsByPrice(@PathVariable double pvalue) {
+        System.out.println("inside filterAllProductsByPrice");
+
+        return ResponseEntity.ok().body(productService.showAllProductByPrice(pvalue));
+
     }
 
 
