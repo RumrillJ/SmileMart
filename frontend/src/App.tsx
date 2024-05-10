@@ -5,6 +5,8 @@ import { Login } from './components/Auth/Login';
 // import { Logout } from './components/Auth/Logout';
 import Register from './components/Auth/Register';
 
+export const backend = (path?: string) => "http://localhost:8080" + path ? "/" + path : ""
+
 function App(): JSX.Element {
   return (
     <Router>
