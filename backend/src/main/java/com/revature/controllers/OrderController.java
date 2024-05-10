@@ -12,6 +12,9 @@ import java.util.Optional;
 
 import com.revature.models.OrderProduct;
 import com.revature.models.Product;
+import com.revature.models.dtos.OutgoingOrderProductDTO;
+import com.revature.services.OrderProductService;
+import com.revature.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +24,17 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     private final OrderDAO orderDAO;
     private final OrderProductsDAO ordPrdDAO;
+    private final OrderProductService ordProductService;
+    private final ProductService productService;
+
 
     @Autowired
-    public OrderController(OrderDAO orderDAO, OrderProductsDAO ordPrdDAO) {
+    public OrderController(OrderDAO orderDAO, OrderProductsDAO ordPrdDAO, ProductService productService, OrderProductService ordProductService, ProductService productService1) {
         this.orderDAO = orderDAO;
         this.ordPrdDAO = ordPrdDAO;
+        this.ordProductService = ordProductService;
+
+        this.productService = productService1;
     }
 
 
@@ -69,7 +78,11 @@ public class OrderController {
     public ResponseEntity<Object> viewAllProductByOrderId(@PathVariable int orderId) {
         System.out.println("Inside viewAllProductByOrderId");
         System.out.println(orderId);
-       Optional<Order>  ord = orderDAO.findById(orderId);
+
+        Optional<Order>  ord = orderDAO.findById(orderId);
+
+
+
         if (ord.isEmpty()) {
             return ResponseEntity.badRequest().body("Order does not exist.");
         }
@@ -77,15 +90,17 @@ public class OrderController {
         System.out.println("OrderID:");
         System.out.println(r.getOrderId());
 
-        List<OrderProduct> allOrdPrd = ordPrdDAO.findAllByOrderOrderId(r.getOrderId());
-        System.out.println("Size:");
-        System.out.println(allOrdPrd.size());
-             for(int i=0;i<allOrdPrd.size();i++) {
-                 System.out.println(i+"Item:");
-                  //System.out.println(allOrdPrd.get(i));
-                 }
+        List<OutgoingOrderProductDTO> outOrdPrdDTO  = ordProductService.findAllOrdProductByOrderId(orderId);
 
-        return ResponseEntity.ok().body(allOrdPrd);
+        //List<OrderProduct> allOrdPrd = ordPrdDAO.findAllByOrderOrderId(r.getOrderId());
+        //System.out.println("Size:");
+        //System.out.println(allOrdPrd.size());
+             //for(int i=0;i<allOrdPrd.size();i++) {
+                 //System.out.println(i+"Item:");
+                  //System.out.println(allOrdPrd.get(i));
+                 //}
+
+        return ResponseEntity.ok().body(outOrdPrdDTO);
 
     }
 
