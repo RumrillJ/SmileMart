@@ -77,7 +77,7 @@ public class OrderService {
         return orderDAO.save(new Order (
                 u,
                 // TODO : Fix this >>
-                new Status(1, "SHOPPING"),
+                new Status("SHOPPING"),
                 new Date()
 
         ));
@@ -106,7 +106,7 @@ public class OrderService {
         User u = optUser.get();
 
         // Check if user has an open order TODO: Fix this >>>
-        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(userId, 1);
+        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(userId, "SHOPPING");
         if (userOrder == null) {
             // instead of throwing an error, we make a new order
             userOrder = addOrder(userId);
@@ -117,9 +117,9 @@ public class OrderService {
         orderProductDTO.setOrderId(userOrder.getOrderId());
 
         // Check if order is filled? - Not filled
-        if (userOrder.getProducts().isEmpty() || userOrder.getProducts() == null) {
-
+        if (userOrder.getProducts() == null || userOrder.getProducts().isEmpty()) {
             // Order list is empty, create a list and add the item
+            userOrder.setProducts(new HashSet<>());
             userOrder.getProducts().add(orderProductService.addOrderProduct(orderProductDTO));
 
             // Save the userOrder

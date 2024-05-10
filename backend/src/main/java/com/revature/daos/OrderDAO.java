@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface OrderDAO extends JpaRepository<Order, Integer> {
-    public Order findByUserUserIdAndStatusStatusId(int userId, int statusId);
+    public Order findByUserUserIdAndStatusStatusId(int userId, String statusId);
     public List<Order> findByUserUserId(int userId);
 
 }
