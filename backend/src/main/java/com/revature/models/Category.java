@@ -20,10 +20,11 @@ public class Category {
     private List<Product> products;
 
     // Constructors
-    public Category(int categoryId, String description, List<Product> products) {
+
+
+    public Category(int categoryId, String description) {
         this.categoryId = categoryId;
         this.description = description;
-        this.products = products;
     }
 
     public Category() {
