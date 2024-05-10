@@ -30,7 +30,7 @@ export const Login: React.FC = () => {
         <div className="login">
             <div className="text-container">
             <h1>Welcome to SmileMart!</h1>
-            <h3>Sign in now and fill your cart with joy.</h3>
+            <h3>Sign in now and fill your cart with joy</h3>
             </div>
             <div className="input-container">
                 <FaUser className="icon" />
