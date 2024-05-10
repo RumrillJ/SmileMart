@@ -61,11 +61,15 @@ public class AuthenticationService {
         if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
             log.warn("Email did not meet the requirements");
-            throw new IllegalArgumentException("Email cannot be blank!");
+            throw new IllegalArgumentException("Invalid Email!");
         }
 
         // Checks if Email already exists
         if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+
+            // Fail log
+            log.warn("Email is already taken");
+            
             throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
         }
 
