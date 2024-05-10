@@ -105,8 +105,7 @@ public class OrderController {
 
         // Try to catch errors
         try {
-            //Order o = orderService.addToOrder(orderProductDTO, (int)session.getAttribute("userId"));
-            Order o = orderService.addToOrder(orderProductDTO, 1);
+            Order o = orderService.addToOrder(orderProductDTO, (int)session.getAttribute("userId"));
             return ResponseEntity.ok(o);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
