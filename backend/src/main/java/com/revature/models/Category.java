@@ -16,14 +16,10 @@ public class Category {
 
     private String description;
 
-    @OneToMany(mappedBy = "productId")
-    private List<Product> products;
-
     // Constructors
-    public Category(int categoryId, String description, List<Product> products) {
+    public Category(int categoryId, String description) {
         this.categoryId = categoryId;
         this.description = description;
-        this.products = products;
     }
 
     public Category() {
@@ -47,13 +43,6 @@ public class Category {
         this.description = description;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
     // To String
 
     @Override

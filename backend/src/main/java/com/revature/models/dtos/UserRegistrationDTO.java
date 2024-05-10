@@ -1,4 +1,4 @@
-package com.revature.models.dtos;
+package com.revature.models.DTOs;
 
 public class UserRegistrationDTO {
 

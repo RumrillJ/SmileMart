@@ -1,6 +1,6 @@
 package com.revature.controllers;
 
-import com.revature.daos.ProductDAO;
+import com.revature.DAOs.ProductDAO;
 import com.revature.models.Product;
 //import com.revature.services.ProductService;
 
@@ -25,10 +25,7 @@ public class ProductController {
     }
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
-
-
-            return ResponseEntity.ok().body(productService.getAllProducts());
-
+        return ResponseEntity.ok().body(productService.getAllProducts());
     }
 
     @DeleteMapping("/{productId}")

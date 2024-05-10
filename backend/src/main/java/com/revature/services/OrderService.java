@@ -1,6 +1,6 @@
 package com.revature.services;
 
-import com.revature.daos.OrderDAO;
+import com.revature.DAOs.OrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
