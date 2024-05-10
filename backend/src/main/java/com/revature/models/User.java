@@ -27,6 +27,8 @@ public class User {
     private ROLE role;
 
     @Column(nullable = false)
+    private String username;
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -42,20 +44,23 @@ public class User {
     private String state;
 
     @Column(nullable = false)
-    private String zip;
+    private int zip;
 
     @Column(nullable = false)
     private String country;
+
+    private long phoneNumber;
 
 
     // generate getters and setters and constructor
 
 
-    public User(int userId, String firstName, String lastName, ROLE role, String password, String email, String address, String city, String state, String zip, String country) {
+    public User(int userId, String firstName, String lastName, ROLE role, String username, String password, String email, String address, String city, String state, String zip, String country, long phoneNumber) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.address = address;
@@ -63,6 +68,7 @@ public class User {
         this.state = state;
         this.zip = zip;
         this.country = country;
+        this.phoneNumber = phoneNumber;
     }
 
     public User() {
