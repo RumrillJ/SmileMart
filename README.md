@@ -119,11 +119,21 @@ We welcome contributions to SmileMart! Please read [CONTRIBUTING.md](CONTRIBUTIN
 
 ## Authors
 
-- **Our Names** - *We have to decide a consistent link between gitHub or LinkedIn* - [YourUsername](https://github.com/yourusername)
-- **John Rumrill**
-- **Gaetano Barreca**
-- **Daniel Istre**
-- .....
+- **[Aruna Assija](https://github.com/arunaassijaqa)**
+- **[Brian Liam](https://github.com/brianlxm)**
+- **[Chikaosolu Amaechi](https://github.com/camaechi)**
+- **[Daniel Istre](https://github.com/danielri02)**
+- **[Gaetano Barreca](https://github.com/gaebar)**
+- **[James Ta](https://github.com/jhtwhb)**
+- **[Jeremy Eddy](https://github.com/illstar)**
+- **[John Rumrill](https://github.com/RumrillJ)**
+- **[Jonathan Tackett](https://github.com/JonCTack)**
+- **[Mcantony Benson Okey](https://github.com/CPTNTBS)**
+- **[Sidney Bowe](https://github.com/bowe1)**
+- **[ThomasHarding](https://github.com/ThomHarding)**
+- **[Ward Alhadid](https://github.com/wardalhadid)**
+- **[Yanyan Jiang](https://github.com/Yanyan07)**
+
 
 ## License
 
