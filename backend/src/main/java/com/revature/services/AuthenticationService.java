@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -32,12 +33,13 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        if (userRegistrationDTO.getName() == null || userRegistrationDTO.getName().isBlank()) {
-            // Fail log
-            log.warn("Name does not meet the requirements");
+        // if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
+        //     && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
+        //     // Fail log
+        //     log.warn("Name does not meet the requirements");
 
-            throw new IllegalArgumentException("Name cannot be blank!");
-        }
+        //     throw new IllegalArgumentException("Name cannot be blank!");
+        // }
 
         // Ensures password is:
         //    - At least one digit (0-9)
@@ -64,53 +66,53 @@ public class AuthenticationService {
         }
 
         // Checks if Email already exists
-//        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
-//
-//            // Fail log
-//            log.warn("Email is already taken");
-//
-//            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
-//        }
+        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+
+            // Fail log
+            log.warn("Email is already taken");
+            
+            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
+        }
 
         // New user object
         User user = new User();
 
         // Set user details from DTO using setters
-//        user.setName(userRegistrationDTO.getName());
-//        user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
-//        user.setEmail(userRegistrationDTO.getEmail());
-//        user.setRole(User.ROLE.USER);
+        // user.setFirstName(userRegistrationDTO.getFirstName());
+        // user.setLastName(userRegistrationDTO.getLastName());
+        user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
+        user.setEmail(userRegistrationDTO.getEmail());
+        user.setRole(User.ROLE.USER);
 
         User newUser = userDAO.save(user);
 
         // Success log
-//        log.info("user with name {} was created!", newUser.getName());
+        log.info("user with name {} was created!", newUser.getFirstName());
 
-//        return "User " + newUser.getName() + " was registered successfully!";
-        return "User returned";
+        return "User " + newUser.getFirstName() + " was registered successfully!";
     }
 
     // Login Service
     public String login (UserLoginDTO userLoginDTO) throws NoSuchElementException {
 
         // Custom DAO Method to find the user by username and password.
-//        Optional<User> optionalUser = userDAO.findByEmail(userLoginDTO.getEmail());
+        Optional<User> optionalUser = userDAO.findByEmail(userLoginDTO.getEmail());
 
 
         // Generate JWT token from JWT Service
-//        if (optionalUser.isPresent()) {
-//            if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
-//                // Success login log.
-//                log.info("{} logged in successfully!", userLoginDTO.getEmail());
-//
-//                return jwtService.generateToken(optionalUser.get());
-//            } else {
-//                // Incorrect password log
-//                log.warn("Invalid password");
-//
-//                throw new NoSuchElementException("Incorrect Password!");
-//            }
-//        }
+        if (optionalUser.isPresent()) {
+            if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
+                // Success login log.
+                log.info("{} logged in successfully!", userLoginDTO.getEmail());
+
+                return jwtService.generateToken(optionalUser.get());
+            } else {
+                // Incorrect password log
+                log.warn("Invalid password");
+
+                throw new NoSuchElementException("Incorrect Password!");
+            }
+        }
 
         // Failed login log.
         log.warn("No such user found");
