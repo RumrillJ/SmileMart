@@ -8,6 +8,7 @@ import { Checkout } from './components/Checkout/Checkout';
 import Login from './components/Auth/Login';
 // import { Logout } from './components/Auth/Logout';
 import Register from './components/Auth/Register';
+import { AddProduct } from './components/Product/AddProduct';
 
 export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" + path : "");
 
@@ -51,6 +52,11 @@ function App() {
                             element={<Checkout/>}
                         />
                         <Route path="/profile" />
+
+                        {/* Just testing components here...*/}
+                        <Route path="/test" element={
+                            <AddProduct onSubmit={(p) => console.log(p)}/>
+                        }/>
                     </Routes>
                 </UserContext.Provider>
             </BrowserRouter>
