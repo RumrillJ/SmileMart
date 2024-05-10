@@ -120,7 +120,7 @@ We welcome contributions to SmileMart! Please read [CONTRIBUTING.md](CONTRIBUTIN
 ## Authors
 
 - **[Aruna Assija](https://github.com/arunaassijaqa)**
-- **[Brian Liam](https://github.com/brianlxm)**
+- **[Brian Lam](https://github.com/brianlxm)**
 - **[Chikaosolu Amaechi](https://github.com/camaechi)**
 - **[Daniel Istre](https://github.com/danielri02)**
 - **[Gaetano Barreca](https://github.com/gaebar)**
