@@ -23,7 +23,7 @@ export const Settings: React.FC = () => {
 		address2: "",
 		city: "",
 		state: "",
-		zipcode: "",
+		zipcode: ""
     })
 
 	//useNavigate to navigate between components
