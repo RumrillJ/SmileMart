@@ -38,6 +38,12 @@ public class Product {
         this.category = category;
     }
 
+    public Product(String name, double cost, Category category) {
+        this.name = name;
+        this.cost = cost;
+        this.category = category;
+    }
+
     public Product() {
     }
 

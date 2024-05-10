@@ -12,4 +12,26 @@ public class Status {
 
     @Id
     private String statusId;
+
+    public Status() {
+    }
+
+    public Status(String statusId) {
+        this.statusId = statusId;
+    }
+
+    public String getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "statusId='" + statusId + '\'' +
+                '}';
+    }
 }
