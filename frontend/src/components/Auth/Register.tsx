@@ -49,8 +49,9 @@ export const Register: React.FC = () => {
     return (
         <div className="login">
             <div className="text-container">
-                <h1>Register for an Account</h1>
-                <h3>Please fill out the form to create an account.</h3>
+                <h1>Create Your SmileMart Account
+</h1>
+                <h3>Sign up and start your journey to endless smiles and exclusive deals!</h3>
             </div>
             <div className="input-container">
                 <FaRegUserCircle />
