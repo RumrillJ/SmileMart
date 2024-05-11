@@ -33,7 +33,8 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        if (userRegistrationDTO.getName() == null || userRegistrationDTO.getName().isBlank()) {
+        if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
+            && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
             // Fail log
             log.warn("Name does not meet the requirements");
 
@@ -56,18 +57,29 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        // Checks if email is empty
-        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank()) {
+        // Checks if email is empty & is a valid email (something@email.***)
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
             log.warn("Email did not meet the requirements");
-            throw new IllegalArgumentException("Email cannot be blank!");
+            throw new IllegalArgumentException("Invalid Email!");
+        }
+
+        // Checks if Email already exists
+        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+
+            // Fail log
+            log.warn("Email is already taken");
+            
+            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
         }
 
         // New user object
         User user = new User();
 
         // Set user details from DTO using setters
-        user.setName(userRegistrationDTO.getName());
+        user.setFirstName(userRegistrationDTO.getFirstName());
+        user.setLastName(userRegistrationDTO.getLastName());
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setEmail(userRegistrationDTO.getEmail());
         user.setRole(User.ROLE.USER);
@@ -75,9 +87,9 @@ public class AuthenticationService {
         User newUser = userDAO.save(user);
 
         // Success log
-        log.info("user with name {} was created!", newUser.getName());
+        log.info("user with name {} was created!", newUser.getFirstName());
 
-        return "User " + newUser.getName() + " was registered successfully!";
+        return "User " + newUser.getFirstName() + " was registered successfully!";
     }
 
     // Login Service
