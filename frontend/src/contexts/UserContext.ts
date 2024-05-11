@@ -1,9 +1,12 @@
-import { Dispatch, SetStateAction, createContext } from "react";
-import { UserInterface } from "../interfaces/UserInterface";
+import { createContext, Dispatch, SetStateAction } from 'react';
+import { UserInterface } from '../interfaces/UserInterface';
 
 interface UserContextType {
-	user: UserInterface | null
-	setUser: Dispatch<SetStateAction<UserInterface>> | null
+    user: UserInterface | null;
+    setUser: Dispatch<SetStateAction<UserInterface | null>> | null;
 }
 
-export const UserContext = createContext<UserContextType>({} as UserContextType)
+export const UserContext = createContext<UserContextType>({
+    user: null,  // Assume no user is logged in initially
+    setUser: null  // Will be set by the component that provides the context
+});

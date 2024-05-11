@@ -6,7 +6,7 @@ import { UserContext } from './contexts/UserContext';
 import { ProductDetail } from './components/Product/ProductDetail';
 import { Checkout } from './components/Checkout/Checkout';
 import Login from './components/Auth/Login';
-// import { Logout } from './components/Auth/Logout';
+import { Logout } from './components/Auth/Logout';
 import Register from './components/Auth/Register';
 
 export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" + path : "");
@@ -40,6 +40,8 @@ function App() {
                             path="/login" 
                             element={<Login />} 
                         />
+                        <Route path="/logout" element={<Logout />} />
+
                         <Route path="/products" />
                         <Route
                             path="/product/:productId"
