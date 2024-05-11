@@ -40,16 +40,29 @@ class ProductServiceTest {
     }
 
     @Test
-    void testAddProductShouldReturnTrueAfterProductIsAdded() {
+    public void testAddProductShouldReturnTrueAfterProductIsAdded() {
 
         Product product = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.empty());
 
         boolean isAdded = productService.addProduct(1, product);
-        
+
         assertTrue(isAdded);
         verify(productDAO, times(1)).findById(1);
         verify(productDAO, times(1)).save(product);
+    }
+
+    @Test
+    public void testAddProductShouldReturnFalseWhenProductExists() {
+
+        Product existingProduct = new Product();
+        when(productDAO.findById(anyInt())).thenReturn(Optional.of(existingProduct));
+
+        boolean isAdded = productService.addProduct(1, new Product());
+        
+        assertFalse(isAdded);
+        verify(productDAO, times(1)).findById(1);
+        verify(productDAO, never()).save(any());
     }
 
 
