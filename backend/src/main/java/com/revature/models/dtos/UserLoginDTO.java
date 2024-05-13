@@ -2,14 +2,14 @@ package com.revature.models.dtos;
 
 public class UserLoginDTO {
 
-    private String email;
+    private String username;
 
     private String password;
 
     // Constructors
 
-    public UserLoginDTO(String email, String password) {
-        this.email = email;
+    public UserLoginDTO(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -17,12 +17,12 @@ public class UserLoginDTO {
 
     // Getters & Setters
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     public String getPassword() {
@@ -38,7 +38,7 @@ public class UserLoginDTO {
     @Override
     public String toString() {
         return "UserLoginDTO{" +
-                "email='" + email + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

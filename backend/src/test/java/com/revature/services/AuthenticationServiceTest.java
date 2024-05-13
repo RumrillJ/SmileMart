@@ -39,11 +39,12 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_Success() throws Exception {
         // Create a valid UserRegistrationDTO
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John Doe", "validPassword123!", "john.doe@email.com");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "validPassword123!", "john.doe@email.com");
 
         // Mock userDAO.save() to return a User object
         User mockUser = new User();
-        mockUser.setName(userRegistrationDTO.getName());
+        mockUser.setFirstName(userRegistrationDTO.getFirstName());
+        mockUser.setLastName(userRegistrationDTO.getLastName());
         mockUser.setEmail(userRegistrationDTO.getEmail());
         mockUser.setPassword(userRegistrationDTO.getEmail());
         mockUser.setRole(User.ROLE.USER);
@@ -55,13 +56,13 @@ class AuthenticationServiceTest {
         String result = authenticationService.registerUser(userRegistrationDTO);
 
         // Assertions
-        assertEquals("User " + userRegistrationDTO.getName() + " was registered successfully!", result);
+        assertEquals("User " + userRegistrationDTO.getFirstName() + " " + userRegistrationDTO.getLastName() + " was registered successfully!", result);
     }
 
     @Test
     public void testRegisterUser_BlankName() throws Exception {
         // Create a UserRegistrationDTO with a blank name
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("", "validPassword123!", "john.doe@email.com");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("","", "validPassword123!", "john.doe@email.com");
 
         // Assert that an IllegalArgumentException is thrown
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
@@ -70,7 +71,7 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_InvalidPassword() throws Exception {
         // Create a UserRegistrationDTO with an invalid password (no special character)
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John Doe", "invalidPassword", "john.doe@email.com");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "invalidPassword", "john.doe@email.com");
 
         // Call the registerUser method
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
@@ -80,7 +81,7 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_BlankEmail() throws Exception {
         // Create a UserRegistrationDTO with a blank email
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John Doe", "validPassword123!", "");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "validPassword123!", "");
 
         // Call the registerUser method
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
