@@ -4,6 +4,8 @@ import axios from 'axios';
 import { FaUser, FaLock } from 'react-icons/fa';
 import './Auth.css';
 import { UserInterface } from '../../interfaces/UserInterface';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login: React.FC = () => {
     const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
@@ -38,10 +40,10 @@ export const Login: React.FC = () => {
             const response = await axios.post("http://localhost:8080/users/login", user);
             const { role, userId, username } = response.data;
             // Logic to manage user role and navigation
-            navigate("/main-page"); // Edit according to your navigation logic
+            navigate("/main-page");
         } catch (error) {
             console.error("Login failed: ", error);
-            alert("Login Failed!");
+            toast.error("Login Failed!");
         }
     };
 
