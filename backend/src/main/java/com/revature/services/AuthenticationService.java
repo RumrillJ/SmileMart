@@ -69,7 +69,7 @@ public class AuthenticationService {
 
             // Fail log
             log.warn("Email is already taken");
-            
+
             throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
         }
 
