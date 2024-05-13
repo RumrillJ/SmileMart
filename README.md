@@ -1,5 +1,5 @@
 
-# WIP:  SmileMart
+# SmileMart
 
 Welcome to **SmileMart**, your one-stop online shop for everything that makes you smile! Our e-commerce platform offers a wide range of products from your favorite categories, ensuring a seamless and joyful shopping experience. Whether you're looking for the latest gadgets, home essentials, or personal care items, SmileMart has it all. Shop with us today and bring a smile to your face with every purchase!
 
