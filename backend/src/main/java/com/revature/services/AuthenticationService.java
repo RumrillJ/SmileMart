@@ -38,6 +38,7 @@ public class AuthenticationService {
             // Fail log
             log.warn("First name, last name, or both do not meet the requirements");
 
+
             throw new IllegalArgumentException("First name, last name, or both do not meet the requirements");
         }
 
@@ -57,7 +58,7 @@ public class AuthenticationService {
         // Checks password meets regex
         if (userRegistrationDTO.getPassword() == null || !(userRegistrationDTO.getPassword()).matches(passwordRegex)) {
             // Fail log
-            log.warn("Password did not meet the requirements");
+            //log.warn("Password did not meet the requirements");
 
             throw new IllegalArgumentException("Invalid password!");
         }
@@ -66,7 +67,7 @@ public class AuthenticationService {
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
-            log.warn("Email did not meet the requirements");
+            //log.warn("Email did not meet the requirements");
             throw new IllegalArgumentException("Invalid Email!");
         }
 
@@ -122,14 +123,14 @@ public class AuthenticationService {
                 return jwtService.generateToken(optionalUser.get());
             } else {
                 // Incorrect password log
-                log.warn("Invalid password");
+                //log.warn("Invalid password");
 
                 throw new NoSuchElementException("Incorrect Password!");
             }
         }
 
         // Failed login log.
-        log.warn("No such user found");
+        //log.warn("No such user found");
 
         // If optional user is not available throw an error.
         throw new NoSuchElementException("User was not found.");
