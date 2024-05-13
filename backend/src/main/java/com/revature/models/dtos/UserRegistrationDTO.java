@@ -50,4 +50,14 @@ public class UserRegistrationDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "UserRegistrationDTO{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

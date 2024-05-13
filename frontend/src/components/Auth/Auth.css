@@ -1,4 +1,12 @@
 /* Auth.css */
+body {
+    background-color: rgb(246, 182, 59); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+}
+
 .login {
     width: stretch;
     display: flex;
@@ -15,12 +23,12 @@
 
 .text-container {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .input-container {
     height: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background-color: #F4F7F5;
     border-radius: 15px;
     padding: 8px 15px;
@@ -94,6 +102,11 @@ input:focus, select:focus {
 .register-link span:hover {
     color: #278440;
 }
+
+.register-form {
+    margin-top: 2%;
+}
+
 
 @media (max-width: 600px) {
     .login {

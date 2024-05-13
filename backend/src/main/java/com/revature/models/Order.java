@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,7 +25,8 @@ public class Order {
 
 
     // products in order? ManyToMany?
-    @OneToMany(mappedBy = "orderProductId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "order")
     Set<OrderProduct> products;
 
 
@@ -36,6 +38,12 @@ public class Order {
 
     // Constructors
     public Order() {
+    }
+
+    public Order(User user, Status status, Date date) {
+        this.user = user;
+        this.status = status;
+        this.date = date;
     }
 
     public Order(int orderId, User user, Set<OrderProduct> products, Status status, Date date) {

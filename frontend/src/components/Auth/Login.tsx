@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaUser, FaLock } from 'react-icons/fa';
@@ -8,6 +8,25 @@ import { UserInterface } from '../../interfaces/UserInterface';
 export const Login: React.FC = () => {
     const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.body.style.backgroundImage = "url('/images/login-background.jpg')";
+        document.body.style.backgroundSize = "70%";
+        document.body.style.backgroundPosition = "right bottom";
+        document.body.style.backgroundRepeat = "no-repeat";
+        document.body.style.backgroundAttachment = "fixed";
+        return () => {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundSize = '';
+            document.body.style.backgroundPosition = '';
+            document.body.style.backgroundRepeat = '';
+            document.body.style.backgroundAttachment = '';
+        };
+    }, []);
+    
+    
+    
+    
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -30,7 +49,7 @@ export const Login: React.FC = () => {
         <div className="login">
             <div className="text-container">
             <h1>Welcome to SmileMart!</h1>
-            <h3>Sign in now and fill your cart with joy.</h3>
+            <h3>Sign in now and fill your cart with joy</h3>
             </div>
             <div className="input-container">
                 <FaUser className="icon" />
