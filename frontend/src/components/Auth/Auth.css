@@ -44,7 +44,7 @@ input, select {
     font-size: 1rem;
     border-radius: 5px;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    margin-left: 10px; /* Nuovo spazio aggiunto */
+    margin-left: 10px;
 }
 
 .input-container input {
