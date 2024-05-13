@@ -76,7 +76,7 @@ public class AuthenticationService {
             // Fail log
             log.warn("Email, username, or both are already taken");
             
-            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
+            throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " or" + userRegistrationDTO.getUsername() +" already taken!");
         }
 
         // New user object
