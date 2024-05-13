@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
@@ -24,6 +24,22 @@ export const Register: React.FC = () => {
     });
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.body.style.backgroundImage = "url('/images/register-background.jpg')";
+        document.body.style.backgroundSize = "60%";
+        document.body.style.backgroundPosition = "left bottom";
+        document.body.style.backgroundRepeat = "no-repeat";
+        document.body.style.backgroundAttachment = "fixed";
+        return () => {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundSize = '';
+            document.body.style.backgroundPosition = '';
+            document.body.style.backgroundRepeat = '';
+            document.body.style.backgroundAttachment = '';
+        };
+    }, []);
+    
 
     // Validates user credentials based on defined rules
     const validateCredentials = () => {
