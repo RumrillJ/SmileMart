@@ -6,24 +6,20 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Entity
-@Table( name = "category")
+@Table( name = "categories")
 @Component
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
 
     private String description;
 
-    @OneToMany(mappedBy = "productId")
-    private List<Product> products;
-
     // Constructors
-    public Category(int categoryId, String description, List<Product> products) {
+    public Category(int categoryId, String description) {
         this.categoryId = categoryId;
         this.description = description;
-        this.products = products;
     }
 
     public Category() {
@@ -47,13 +43,6 @@ public class Category {
         this.description = description;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
     // To String
 
     @Override

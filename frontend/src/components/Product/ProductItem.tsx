@@ -8,7 +8,7 @@ export const ProductItem: React.FC<Props> = ({product}) => {
 
 	return (
 		<div>
-
+			{JSON.stringify(product)}
 		</div>
 	)
 }

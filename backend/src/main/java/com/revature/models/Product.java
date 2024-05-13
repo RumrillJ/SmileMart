@@ -41,6 +41,12 @@ public class Product {
         this.description = description;
     }
 
+    public Product(String name, double cost, Category category) {
+        this.name = name;
+        this.cost = cost;
+        this.category = category;
+    }
+
     public Product() {
     }
 
