@@ -46,9 +46,9 @@ public class ProductController {
 
 
     @PostMapping("/{productId}")
-    public ResponseEntity<Object> addProduct(@PathVariable int productId, @RequestBody Product product) {
+    public ResponseEntity<Object> addProduct(@RequestBody Product product, @PathVariable int categoryId, String categoryDesc) {
 
-        if (productService.addProduct(productId, product)) {
+        if (productService.addProduct(product, categoryId, categoryDesc)) {
 
             return ResponseEntity.ok().body(product.getName() + " has been added");
         } else {
