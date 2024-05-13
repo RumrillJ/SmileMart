@@ -39,7 +39,20 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_Success() throws Exception {
         // Create a valid UserRegistrationDTO
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "validPassword123!", "john.doe@email.com");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO(
+                "John",
+                "Doe",
+                "validPassword123!",
+                "john.doe@email.com",
+                "johndoe",
+                "123 Your St.",
+                "NY City",
+                "NY",
+                12345,
+                "US",
+                1234567890
+
+        );
 
         // Mock userDAO.save() to return a User object
         User mockUser = new User();
@@ -49,6 +62,13 @@ class AuthenticationServiceTest {
         mockUser.setPassword(userRegistrationDTO.getEmail());
         mockUser.setRole(User.ROLE.USER);
         mockUser.setUserId(0);
+        mockUser.setUsername(userRegistrationDTO.getUsername());
+        mockUser.setPhoneNumber(userRegistrationDTO.getPhoneNumber());
+        mockUser.setAddress(userRegistrationDTO.getAddress());
+        mockUser.setCity(userRegistrationDTO.getCity());
+        mockUser.setState(userRegistrationDTO.getState());
+        mockUser.setZip(userRegistrationDTO.getZip());
+        mockUser.setCountry(userRegistrationDTO.getCountry());
 
         Mockito.when(userDAO.save(Mockito.any(User.class))).thenReturn(mockUser);
 
@@ -62,7 +82,14 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_BlankName() throws Exception {
         // Create a UserRegistrationDTO with a blank name
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("","", "validPassword123!", "john.doe@email.com");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("","", "validPassword123!", "john.doe@email.com",
+                "johndoe",
+                "123 Your St.",
+                "NY City",
+                "NY",
+                12345,
+                "US",
+                1234567890);
 
         // Assert that an IllegalArgumentException is thrown
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
@@ -71,7 +98,14 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_InvalidPassword() throws Exception {
         // Create a UserRegistrationDTO with an invalid password (no special character)
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "invalidPassword", "john.doe@email.com");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "invalidPassword", "john.doe@email.com",
+                "johndoe",
+                "123 Your St.",
+                "NY City",
+                "NY",
+                12345,
+                "US",
+                1234567890);
 
         // Call the registerUser method
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
@@ -81,7 +115,31 @@ class AuthenticationServiceTest {
     @Test
     public void testRegisterUser_BlankEmail() throws Exception {
         // Create a UserRegistrationDTO with a blank email
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "validPassword123!", "");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "validPassword123!", "",
+                "johndoe",
+                "123 Your St.",
+                "NY City",
+                "NY",
+                12345,
+                "US",
+                1234567890);
+
+        // Call the registerUser method
+        assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
+
+    }
+
+    @Test
+    public void testRegisterUser_BlankAddress() throws Exception {
+        // Create a UserRegistrationDTO with a blank email
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John", "Doe", "validPassword123!", "johndoe@email.com",
+                "johndoe",
+                "",
+                "NY City",
+                "NY",
+                12345,
+                "US",
+                1234567890);
 
         // Call the registerUser method
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
@@ -91,17 +149,17 @@ class AuthenticationServiceTest {
     @Test
     void testLoginUser_Success() throws Exception {
         // Create a valid UserLoginDTO
-        UserLoginDTO userLoginDTO = new UserLoginDTO("john.doe@email.com", "validPassword123!");
+        UserLoginDTO userLoginDTO = new UserLoginDTO("johndoe", "validPassword123!");
 
         // Mock userDAO.save() to return a User object
         User mockUser = new User();
-        mockUser.setEmail(userLoginDTO.getEmail());
+        mockUser.setUsername(userLoginDTO.getUsername());
         mockUser.setPassword(passwordEncoder.encode(userLoginDTO.getPassword()));
         mockUser.setRole(User.ROLE.USER);
         mockUser.setUserId(0);
 
         // Mocks userDAO.findByEmail() to return a User object
-        Mockito.when(userDAO.findByEmail(Mockito.any())).thenReturn(Optional.of(mockUser));
+        Mockito.when(userDAO.findByUsername(Mockito.any())).thenReturn(Optional.of(mockUser));
 
         String token = jwtService.generateToken(mockUser);
 
@@ -115,17 +173,17 @@ class AuthenticationServiceTest {
     @Test
     void testLoginUser_IncorrectPassword() throws Exception {
         // Create a valid UserLoginDTO with incorrect password.
-        UserLoginDTO userLoginDTO = new UserLoginDTO("john.doe@email.com", "validPassword123!");
+        UserLoginDTO userLoginDTO = new UserLoginDTO("johndoe", "validPassword123!");
 
         // Mock userDAO.save() to return a User object
         User mockUser = new User();
-        mockUser.setEmail(userLoginDTO.getEmail());
+        mockUser.setUsername(userLoginDTO.getUsername());
         mockUser.setPassword(passwordEncoder.encode("VeryDifferentPassword"));
         mockUser.setRole(User.ROLE.USER);
         mockUser.setUserId(0);
 
         // Mocks userDAO.findByEmail() and returns a User object.
-        Mockito.when(userDAO.findByEmail(Mockito.any())).thenReturn(Optional.of(mockUser));
+        Mockito.when(userDAO.findByUsername(Mockito.any())).thenReturn(Optional.of(mockUser));
 
         // Assertion
         assertThrows(NoSuchElementException.class, () -> authenticationService.login(userLoginDTO));
@@ -134,13 +192,13 @@ class AuthenticationServiceTest {
     @Test
     void testLoginUser_NoUser() throws Exception {
         // Create a valid UserLoginDTO with no such user
-        UserLoginDTO userLoginDTO = new UserLoginDTO("john.doe@email.com", "validPassword123!");
+        UserLoginDTO userLoginDTO = new UserLoginDTO("johndoe", "validPassword123!");
 
         // To mock empty user
         Optional<User> mockUser = Optional.empty();
 
         // Mocks userDAO.findByEmail and returns an empty optional
-        Mockito.when(userDAO.findByEmail(Mockito.any())).thenReturn(mockUser);
+        Mockito.when(userDAO.findByUsername(Mockito.any())).thenReturn(mockUser);
 
         // Assertion
         assertThrows(NoSuchElementException.class, () -> authenticationService.login(userLoginDTO));
