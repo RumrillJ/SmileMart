@@ -38,9 +38,18 @@ The SmileMart application consists of two main components:
 
 ## Database Architecture
 
-The database architecture includes tables for ...
+The database architecture includes tables for managing users, orders, products, and order statuses. 
 
-[Add ER-diagram screenshot]
+- **Users**: The `users` table holds information about user profiles, such as contact details and authentication data. 
+- **Orders**: The `orders` table tracks each order placed, linked to users through a user ID and to order statuses through a status ID.
+- **Order Products**: The `order_products` table details the products included in each order, recording quantities and product IDs.
+- **Statuses**: The `statuses` table describes possible states an order can be in, such as 'pending', 'shipped', or 'delivered'.
+
+
+<p float="left">
+  <img src="images/er-orders-users-statuses-order_products.png" width="49%"/>
+  <img src="images/er-products.png" width="49%"/>
+</p>
 
 ## Requirements
 
