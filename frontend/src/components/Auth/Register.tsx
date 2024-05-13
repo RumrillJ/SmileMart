@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Auth.css';
 import { FaRegUserCircle, FaRegIdBadge, FaUser, FaLock, FaCheckDouble, FaEnvelope, FaHome, FaCity, FaMapMarkerAlt, FaEnvelopeOpenText, FaGlobeAmericas, FaPhone } from 'react-icons/fa';
 
@@ -29,13 +31,13 @@ export const Register: React.FC = () => {
 
         // Check for minimum username length
         if (username.length < 8) {
-            alert("Username must contain at least 8 characters.");
+            toast.error("Username must contain at least 8 characters.");
             return false;
         }
 
         // Check for the presence of a number or punctuation in the password
         if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(password)) {
-            alert("Password must contain a number or punctuation.");
+            toast.error("Password must contain a number or punctuation.");
             return false;
         }
 
@@ -43,7 +45,7 @@ export const Register: React.FC = () => {
 
         // Verify passwords match
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            toast.error("Passwords do not match!");
             return false;
         }
 
@@ -55,10 +57,10 @@ export const Register: React.FC = () => {
         if (validateCredentials()) {
             try {
                 const response = await axios.post('http://localhost:8080/register', userData);
-                alert('Registration successful!');
+                toast.success('Registration successful!');
                 navigate("/login");
             } catch (error) {
-                alert('Registration failed!');
+                toast.error('Registration failed!');
                 console.error(error);
             }
         }
@@ -73,6 +75,7 @@ export const Register: React.FC = () => {
     // Component layout
     return (
         <div className="login register-form">
+            <ToastContainer />
             <div className="text-container">
                 <h1>Create Your SmileMart Account</h1>
                 <h3>Sign up and start your journey to endless smiles and exclusive deals!</h3>
