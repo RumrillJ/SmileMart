@@ -5,13 +5,15 @@ import com.revature.models.dtos.UserRegistrationDTO;
 import com.revature.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthenticationController {
     private AuthenticationService authenticationService;
 
@@ -34,7 +36,7 @@ public class AuthenticationController {
 
     // User login controller
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         try {
             // Returns the JWT token on success
             return ResponseEntity.ok(authenticationService.login(userLoginDTO));
