@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.daos.CategoryDAO;
 import com.revature.daos.ProductDAO;
 import com.revature.models.Product;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ class ProductServiceTest {
     @Mock
     private ProductDAO productDAO;
 
+
     @InjectMocks
     private ProductService productService;
 
@@ -45,7 +47,7 @@ class ProductServiceTest {
         Product product = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.empty());
 
-        boolean isAdded = productService.addProduct(1, product);
+        boolean isAdded = productService.addProduct(product, 1, "description");
 
         assertTrue(isAdded);
         verify(productDAO, times(1)).findById(1);
@@ -58,8 +60,8 @@ class ProductServiceTest {
         Product existingProduct = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.of(existingProduct));
 
-        boolean isAdded = productService.addProduct(1, new Product());
-        
+        boolean isAdded = productService.addProduct(new Product(), 1, "description");
+
         assertFalse(isAdded);
         verify(productDAO, times(1)).findById(1);
         verify(productDAO, never()).save(any());

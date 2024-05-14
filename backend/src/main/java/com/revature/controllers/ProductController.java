@@ -23,6 +23,8 @@ public class ProductController {
         this.productDAO = productDAO;
         this.productService = productService;
     }
+
+
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
 
@@ -45,8 +47,8 @@ public class ProductController {
     }
 
 
-    @PostMapping("/{productId}")
-    public ResponseEntity<Object> addProduct(@RequestBody Product product, @PathVariable int categoryId, String categoryDesc) {
+    @PostMapping("/{categoryId}/{categoryDesc}")
+    public ResponseEntity<Object> addProduct(@RequestBody Product product, @PathVariable int categoryId, @PathVariable String categoryDesc) {
 
         if (productService.addProduct(product, categoryId, categoryDesc)) {
 

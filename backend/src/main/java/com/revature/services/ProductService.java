@@ -28,6 +28,7 @@ public class ProductService {
         return productDAO.findAll();
     }
 
+
     public boolean addProduct(Product product, int categoryId, String categoryDesc) {
 
         Optional<Product> products = productDAO.findById(product.getProductId());
@@ -39,17 +40,19 @@ public class ProductService {
 
             return false;
 
-        } else if (categories.isEmpty()) {
-
-            product.setCategory(new Category(categoryId, categoryDesc));
-
-        } else {
+        } else if (categories.isPresent()) {
 
             product.setCategory(categories.get());
 
+
+        } else {
+
+            product.setCategory(new Category(categoryId, categoryDesc));
+
+
         }
 
-            productDAO.save(product);
+           productDAO.save(product);
 
             return true;
         }

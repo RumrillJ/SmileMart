@@ -2,13 +2,15 @@ package com.revature.models.dtos;
 
 public class UserRegistrationDTO {
 
-    private String name;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
 
     // Constructor
-    public UserRegistrationDTO(String name, String password, String email) {
-        this.name = name;
+    public UserRegistrationDTO(String firstName, String lastName, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.email = email;
     }
@@ -17,12 +19,20 @@ public class UserRegistrationDTO {
     }
 
     //Getters & Setters
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -39,5 +49,15 @@ public class UserRegistrationDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRegistrationDTO{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
