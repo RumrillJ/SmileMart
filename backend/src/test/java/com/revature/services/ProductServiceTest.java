@@ -1,13 +1,18 @@
 package com.revature.services;
 
+
+import com.revature.daos.CategoryDAO;
 import com.revature.daos.ProductDAO;
+import com.revature.models.Category;
 import com.revature.models.Product;
-import org.junit.jupiter.api.BeforeEach;
+
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
+
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
@@ -23,6 +28,10 @@ class ProductServiceTest {
 
     @Mock
     private ProductDAO productDAO;
+
+    @Mock
+    private CategoryDAO categoryDAO;
+
 
     @InjectMocks
     private ProductService productService;
@@ -44,11 +53,13 @@ class ProductServiceTest {
 
         Product product = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.empty());
+        when(categoryDAO.findById(anyInt())).thenReturn(Optional.of(new Category()));
 
-        boolean isAdded = productService.addProduct(1, product);
+        boolean isAdded = productService.addProduct(product, 1, 1, "fruits");
 
         assertTrue(isAdded);
         verify(productDAO, times(1)).findById(1);
+        verify(categoryDAO, times(1)).findById(1);
         verify(productDAO, times(1)).save(product);
     }
 
@@ -58,8 +69,8 @@ class ProductServiceTest {
         Product existingProduct = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.of(existingProduct));
 
-        boolean isAdded = productService.addProduct(1, new Product());
-        
+        boolean isAdded = productService.addProduct(new Product(), 1, 1, "fruits");
+
         assertFalse(isAdded);
         verify(productDAO, times(1)).findById(1);
         verify(productDAO, never()).save(any());
