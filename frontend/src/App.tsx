@@ -6,8 +6,9 @@ import { UserContext } from './contexts/UserContext';
 import { ProductDetail } from './components/Product/ProductDetail';
 import { Checkout } from './components/Checkout/Checkout';
 import Login from './components/Auth/Login';
-// import { Logout } from './components/Auth/Logout';
+import Logout from './components/Auth/Logout';
 import Register from './components/Auth/Register';
+import { UserInterface } from './interfaces/UserInterface';
 import { AddProduct } from './components/Product/AddProduct';
 import { ProductInterface } from './interfaces/ProductInterface';
 import { CartContext } from './contexts/CartContext';
@@ -15,8 +16,10 @@ import { CartContext } from './contexts/CartContext';
 export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" + path : "");
 
 function App() {
+
     const [user, setUser] = useState({ username: '', password: '' }); // Initialize user state with empty values
     const [cart, setCart] = useState({} as Record<number, ProductInterface>);
+
 
     return (
         <div className="App">
@@ -45,6 +48,8 @@ function App() {
                             path="/login" 
                             element={<Login />} 
                         />
+                        <Route path="/logout" element={<Logout />} />
+
                         <Route path="/products" />
                         <Route
                             path="/product/:productId"
