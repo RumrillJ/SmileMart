@@ -53,12 +53,12 @@ public class ProductController {
         if (productService.addProduct(product, productId, categoryId, categoryDesc)) {
 
             return ResponseEntity.ok().body(product.getName() + " has been added");
+
         } else {
 
             return ResponseEntity.status(404).body(product.getName() + " already exists");
         }
     }
-
 
 
 }
