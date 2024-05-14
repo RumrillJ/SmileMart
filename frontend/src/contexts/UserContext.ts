@@ -3,7 +3,9 @@ import { UserInterface } from '../interfaces/UserInterface';
 
 interface UserContextType {
     user: UserInterface | null;
-    setUser: any;
+
+    setUser: Dispatch<SetStateAction<UserInterface>> | null;
+
 }
 
 export const UserContext = createContext<UserContextType>({
