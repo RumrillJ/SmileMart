@@ -47,8 +47,8 @@ public class ProductController {
     }
 
 
-    @PostMapping("/{categoryId}/{categoryDesc}")
-    public ResponseEntity<Object> addProduct(@RequestBody Product product, int productId, @PathVariable int categoryId, @PathVariable String categoryDesc) {
+    @PostMapping("{productId}/{categoryId}/{categoryDesc}")
+    public ResponseEntity<Object> addProduct(@RequestBody Product product, @PathVariable int productId, @PathVariable int categoryId, @PathVariable String categoryDesc) {
 
         if (productService.addProduct(product, productId, categoryId, categoryDesc)) {
 
