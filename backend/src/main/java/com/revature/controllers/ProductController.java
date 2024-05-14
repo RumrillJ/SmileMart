@@ -2,7 +2,7 @@ package com.revature.controllers;
 
 import com.revature.daos.ProductDAO;
 import com.revature.models.Product;
-//import com.revature.services.ProductService;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -48,9 +48,9 @@ public class ProductController {
 
 
     @PostMapping("/{categoryId}/{categoryDesc}")
-    public ResponseEntity<Object> addProduct(@RequestBody Product product, @PathVariable int categoryId, @PathVariable String categoryDesc) {
+    public ResponseEntity<Object> addProduct(@RequestBody Product product, int productId, @PathVariable int categoryId, @PathVariable String categoryDesc) {
 
-        if (productService.addProduct(product, categoryId, categoryDesc)) {
+        if (productService.addProduct(product, productId, categoryId, categoryDesc)) {
 
             return ResponseEntity.ok().body(product.getName() + " has been added");
         } else {

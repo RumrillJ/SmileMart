@@ -29,9 +29,9 @@ public class ProductService {
     }
 
 
-    public boolean addProduct(Product product, int categoryId, String categoryDesc) {
+    public boolean addProduct(Product product, int productId, int categoryId, String categoryDesc) {
 
-        Optional<Product> products = productDAO.findById(product.getProductId());
+        Optional<Product> products = productDAO.findById(productId);
 
         Optional<Category> categories = categoryDAO.findById(categoryId);
 
