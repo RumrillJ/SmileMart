@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/products")
 @RestController
+@CrossOrigin
 public class ProductController {
     private final ProductDAO productDAO;
     private final ProductService productService;

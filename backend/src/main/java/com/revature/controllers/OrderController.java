@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/orders")
+@CrossOrigin
 public class OrderController {
 
     private final OrderDAO orderDAO;
