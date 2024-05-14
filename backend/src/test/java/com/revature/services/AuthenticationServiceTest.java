@@ -56,13 +56,16 @@ class AuthenticationServiceTest {
         String result = authenticationService.registerUser(userRegistrationDTO);
 
         // Assertions
-        assertEquals("User " + userRegistrationDTO.getFirstName() + " was registered successfully!", result);
+        assertEquals("User " + userRegistrationDTO.getFirstName() + " " + userRegistrationDTO.getLastName() + " was registered successfully!", result);
+
     }
 
     @Test
     public void testRegisterUser_BlankName() throws Exception {
         // Create a UserRegistrationDTO with a blank name
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("", "", "validPassword123!", "john.doe@email.com");
+
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("","", "validPassword123!", "john.doe@email.com");
+
 
         // Assert that an IllegalArgumentException is thrown
         assertThrows(IllegalArgumentException.class, () -> authenticationService.registerUser(userRegistrationDTO));
