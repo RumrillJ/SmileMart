@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Auth.css';
-import { FaRegUserCircle, FaRegIdBadge, FaUser, FaLock, FaCheckDouble, FaEnvelope, FaHome, FaCity, FaEnvelopeOpenText, FaPhone, FaMapMarkerAlt, FaGlobeAmericas } from 'react-icons/fa';
-
+import { FaRegUserCircle, FaRegIdBadge, FaUser, FaLock, FaCheckDouble, FaEnvelope, FaHome, FaCity, FaMapMarkerAlt, FaEnvelopeOpenText, FaGlobeAmericas, FaPhone } from 'react-icons/fa';
 
 export const Register: React.FC = () => {
     const [userData, setUserData] = useState<RegistrationInterface>({
@@ -39,36 +40,60 @@ export const Register: React.FC = () => {
         };
     }, []);
     
-    
-    
 
+    // Validates user credentials based on defined rules
+    const validateCredentials = () => {
+        const { username, password, confirmPassword } = userData;
 
+        // Check for minimum username length
+        if (username.length < 8) {
+            toast.error("Username must contain at least 8 characters.");
+            return false;
+        }
+
+        // Check for the presence of a number or punctuation in the password
+        if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            toast.error("Password must contain a number or punctuation.");
+            return false;
+        }
+
+        // Add additional validation checks as needed
+
+        // Verify passwords match
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match!");
+            return false;
+        }
+
+        return true;
+    };
+
+    // Handle form submission for registration
+    const handleRegister = async () => {
+        if (validateCredentials()) {
+            try {
+                const response = await axios.post('http://localhost:8080/register', userData);
+                toast.success('Registration successful!');
+                navigate("/login");
+            } catch (error) {
+                toast.error('Registration failed!');
+                console.error(error);
+            }
+        }
+    };
+
+    // Handles changes to form inputs
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
     };
 
-    const handleRegister = async () => {
-        if (userData.password !== userData.confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
-        try {
-            const response = await axios.post('http://localhost:8080/register', userData);
-            alert('Registration successful!');
-            console.log('Registered user:', response.data);
-            navigate("/login");
-        } catch (error) {
-            alert('Registration failed!');
-            console.error(error);
-        }
-    };
-
+    // Component layout
     return (
         <div className="login register-form">
+            <ToastContainer />
             <div className="text-container">
-                <h1>Create Your SmileMart Account
-</h1>
+                <h1>Create Your SmileMart Account</h1>
                 <h3>Sign up and start your journey to endless smiles and exclusive deals!</h3>
             </div>
             <div className="input-container">
@@ -125,6 +150,6 @@ export const Register: React.FC = () => {
             </p>
         </div>
     );
-    
 }
+
 export default Register;

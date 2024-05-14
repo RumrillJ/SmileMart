@@ -10,8 +10,9 @@ export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
 	const [product, setProduct] = useState({} as ProductInterface)
 
 	const handleSubmit = () => {
+		// send post request here or in parent?
 		if (onSubmit) {
-			onSubmit(product)
+			onSubmit({...product})
 		}
 		setProduct({} as ProductInterface)
 	}

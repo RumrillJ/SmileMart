@@ -10,12 +10,16 @@ import Logout from './components/Auth/Logout';
 import Register from './components/Auth/Register';
 import { UserInterface } from './interfaces/UserInterface';
 import { AddProduct } from './components/Product/AddProduct';
+import { ProductInterface } from './interfaces/ProductInterface';
+import { CartContext } from './contexts/CartContext';
 
 export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" + path : "");
 
 function App() {
-    const [user, setUser] = useState<UserInterface | null>(null); // Initialize user state with empty values
-    
+
+    const [user, setUser] = useState({ username: '', password: '' }); // Initialize user state with empty values
+    const [cart, setCart] = useState([] as ProductInterface[]);
+
 
     return (
         <div className="App">
@@ -23,6 +27,7 @@ function App() {
 
             <BrowserRouter>
                 <UserContext.Provider value={{ user: user, setUser: setUser }}>
+                <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
                     <Routes>
                         <Route
                             path=""
@@ -62,6 +67,7 @@ function App() {
                             <AddProduct onSubmit={(p) => console.log(p)}/>
                         }/>
                     </Routes>
+                </CartContext.Provider>
                 </UserContext.Provider>
             </BrowserRouter>
         </div>
