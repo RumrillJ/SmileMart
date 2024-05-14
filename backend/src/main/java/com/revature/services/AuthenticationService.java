@@ -33,12 +33,18 @@ public class AuthenticationService {
     public String registerUser(UserRegistrationDTO userRegistrationDTO) throws IllegalArgumentException{
 
         // Checks if name is empty
-        if ((userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank())
-            && (userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank())) {
+        if (userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank()
+            || userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank()) {
             // Fail log
-            //log.warn("Name does not meet the requirements");
+            log.warn("First name, last name, or both do not meet the requirements");
 
-            throw new IllegalArgumentException("Name cannot be blank!");
+
+            throw new IllegalArgumentException("First name, last name, or both do not meet the requirements");
+        }
+
+        if (userRegistrationDTO.getAddress().isBlank() || userRegistrationDTO.getCity().isBlank() || userRegistrationDTO.getCountry().isBlank() || userRegistrationDTO.getState().isBlank() || userRegistrationDTO.getZip() == 0) {
+            log.warn("All address fields must be filled");
+            throw new IllegalArgumentException("All address fields must be filled");
         }
 
         // Ensures password is:
@@ -66,11 +72,11 @@ public class AuthenticationService {
         }
 
         // Checks if Email already exists
-        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent()) {
+        if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent() || userDAO.findByUsername(userRegistrationDTO.getUsername()).isPresent()) {
 
             // Fail log
-            //log.warn("Email is already taken");
-            
+            log.warn("Email, username, or both are already taken");
+
             throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " already taken!");
         }
 
@@ -83,27 +89,36 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setEmail(userRegistrationDTO.getEmail());
         user.setRole(User.ROLE.USER);
+        user.setAddress(userRegistrationDTO.getAddress());
+        user.setCity(userRegistrationDTO.getCity());
+        user.setCountry(userRegistrationDTO.getCountry());
+        user.setState(userRegistrationDTO.getState());
+        user.setZip(userRegistrationDTO.getZip());
+        user.setUsername(userRegistrationDTO.getUsername());
+        if (userRegistrationDTO.getPhoneNumber() != 0) {
+            user.setPhoneNumber(userRegistrationDTO.getPhoneNumber());
+        }
 
         User newUser = userDAO.save(user);
 
         // Success log
-        //log.info("user with name {} was created!", newUser.getFirstName());
+        log.info("user with name {} {} was created!", newUser.getFirstName(), newUser.getLastName());
 
-        return "User " + newUser.getFirstName() + " was registered successfully!";
+        return "User " + newUser.getFirstName() + " " + newUser.getLastName() + " was registered successfully!";
     }
 
     // Login Service
     public String login (UserLoginDTO userLoginDTO) throws NoSuchElementException {
 
         // Custom DAO Method to find the user by username and password.
-        Optional<User> optionalUser = userDAO.findByEmail(userLoginDTO.getEmail());
+        Optional<User> optionalUser = userDAO.findByUsername(userLoginDTO.getUsername());
 
 
         // Generate JWT token from JWT Service
         if (optionalUser.isPresent()) {
             if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
                 // Success login log.
-                //log.info("{} logged in successfully!", userLoginDTO.getEmail());
+                log.info("{} logged in successfully!", userLoginDTO.getUsername());
 
                 return jwtService.generateToken(optionalUser.get());
             } else {
