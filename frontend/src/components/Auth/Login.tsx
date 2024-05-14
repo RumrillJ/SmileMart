@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const Login: React.FC = () => {
     const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         document.body.style.backgroundImage = "url('/images/login-background.jpg')";
@@ -37,8 +38,10 @@ export const Login: React.FC = () => {
 
     const login = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/users/login", user);
-            const { role, userId, username } = response.data;
+            const response = await axios.post("http://localhost:8080/auth/login", user);
+            // TODO: THe response only returns the token not the user data.
+            //const { role, userId, username } = response.data;
+            
             // Logic to manage user role and navigation
             navigate("/main-page");
         } catch (error) {

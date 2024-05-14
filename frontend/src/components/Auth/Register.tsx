@@ -72,7 +72,7 @@ export const Register: React.FC = () => {
     const handleRegister = async () => {
         if (validateCredentials()) {
             try {
-                const response = await axios.post('http://localhost:8080/register', userData);
+                const response = await axios.post('http://localhost:8080/auth/register', userData);
                 toast.success('Registration successful!');
                 navigate("/login");
             } catch (error) {
