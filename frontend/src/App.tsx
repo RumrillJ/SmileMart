@@ -16,7 +16,7 @@ export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" 
 
 function App() {
     const [user, setUser] = useState({ username: '', password: '' }); // Initialize user state with empty values
-    const [cart, setCart] = useState([] as ProductInterface[]);
+    const [cart, setCart] = useState({} as Record<number, ProductInterface>);
 
     return (
         <div className="App">

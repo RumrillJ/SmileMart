@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction, createContext } from "react";
 import { ProductInterface } from "../interfaces/ProductInterface";
 
 interface CartContextType {
-	cart: ProductInterface[] | null
-	setCart: Dispatch<SetStateAction<ProductInterface[]>> | null
+	cart: Record<number, ProductInterface> | null
+	setCart: Dispatch<SetStateAction<Record<number, ProductInterface>>> | null
 }
 
 export const CartContext = createContext<CartContextType>({
