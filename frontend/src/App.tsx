@@ -13,6 +13,7 @@ import { ProductInterface } from './interfaces/ProductInterface';
 import { CartProvider } from './contexts/CartContext';
 import { ProductItem } from './components/Product/ProductItem';
 import { Cart } from './components/Checkout/Cart';
+import { ProductsPage } from './components/Pages/ProductsPage';
 
 export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" + path : "");
 
@@ -39,7 +40,7 @@ function App() {
 							/>
 							<Route path="/register" element={<Register />} />
 							<Route path="/login" element={<Login />} />
-							<Route path="/products" />
+							<Route path="/products" element={<ProductsPage/>}/>
 							<Route
 								path="/product/:productId"
 								element={<ProductDetail />}
