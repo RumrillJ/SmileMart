@@ -6,9 +6,11 @@ import './Auth.css';
 import { UserInterface } from '../../interfaces/UserInterface';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUser } from '../../contexts/UserContext';
 
 export const Login: React.FC = () => {
-    const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
+    //const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
+    const {user, setUser} = useUser()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export const Login: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prev => ({ ...prev, [name]: value }));
+        setUser(prev => ({ ...prev, [name]: value } as UserInterface));
     };
 
     const login = async () => {
