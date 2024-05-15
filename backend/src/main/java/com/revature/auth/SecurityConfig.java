@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -34,10 +35,11 @@ public class SecurityConfig {
                         .anyRequest().permitAll()) // temporarily lets allow all requests
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                ;
+                // add the JWT filter to authenticate incoming requests
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // Probably lets not add this filter yet
-                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        /* Most online stores allow you to browse without logging in.
+        *  Probably just require login for add to cart, checkout, etc */
 
         return http.build();
     }
