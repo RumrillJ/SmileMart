@@ -15,7 +15,7 @@ import { ProductItem } from './components/Product/ProductItem';
 import { Cart } from './components/Checkout/Cart';
 import { ProductsPage } from './components/Pages/ProductsPage';
 
-export const backend = (path?: string) => "http://localhost:8080" + (path ? "/" + path : "");
+export const backend = (path?: string) => "http://localhost:8080" + (path ?? "");
 
 function App() {
 

@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Auth.css';
 import { FaRegUserCircle, FaRegIdBadge, FaUser, FaLock, FaCheckDouble, FaEnvelope, FaHome, FaCity, FaMapMarkerAlt, FaEnvelopeOpenText, FaGlobeAmericas, FaPhone } from 'react-icons/fa';
+import { registerUser } from '../../api/authAPI';
 
 export const Register: React.FC = () => {
     const [userData, setUserData] = useState<RegistrationInterface>({
@@ -72,7 +73,7 @@ export const Register: React.FC = () => {
     const handleRegister = async () => {
         if (validateCredentials()) {
             try {
-                const response = await axios.post('http://localhost:8080/auth/register', userData);
+                const response = await registerUser(userData);
                 toast.success('Registration successful!');
                 navigate("/login");
             } catch (error) {
