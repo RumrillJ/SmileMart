@@ -36,14 +36,14 @@ public class AuthenticationService {
         if (userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank()
             || userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank()) {
             // Fail log
-            log.warn("First name, last name, or both do not meet the requirements");
+            //log.warn("First name, last name, or both do not meet the requirements");
 
 
             throw new IllegalArgumentException("First name, last name, or both do not meet the requirements");
         }
 
         if (userRegistrationDTO.getAddress().isBlank() || userRegistrationDTO.getCity().isBlank() || userRegistrationDTO.getCountry().isBlank() || userRegistrationDTO.getState().isBlank() || userRegistrationDTO.getZip() == 0) {
-            log.warn("All address fields must be filled");
+            //log.warn("All address fields must be filled");
             throw new IllegalArgumentException("All address fields must be filled");
         }
 
@@ -75,7 +75,7 @@ public class AuthenticationService {
         if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent() || userDAO.findByUsername(userRegistrationDTO.getUsername()).isPresent()) {
 
             // Fail log
-            log.warn("Email, username, or both are already taken");
+            //log.warn("Email, username, or both are already taken");
 
             
             throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " or" + userRegistrationDTO.getUsername() +" already taken!");
@@ -103,7 +103,7 @@ public class AuthenticationService {
         User newUser = userDAO.save(user);
 
         // Success log
-        log.info("user with name {} {} was created!", newUser.getFirstName(), newUser.getLastName());
+        //log.info("user with name {} {} was created!", newUser.getFirstName(), newUser.getLastName());
 
         return "User " + newUser.getFirstName() + " " + newUser.getLastName() + " was registered successfully!";
     }
@@ -119,7 +119,7 @@ public class AuthenticationService {
         if (optionalUser.isPresent()) {
             if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
                 // Success login log.
-                log.info("{} logged in successfully!", userLoginDTO.getUsername());
+                //log.info("{} logged in successfully!", userLoginDTO.getUsername());
 
                 return jwtService.generateToken(optionalUser.get());
             } else {

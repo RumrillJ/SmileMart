@@ -1,10 +1,10 @@
 import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
+import { useUser } from '../../contexts/UserContext';
 
 const Logout: React.FC = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
+    const { setUser } = useUser();
 
     useEffect(() => {
         // Clear user session or any global state if necessary
