@@ -153,4 +153,19 @@ public class OrderService {
         orderDAO.save(userOrder);
         return userOrder;
     }
+
+    //add an order and its order-products
+    public int saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts) {
+        Optional<User> optionalUser = userDAO.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("Invalid user.");
+        }
+        order.setUser(optionalUser.get());
+        Order o = orderDAO.save(order);
+        for(OrderProduct op : orderProducts) {
+            orderProductService.addOrderProductsWithOrderId(op, o.getOrderId());
+        }
+        return o.getOrderId();
+    }
+
 }

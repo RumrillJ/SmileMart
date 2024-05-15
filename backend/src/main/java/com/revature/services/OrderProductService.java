@@ -10,6 +10,7 @@ import com.revature.models.dtos.OrderProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,5 +59,15 @@ public class OrderProductService {
             throw new IllegalArgumentException("OrderProduct is null.");
         }
         return orderProductDAO.save(op);
+    }
+
+    //create an orderProduct with orderId
+    public OrderProduct addOrderProductsWithOrderId(OrderProduct orderProduct, int orderId){
+        Optional<Order> optionalOrder = orderDAO.findById(orderId);
+        if(optionalOrder.isEmpty()) {
+            throw new IllegalArgumentException("Order with id: " +orderId + " does not exist");
+        }
+        orderProduct.setOrder(optionalOrder.get());
+        return orderProductDAO.save(orderProduct);
     }
 }
