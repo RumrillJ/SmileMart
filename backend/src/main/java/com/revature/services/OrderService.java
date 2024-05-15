@@ -65,7 +65,7 @@ public class OrderService {
         return outgoingOrderDTOList;
     }
 
-    // Create an order, Requires only a user
+    // Create an order, Requires only a user id
     public Order addOrder(int userId) {
         // Check if valid user
         Optional<User> optUser = userDAO.findById(userId);
@@ -102,6 +102,10 @@ public class OrderService {
             throw new IllegalArgumentException("Invalid user.");
         }
 
+        if(productDAO.findById(orderProductDTO.getProductId()).isEmpty()) {
+            throw new IllegalArgumentException("Product does not exist in the inventory: " + orderProductDTO.getProductId());
+        }
+
         // Save user as u
         User u = optUser.get();
 
@@ -121,9 +125,6 @@ public class OrderService {
             // Order list is empty, create a list and add the item
             userOrder.setProducts(new HashSet<>());
             userOrder.getProducts().add(orderProductService.addOrderProduct(orderProductDTO));
-
-            // Save the userOrder
-            return orderDAO.save(userOrder);
         }
         else {
             // If the order is NOT empty, check for the item
@@ -148,6 +149,8 @@ public class OrderService {
                 userOrder.getProducts().add(newOrderProduct);
             }
         }
-        return orderDAO.save(userOrder);
+        //return orderDAO.save(userOrder);
+        orderDAO.save(userOrder);
+        return userOrder;
     }
 }

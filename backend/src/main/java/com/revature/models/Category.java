@@ -3,7 +3,7 @@ package com.revature.models;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+
 
 @Entity
 @Table( name = "categories")

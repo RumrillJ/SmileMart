@@ -4,10 +4,16 @@ import axios from 'axios';
 import { FaUser, FaLock } from 'react-icons/fa';
 import './Auth.css';
 import { UserInterface } from '../../interfaces/UserInterface';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useUser } from '../../contexts/UserContext';
+import { loginUser } from '../../api/authAPI';
 
 export const Login: React.FC = () => {
-    const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
+    //const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
+    const {user, setUser} = useUser()
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         document.body.style.backgroundImage = "url('/images/login-background.png')";
@@ -30,18 +36,20 @@ export const Login: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prev => ({ ...prev, [name]: value }));
+        setUser(prev => ({ ...prev, [name]: value } as UserInterface));
     };
 
     const login = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/users/login", user);
-            const { role, userId, username } = response.data;
+            const response = await loginUser(user as UserInterface);
+            // TODO: THe response only returns the token not the user data.
+            //const { role, userId, username } = response.data;
+            
             // Logic to manage user role and navigation
-            navigate("/main-page"); // Edit according to your navigation logic
+            navigate("/main-page");
         } catch (error) {
             console.error("Login failed: ", error);
-            alert("Login Failed!");
+            toast.error("Login Failed!");
         }
     };
 
