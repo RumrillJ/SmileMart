@@ -1,15 +1,23 @@
-import { ReactNode, useContext } from "react"
-import { UserContext } from "../../contexts/UserContext"
+import { ReactNode, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useUser } from "../../contexts/UserContext"
 
 
 interface Props {
 	children?: ReactNode
+	requireAuth?: boolean
 }
 
-export const Page: React.FC<Props> = ({ children }) => {
+export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 
-	// Example usage. Should use directly in the component where needed
-	const {user, setUser} = useContext(UserContext)
+	const { user, setUser } = useUser()
+	const navigate = useNavigate()
+
+	// should just redirect on a 403 status
+
+	useEffect(() => {
+
+	}, [user])
 
 	return (
 		<div>
