@@ -11,7 +11,7 @@ export const Login: React.FC = () => {
 
     useEffect(() => {
         document.body.style.backgroundImage = "url('/images/login-background.png')";
-        document.body.style.backgroundSize = "65%";
+        document.body.style.backgroundSize = "70%";
         document.body.style.backgroundPosition = "right bottom";
         document.body.style.backgroundRepeat = "no-repeat";
         document.body.style.backgroundAttachment = "fixed";
