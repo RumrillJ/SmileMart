@@ -25,7 +25,7 @@ export const Register: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        document.body.style.backgroundImage = "url('/images/register-background.jpg')";
+        document.body.style.backgroundImage = "url('/images/register-background.png')";
         document.body.style.backgroundSize = "60%";
         document.body.style.backgroundPosition = "left bottom";
         document.body.style.backgroundRepeat = "no-repeat";
