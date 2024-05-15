@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { UserInterface } from "../../interfaces/UserInterface"
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
 
 export const Settings: React.FC = () => {
@@ -63,6 +64,14 @@ export const Settings: React.FC = () => {
 	const updateUser = async () => {
 
 		//axios call to update user information in the database
+		//TODO: replace PLACEHOLDER_URL with actual endpoint
+		const response = await axios.patch("http://PLACEHOLDER_URL", user)
+
+		//toast message to confirm user information has been updated
+
+		//navigate back to previous page
+		//TODO: replace PLACEHOLDER with actual endpoint
+		navigate("/PLACEHOLDER")
 
 	}
 
@@ -121,8 +130,8 @@ export const Settings: React.FC = () => {
 				
 				<div className="button-container">
                     <button className="settings-button" onClick={updateUser}>Update</button>
-					{/* button to navigate back to previous page (endpoint is placeholder) */}
-                    <button className="settings-button" onClick={() => navigate("/")}>Back</button>
+					{/* button to navigate back to previous page (//TODO: replace PLACEHOLDER with actual endpoint) */}
+                    <button className="settings-button" onClick={() => navigate("/PLACEHOLDER")}>Back</button>
                 </div>
 
 
