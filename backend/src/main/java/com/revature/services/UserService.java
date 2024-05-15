@@ -1,7 +1,6 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
-import com.revature.models.Order;
 import com.revature.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 
 @Service
 @Slf4j
@@ -72,12 +66,14 @@ public class UserService {
             u.get().setPhoneNumber(user.getPhoneNumber());
         }
 
-        User updatedUser = userDAO.save(u.get());
+        userDAO.save(u.get());
 
-        // Success log
         log.info("user with the id #{}'s profile was updated successfully!", updatedUser.getUserId());
         return "User " + updatedUser.getFirstName() + " " + updatedUser.getLastName() + "'s profile was updated successfully!";
     }
 
+        log.info("user {} {}'s profile was updated successfully!", u.get().getFirstName(), u.get().getLastName());
+        return "User " + u.get().getFirstName() + " " + u.get().getLastName() + "'s profile was updated successfully!";
+    }
 
 }

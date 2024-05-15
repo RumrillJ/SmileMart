@@ -1,6 +1,6 @@
-import { ReactNode, useContext, useEffect } from "react"
-import { UserContext } from "../../contexts/UserContext"
+import { ReactNode, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "../../contexts/UserContext"
 
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 
-	const {user, setUser} = useContext(UserContext)
+	const { user, setUser } = useUser()
 	const navigate = useNavigate()
 
 	// should just redirect on a 403 status

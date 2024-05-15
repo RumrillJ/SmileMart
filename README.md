@@ -17,7 +17,14 @@ The SmileMart application consists of two main components:
 - **Order Management**: Users can view their order history and track new orders.
 - **Admin Panel**: Admins can add, edit, or remove products, view orders, and manage users.
 
-[Add main page image]
+## Screenshots
+
+### Login Page
+<img src="images/login-page.png" alt="Login Page" width="600"/>
+
+### Register Page
+<img src="images/register-page.png" alt="Register Page" width="600"/>
+
 
 ### Validation
 - **User Authentication**: The system ensures that only logged-in users can access functionalities. Using Spring Security, the backend manages sessions and authentication states securely. Each request is verified to ensure that it comes from an authenticated session before any user-specific actions are processed. In case of session expiration or non-authentication, the system redirects users to the login page.

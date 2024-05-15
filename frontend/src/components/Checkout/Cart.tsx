@@ -1,19 +1,16 @@
-import { useContext } from "react"
-import { CartContext } from "../../contexts/CartContext"
+import { useCart } from "../../contexts/CartContext"
 import { ProductItem } from "../Product/ProductItem"
 
-
 export const Cart: React.FC = () => {
-	const { cart } = useContext(CartContext)
+	const { cart } = useCart()
 
 	return (
 		<div>
-			<h2>Your Order: </h2>
-			<button>Continue to checkout</button>
-
-			{cart?.map((product) => {
-				return <ProductItem product={product} />
+			<h2>Your Cart: </h2>
+			{Object.values(cart).map((product, index) => {
+				return <ProductItem product={product} key={"prd" + index}/>
 			})}
+			<button>Continue to checkout</button>
 		</div>
 	)
 }
