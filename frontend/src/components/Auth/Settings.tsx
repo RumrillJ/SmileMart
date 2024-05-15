@@ -2,28 +2,27 @@ import { useState } from "react"
 import { UserInterface } from "../../interfaces/UserInterface"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import { RegistrationInterface } from "../../interfaces/RegistrationInterface"
+import { toast } from "react-toastify"
 
 
 export const Settings: React.FC = () => {
 
-	//will the useContext replace all of this?
-	//set state (UserInterface)
-    const[user, setUser] = useState<UserInterface>({
+	//set state (using RegistrationInterface since they contain the same fields, can change if needed)
+    const[user, setUser] = useState<RegistrationInterface>({
         username:"",
         password:"",
         firstName: "",
 		lastName: "",
         email: "",
-        role: "Customer", //default role is Customer
 
-
-		//I do not know if we want to use all of these fields but I included them for now as placeholders
 		address: "",
 		city: "",
 		state: "",
-		zipcode: "",
+		zip: "",
 		country: "",
-		phone: ""
+		phoneNumber: "",
+		confirmPassword: ""
     })
 
 	//useNavigate to navigate between components
@@ -38,9 +37,11 @@ export const Settings: React.FC = () => {
             setUser((user) => ({...user, username:input.target.value}))
         } else if(input.target.name === "password"){
             setUser((user) => ({...user, password:input.target.value}))
-        } else if(input.target.name === "firstname"){
+        } else if(input.target.name === "confirmPassword"){
+            setUser((user) => ({...user, password:input.target.value}))
+        } else if(input.target.name === "firstName"){
             setUser((user) => ({...user, firstName:input.target.value}))
-        } else if(input.target.name === "lastname"){
+        } else if(input.target.name === "lastName"){
             setUser((user) => ({...user, lastName:input.target.value}))
         } else if(input.target.name === "email"){
             setUser((user) => ({...user, email:input.target.value}))
@@ -50,11 +51,11 @@ export const Settings: React.FC = () => {
 			setUser((user) => ({...user, city:input.target.value}))
 		} else if(input.target.name === "state"){
 			setUser((user) => ({...user, state:input.target.value}))
-		} else if(input.target.name === "zipcode"){
+		} else if(input.target.name === "zip"){
 			setUser((user) => ({...user, zipcode:input.target.value}))
 		} else if(input.target.name === "country"){
 			setUser((user) => ({...user, country:input.target.value}))
-		} else if(input.target.name === "phone"){
+		} else if(input.target.name === "phoneNumber"){
 			setUser((user) => ({...user, phone:input.target.value}))
 		}
 
@@ -64,15 +65,17 @@ export const Settings: React.FC = () => {
 	const updateUser = async () => {
 
 		//axios call to update user information in the database
-		//TODO: replace PLACEHOLDER_URL with actual endpoint
-		const response = await axios.patch("http://PLACEHOLDER_URL", user)
-
-		//toast message to confirm user information has been updated
-
-		//navigate back to previous page
-		//TODO: replace PLACEHOLDER with actual endpoint
-		navigate("/PLACEHOLDER")
-
+		try {
+			//TODO: replace PLACEHOLDER_URL with actual endpoint
+			const response = await axios.patch("http://PLACEHOLDER_URL", user)
+			toast.success("User information has been updated successfully!");
+			//navigate back to previous page
+			//TODO: replace PLACEHOLDER with actual endpoint
+			navigate("/PLACEHOLDER")
+		} catch (error) {
+            toast.error("User information failed to update!");
+            console.error(error);
+        }
 	}
 
 	
@@ -84,45 +87,42 @@ export const Settings: React.FC = () => {
 				<h3>Update your personal information below.</h3>
 
 
-				{/* input boxes for user information 
-					we could potententially inmplement conditional rendering
-					based to if user wants to change their core account information
-					like username, password, name, et cetera (should we even allow username to change?)
-					OR
-					if they want to change their address/contact information
-				*/}
+				{/* input boxes for user information */}
 				<div className="input-container">
-					<input type="text" placeholder="username" name="username" onChange={storeValues}/>
+					<input type="text" placeholder="Username" name="username" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="password" placeholder="password" name="password" onChange={storeValues}/>
+					<input type="password" placeholder="Password" name="password" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="first name" name="firstname" onChange={storeValues}/>
+					<input type="password" placeholder="Confirm Password" name="confirmPassword" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="last name" name="lastname" onChange={storeValues}/>
+					<input type="text" placeholder="First Name" name="firstName" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="email" name="email" onChange={storeValues}/>
+					<input type="text" placeholder="Last Name" name="lastName" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="address" name="address" onChange={storeValues}/>
+					<input type="text" placeholder="Email" name="email" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="city" name="city" onChange={storeValues}/>
+					<input type="text" placeholder="Address" name="address" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="state" name="state" onChange={storeValues}/>
+					<input type="text" placeholder="City" name="city" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="zipcode" name="zipcode" onChange={storeValues}/>
+					<input type="text" placeholder="State" name="state" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="country" name="country" onChange={storeValues}/>
+					<input type="text" placeholder="Zip" name="zip" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="text" placeholder="phone" name="phone" onChange={storeValues}/>
+					<input type="text" placeholder="Country" name="country" onChange={storeValues}/>
+				</div>
+				<div className="input-container">
+					<input type="text" placeholder="Phone Number" name="phoneNumber" onChange={storeValues}/>
 				</div>
 
 
