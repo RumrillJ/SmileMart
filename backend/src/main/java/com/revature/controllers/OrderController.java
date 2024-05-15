@@ -3,6 +3,7 @@ package com.revature.controllers;
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
 import com.revature.models.Order;
+import com.revature.models.OrderProduct;
 import com.revature.models.Status;
 
 import java.util.List;
@@ -120,5 +121,17 @@ public class OrderController {
             return ResponseEntity.status(400).body(e.getMessage());
         }
 
+    }
+
+    //user checkout and return an orderId
+    @PostMapping("/checkout")
+    public ResponseEntity<?> GetOrderIdCheckout(int userId, Order order, List<OrderProduct> orderProducts){
+        //saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts)
+        try{
+            int orderId = orderService.saveOrderAndOrderProducts(userId, order, orderProducts);
+            return ResponseEntity.ok(orderId);
+        }catch(Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 }

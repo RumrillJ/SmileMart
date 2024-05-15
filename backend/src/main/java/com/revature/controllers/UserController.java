@@ -36,17 +36,4 @@ public class UserController {
         }
     }
 
-    //return an order when user checkout
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrderByUser(@PathVariable int userId) {
-        try {
-            Order order = userService.userCheckoutWithOrder(userId);
-            return ResponseEntity.ok(order);
-        }catch(RuntimeException e){
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
-    }
-
-
-
 }

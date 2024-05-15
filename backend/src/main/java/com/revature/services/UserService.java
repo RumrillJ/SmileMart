@@ -79,14 +79,5 @@ public class UserService {
         return "User " + updatedUser.getFirstName() + " " + updatedUser.getLastName() + "'s profile was updated successfully!";
     }
 
-    public Order userCheckoutWithOrder(int userId) {
-        Optional<User> optionalUser = userDAO.findById(userId);
-        if(optionalUser.isEmpty()){
-            throw new IllegalArgumentException("can't find user");
-        }
-        List<Order> orders = userDAO.findOrdersByUserId(userId);
-        orders.sort((o1,o2) -> o2.getOrderId()-o1.getOrderId());
-        return orders.get(0);
-    }
 
 }
