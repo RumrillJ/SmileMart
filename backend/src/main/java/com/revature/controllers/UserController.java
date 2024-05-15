@@ -1,6 +1,5 @@
 package com.revature.controllers;
 
-import com.revature.models.Order;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +34,4 @@ public class UserController {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }
-
-    //return an order when user checkout
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrderByUser(@PathVariable int userId) {
-        try {
-            Order order = userService.userCheckoutWithOrder(userId);
-            return ResponseEntity.ok(order);
-        }catch(RuntimeException e){
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
-    }
-
-
-
 }
