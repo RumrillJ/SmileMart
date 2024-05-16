@@ -31,7 +31,7 @@ export async function loginUser(user: UserInterface) {
 }
 
 export async function updateUser(user: SettingsInterface) {
-	const response = await axios.post(backend("/auth/settings"), user)
+	const response = await axios.patch(backend("/auth/settings"), user)
 	console.log(response)
 	return response
 }
