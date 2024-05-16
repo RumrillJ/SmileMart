@@ -142,7 +142,7 @@ public class OrderController {
     @GetMapping("/order/{orderId}")
 
     public ResponseEntity<Object> viewAllProductByOrderId(@PathVariable int orderId) {
-        System.out.println("Inside viewAllProductByOrderId");
+        System.out.println("    Inside viewAllProductByOrderId");
         System.out.println(orderId);
 
         Optional<Order>  ord = orderDAO.findById(orderId);
