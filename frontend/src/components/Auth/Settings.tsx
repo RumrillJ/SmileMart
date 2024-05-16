@@ -1,15 +1,16 @@
 import { useState } from "react"
-import { UserInterface } from "../../interfaces/UserInterface"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
-import { RegistrationInterface } from "../../interfaces/RegistrationInterface"
-import { toast } from "react-toastify"
+
+
+import { ToastContainer, toast } from "react-toastify"
+import { SettingsInterface } from "../../interfaces/SettingsInterface"
+import { updateUser } from "../../api/authAPI"
 
 
 export const Settings: React.FC = () => {
 
 	//set state (using RegistrationInterface since they contain the same fields, can change if needed)
-    const[user, setUser] = useState<RegistrationInterface>({
+    const[user, setUser] = useState<SettingsInterface>({
         username:"",
         password:"",
         firstName: "",
@@ -27,12 +28,40 @@ export const Settings: React.FC = () => {
 
 	//useNavigate to navigate between components
     const navigate = useNavigate()
+
+	// ** Method Stolen from Gaetano's Code ** //
+	// Validates user credentials based on defined rules
+    const validateCredentials = () => {
+        const { username, password, confirmPassword } = user;
+
+        // Check for minimum username length
+        if (username.length < 8) {
+            toast.error("Username must contain at least 8 characters.");
+            return false;
+        }
+
+        // Check for the presence of a number or punctuation in the password
+        if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            toast.error("Password must contain a number or punctuation.");
+            return false;
+        }
+
+        // Add additional validation checks as needed
+
+        // Verify passwords match
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match!");
+            return false;
+        }
+
+        return true;
+    };
     
 
 	//function to store input box values
     const storeValues = (input:any) => {
 
-		//placeholder code to catch the input box information
+		//code to catch the input box information, apologies for inelegance
         if(input.target.name === "username"){
             setUser((user) => ({...user, username:input.target.value}))
         } else if(input.target.name === "password"){
@@ -62,21 +91,23 @@ export const Settings: React.FC = () => {
     }
 
 	//function to submit new user information
-	const updateUser = async () => {
-
-		//axios call to update user information in the database
-		try {
-			//TODO: replace PLACEHOLDER_URL with actual endpoint
-			const response = await axios.patch("http://PLACEHOLDER_URL", user)
-			toast.success("User information has been updated successfully!");
-			//navigate back to previous page
-			//TODO: replace PLACEHOLDER with actual endpoint
-			navigate("/PLACEHOLDER")
-		} catch (error) {
-            toast.error("User information failed to update!");
-            console.error(error);
-        }
+	const updateSettings = async () => {
+		if (validateCredentials()) {
+			//axios call to update user information in the database (updateUser in authAPI.ts)
+			try {
+				const response = await updateUser(user);
+				toast.success("User information has been updated successfully!");
+				//navigate back to the main page //TODO: change endpoint if needed
+				navigate("/main-page")
+			} catch (error) {
+				toast.error("User information failed to update!");
+				console.error(error);
+			}
+		}
 	}
+
+	
+
 
 	
 
@@ -88,14 +119,15 @@ export const Settings: React.FC = () => {
 
 
 				{/* input boxes for user information */}
+				<ToastContainer />
 				<div className="input-container">
 					<input type="text" placeholder="Username" name="username" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="password" placeholder="Password" name="password" onChange={storeValues}/>
+					<input type="password" placeholder="New Password" name="password" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
-					<input type="password" placeholder="Confirm Password" name="confirmPassword" onChange={storeValues}/>
+					<input type="password" placeholder="Confirm New Password" name="confirmPassword" onChange={storeValues}/>
 				</div>
 				<div className="input-container">
 					<input type="text" placeholder="First Name" name="firstName" onChange={storeValues}/>
@@ -129,9 +161,9 @@ export const Settings: React.FC = () => {
 				{/* button to submit new user information */}
 				
 				<div className="button-container">
-                    <button className="settings-button" onClick={updateUser}>Update</button>
-					{/* button to navigate back to previous page (//TODO: replace PLACEHOLDER with actual endpoint) */}
-                    <button className="settings-button" onClick={() => navigate("/PLACEHOLDER")}>Back</button>
+                    <button className="settings-button" onClick={updateSettings}>Update</button>
+					{/* button to navigate back to previous page (//navigate back to the main page //TODO: change endpoint if needed */}
+                    <button className="settings-button" onClick={() => navigate("/main-page")}>Back</button>
                 </div>
 
 
@@ -140,3 +172,5 @@ export const Settings: React.FC = () => {
 		</div>
 	)
 }
+
+export default Settings;

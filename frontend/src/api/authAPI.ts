@@ -2,6 +2,7 @@ import axios from "axios"
 import { UserInterface } from "../interfaces/UserInterface"
 import { backend } from "../App"
 import { RegistrationInterface } from "../interfaces/RegistrationInterface"
+import { SettingsInterface } from "../interfaces/SettingsInterface"
 
 
 function setAuth(jwt: string) {
@@ -26,5 +27,11 @@ export async function loginUser(user: UserInterface) {
     const response = await axios.post(backend("/auth/login"), user)
 	console.log(response)
 	setAuth(response.data)
+	return response
+}
+
+export async function updateUser(user: SettingsInterface) {
+	const response = await axios.post(backend("/auth/settings"), user)
+	console.log(response)
 	return response
 }
