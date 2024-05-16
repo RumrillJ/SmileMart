@@ -5,6 +5,8 @@ import com.revature.models.Order;
 import com.revature.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -21,9 +23,13 @@ public class UserService {
 
     private final UserDAO userDAO;
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final JwtService jwtService;
+
     @Autowired
-    public UserService(UserDAO userDAO) {
+    public UserService(UserDAO userDAO, JwtService jwtService){
         this.userDAO = userDAO;
+        this.jwtService = jwtService;
     }
 
     // Update User Information
@@ -48,7 +54,7 @@ public class UserService {
             u.get().setUsername(user.getUsername());
         }
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            u.get().setPassword(user.getPassword());
+            u.get().setPassword(passwordEncoder.encode(user.getPassword()));
         }
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {
             u.get().setEmail(user.getEmail());
