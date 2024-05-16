@@ -8,6 +8,6 @@ export async function postOrder(orderCheckout: Record<number, ProductInterface>)
         return response.data
     }
     catch (e:any) {
-        return e
+        return e.response.data
     }
 }
