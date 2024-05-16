@@ -46,7 +46,7 @@ export const Login: React.FC = () => {
             //const { role, userId, username } = response.data;
             
             // Logic to manage user role and navigation
-            navigate("/main-page");
+            navigate("/");
         } catch (error) {
             console.error("Login failed: ", error);
             toast.error("Login Failed!");

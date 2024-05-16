@@ -4,12 +4,8 @@ import { backend } from "../App";
 
 
 export async function getProducts() {
-	try{
-		const response = await axios.get(backend("/products"))
-		return response.data as ProductInterface[]
-	} catch (e: any) {
-		return e.response.data
-	}
+	const response = await axios.get(backend("/products"))
+	return response
 }
 
 async function getProduct(productId: number) { //}: ProductInterface | string {
