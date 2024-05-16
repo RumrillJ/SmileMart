@@ -4,10 +4,10 @@ import { backend } from "../App";
 
 export async function postOrder(orderCheckout: Record<number, ProductInterface>) {
     try {
-        const response = await axios.post(backend("/checkout"))
+        const response = await axios.post(backend("/orders/checkout"))
         return response.data
     }
     catch (e:any) {
-        return e.response.data
+        return e
     }
 }
