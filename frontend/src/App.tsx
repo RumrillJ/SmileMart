@@ -29,23 +29,15 @@ function App() {
 						<Routes>
 							<Route
 								path=""
-								element={
-									<Page>
-										<h2>Welcome</h2>
-										<h4>Click here to shop with us!</h4>
-										<h5>Click here to manage products.</h5>
-										{/* we should discuss if we want a landing page or just straight to products */}
-									</Page>
-								}
+								element={<ProductsPage/>}
 							/>
 							<Route path="/register" element={<Register />} />
 							<Route path="/login" element={<Login />} />
-							<Route path="/products" element={<ProductsPage/>}/>
 							<Route
 								path="/product/:productId"
 								element={<ProductDetail />}
 							/>
-							<Route path="/cart" />
+							<Route path="/cart" element={<Cart/>}/>
 							<Route path="/checkout" element={<Checkout />} />
 							<Route path="/profile" />
 

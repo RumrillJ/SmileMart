@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderProductDAO extends JpaRepository<OrderProduct, Integer> {
     public OrderProduct findByOrderProductId(int orderProductId);
+
 }
