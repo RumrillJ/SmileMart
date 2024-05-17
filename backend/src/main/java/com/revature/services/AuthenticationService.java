@@ -36,7 +36,7 @@ public class AuthenticationService {
         if (userRegistrationDTO.getFirstName() == null || userRegistrationDTO.getFirstName().isBlank()
             || userRegistrationDTO.getLastName() == null || userRegistrationDTO.getLastName().isBlank()) {
             // Fail log
-            //log.warn("First name, last name, or both do not meet the requirements");
+            log.warn("First name, last name, or both do not meet the requirements");
 
 
             throw new IllegalArgumentException("First name, last name, or both do not meet the requirements");
@@ -58,7 +58,7 @@ public class AuthenticationService {
         // Checks password meets regex
         if (userRegistrationDTO.getPassword() == null || !(userRegistrationDTO.getPassword()).matches(passwordRegex)) {
             // Fail log
-            //log.warn("Password did not meet the requirements");
+            log.warn("Password did not meet the requirements");
 
             throw new IllegalArgumentException("Invalid password!");
         }
@@ -67,7 +67,7 @@ public class AuthenticationService {
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (userRegistrationDTO.getEmail() == null || userRegistrationDTO.getEmail().isBlank() || !userRegistrationDTO.getEmail().matches(emailRegex)) {
             // Fail log
-            //log.warn("Email did not meet the requirements");
+            log.warn("Email did not meet the requirements");
             throw new IllegalArgumentException("Invalid Email!");
         }
 
@@ -75,7 +75,7 @@ public class AuthenticationService {
         if (userDAO.findByEmail(userRegistrationDTO.getEmail()).isPresent() || userDAO.findByUsername(userRegistrationDTO.getUsername()).isPresent()) {
 
             // Fail log
-            //log.warn("Email, username, or both are already taken");
+            log.warn("Email, username, or both are already taken");
 
             
             throw new IllegalArgumentException(userRegistrationDTO.getEmail() + " or" + userRegistrationDTO.getUsername() +" already taken!");
@@ -103,7 +103,7 @@ public class AuthenticationService {
         User newUser = userDAO.save(user);
 
         // Success log
-        //log.info("user with name {} {} was created!", newUser.getFirstName(), newUser.getLastName());
+        log.info("user with name {} {} was created!", newUser.getFirstName(), newUser.getLastName());
 
         return "User " + newUser.getFirstName() + " " + newUser.getLastName() + " was registered successfully!";
     }
@@ -119,19 +119,19 @@ public class AuthenticationService {
         if (optionalUser.isPresent()) {
             if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
                 // Success login log.
-                //log.info("{} logged in successfully!", userLoginDTO.getUsername());
+                log.info("{} logged in successfully!", userLoginDTO.getUsername());
 
                 return jwtService.generateToken(optionalUser.get());
             } else {
                 // Incorrect password log
-                //log.warn("Invalid password");
+                log.warn("Invalid password");
 
                 throw new NoSuchElementException("Incorrect Password!");
             }
         }
 
         // Failed login log.
-        //log.warn("No such user found");
+        log.warn("No such user found");
 
         // If optional user is not available throw an error.
         throw new NoSuchElementException("User was not found.");
