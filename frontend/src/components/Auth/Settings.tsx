@@ -29,33 +29,36 @@ export const Settings: React.FC = () => {
 	//useNavigate to navigate between components
     const navigate = useNavigate()
 
-	// ** Method Stolen from Gaetano's Code ** //
+	// ** Method Stolen from Gaetano's Code, added optional validation rules ** //
 	// Validates user credentials based on defined rules
     const validateCredentials = () => {
         const { username, password, confirmPassword } = user;
 
-        // Check for minimum username length
-        if (username.length < 8) {
-            toast.error("Username must contain at least 8 characters.");
-            return false;
-        }
+		//we want to validate the username only if it is not empty (user doesn't have to change all fields)
+		if	(username !== "") {
 
-        // Check for the presence of a number or punctuation in the password
-        if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(password)) {
-            toast.error("Password must contain a number or punctuation.");
-            return false;
-        }
+			// Check for minimum username length
+			if (username.length < 8) {
+				toast.error("Username must contain at least 8 characters.");
+				return false;
+			}			
+		}	
+			
 
-        // Add additional validation checks as needed
-		
-        // Verify passwords match
-        if (password !== confirmPassword) {
-			//console.log(password)
-			//console.log(confirmPassword)
-            toast.error("Passwords do not match!");
-            return false;
-        }
-		
+		//we want to validate the password change only if it is not empty (user doesn't have to change all fields)
+		if (password !== "" || confirmPassword !== "") {
+			// Check for the presence of a number or punctuation in the password
+			if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(password)) {
+				toast.error("Password must contain a number or punctuation.");
+				return false;
+			}
+
+			// Verify passwords match
+			if (password !== confirmPassword) {
+				toast.error("Passwords do not match!");
+				return false;
+			}
+		}
 
         return true;
     };
