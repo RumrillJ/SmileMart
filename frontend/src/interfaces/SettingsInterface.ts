@@ -1,7 +1,11 @@
 import { UserInterface } from "./UserInterface";
 
 // SettingsInterface extends UserInterface to update user information.
-export interface SettingsInterface extends UserInterface {
+export interface SettingsInterface { //} extends UserInterface {
+    // from user
+    username: string
+    password: string
+
     firstName?: string;
     lastName?: string;
     email?: string;

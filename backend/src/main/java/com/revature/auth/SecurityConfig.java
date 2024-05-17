@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/orders/**").authenticated()
                         //.anyRequest().authenticated()) // this will close all other endpoints to unauthenticated requests
                         .anyRequest().permitAll()) // temporarily lets allow all other requests
+                .anonymous((anonymous) -> anonymous.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // add the JWT filter to authenticate incoming requests

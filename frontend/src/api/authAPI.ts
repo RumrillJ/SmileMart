@@ -26,7 +26,7 @@ export async function registerUser(user: RegistrationInterface) {
 export async function loginUser(user: UserInterface) {
 	const response = await axios.post(backend("/auth/login"), user)
 	console.log(response)
-	setAuth(response.data)
+	setAuth(response.data.token)
 	return response
 }
 
