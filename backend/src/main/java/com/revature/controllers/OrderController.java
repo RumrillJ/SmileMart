@@ -76,7 +76,7 @@ public class OrderController {
 
 
     //get orders by User Id
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<?> getOrdersByUser(@RequestHeader("Authorization") String token){
         // SecurityConfig's
         // .requestMatchers("/orders/**").authenticated()
