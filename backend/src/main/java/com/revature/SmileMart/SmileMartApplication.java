@@ -14,6 +14,9 @@ public class SmileMartApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SmileMartApplication.class, args);
+
+		System.out.println("Application Started");
 	}
+
 
 }
