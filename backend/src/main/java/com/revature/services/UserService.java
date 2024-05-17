@@ -68,10 +68,6 @@ public class UserService {
 
         userDAO.save(u.get());
 
-        log.info("user with the id #{}'s profile was updated successfully!", updatedUser.getUserId());
-        return "User " + updatedUser.getFirstName() + " " + updatedUser.getLastName() + "'s profile was updated successfully!";
-    }
-
         log.info("user {} {}'s profile was updated successfully!", u.get().getFirstName(), u.get().getLastName());
         return "User " + u.get().getFirstName() + " " + u.get().getLastName() + "'s profile was updated successfully!";
     }

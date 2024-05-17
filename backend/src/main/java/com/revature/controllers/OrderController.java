@@ -3,6 +3,7 @@ package com.revature.controllers;
 import com.revature.auth.JwtFilter;
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.Order;
 import com.revature.models.OrderProduct;
 import com.revature.models.Status;
@@ -29,13 +30,15 @@ public class OrderController {
     private final OrderDAO orderDAO;
     private final StatusDAO statusDAO;
     private OrderService orderService;
+    private UserDAO userDAO;
     private JwtFilter jwtFilter;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, JwtFilter jwtFilter) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, UserDAO userDAO, JwtFilter jwtFilter) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
+        this.userDAO = userDAO;
         this.jwtFilter = jwtFilter;
     }
 
@@ -77,11 +80,14 @@ public class OrderController {
 
 
     //get orders by User Id
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId, HttpSession session){
-
+    @GetMapping("/user")
+    public ResponseEntity<?> getOrdersByUserId( @RequestHeader("Authorization") String token){
+        String jwt = token.substring(7);
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = authenticatedUser.getUserId();
+        Optional<User> optionalUser = userDAO.findById(userId);
         //login check
-        if(session.getAttribute("userId") == null) {
+        if(optionalUser.isEmpty()) {
             return ResponseEntity.status(401).body("User not logged in!");
         }
 
@@ -111,7 +117,7 @@ public class OrderController {
 
     // TODO: Endpoint subject to change
     @PostMapping
-    public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, HttpSession session) {
+    public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, @RequestHeader("Authorization") String token) {
         /*
         // Check if logged in
         if (session.getAttribute("userId") == null) {
@@ -120,7 +126,10 @@ public class OrderController {
 
         // Try to catch errors
         try {
-            Order o = orderService.addToOrder(orderProductDTO, (int)session.getAttribute("userId"));
+            String jwt = token.substring(7);
+            User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            int userId = authenticatedUser.getUserId();
+            Order o = orderService.addToOrder(orderProductDTO, userId);
             return ResponseEntity.ok(o);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
