@@ -2,24 +2,33 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import { postOrder } from "../../api/orderAPI";
 import { toast } from 'react-toastify';
+import { useUser } from "../../contexts/UserContext";
 
 export const Checkout: React.FC = () => {
 
     //TODO: have the order return on confirmation to database and set it in useState here or in useContext
     const { cart } = useCart()
+    const {user} = useUser()
     const navigate = useNavigate();
     const {clearCart} = useCart();
 
+    console.log(user)
+
     async function purchaseCart() {
-        try{
-        const response = await postOrder(cart)
-        clearCart()
-        toast.done("Checkout Complete!")
-        navigate("/")
+        if(user == null || user.username == ""){
+            toast.error("You must be logged in!")
+        } else {
+            try{
+            const response = await postOrder(cart)
+            clearCart()
+            toast.done("Checkout Complete!")
+            navigate("/")
         }
         catch (e:any) {
             console.log(e)
         }
+        }
+
     } 
     return(
         <div>
