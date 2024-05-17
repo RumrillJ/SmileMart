@@ -6,15 +6,18 @@ import './Auth.css';
 import { UserInterface } from '../../interfaces/UserInterface';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUser } from '../../contexts/UserContext';
+import { loginUser } from '../../api/authAPI';
 
 export const Login: React.FC = () => {
-    const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
+    //const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
+    const {user, setUser} = useUser()
     const navigate = useNavigate();
     
 
     useEffect(() => {
-        document.body.style.backgroundImage = "url('/images/login-background.jpg')";
-        document.body.style.backgroundSize = "60%";
+        document.body.style.backgroundImage = "url('/images/login-background.png')";
+        document.body.style.backgroundSize = "70%";
         document.body.style.backgroundPosition = "right bottom";
         document.body.style.backgroundRepeat = "no-repeat";
         document.body.style.backgroundAttachment = "fixed";
@@ -33,17 +36,17 @@ export const Login: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prev => ({ ...prev, [name]: value }));
+        setUser(prev => ({ ...prev, [name]: value } as UserInterface));
     };
 
     const login = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/auth/login", user);
+            const response = await loginUser(user as UserInterface);
             // TODO: THe response only returns the token not the user data.
             //const { role, userId, username } = response.data;
             
             // Logic to manage user role and navigation
-            navigate("/main-page");
+            navigate("/");
         } catch (error) {
             console.error("Login failed: ", error);
             toast.error("Login Failed!");

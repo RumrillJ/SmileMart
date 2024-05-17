@@ -91,6 +91,7 @@ class AuthenticationServiceTest {
 
         // Assertions
         assertEquals("User " + userRegistrationDTO.getFirstName() + " " + userRegistrationDTO.getLastName() + " was registered successfully!", result);
+
     }
 
     @Test

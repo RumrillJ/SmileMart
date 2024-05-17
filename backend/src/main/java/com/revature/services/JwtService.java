@@ -14,7 +14,6 @@ public class JwtService {
 
     public String generateToken(User user) {
         return Jwts.builder()
-                // subject = username, email, userid or something we can look up a unique user
                 .subject(user.getUsername())
                 .issuedAt(new Date())
                 .signWith(KEY)
@@ -30,7 +29,7 @@ public class JwtService {
                 .getPayload().getSubject();
     }
 
-    public boolean validateToken(String jwt, User user) {
+    public boolean validateToken(String jwt) {
         return true;
     }
 }

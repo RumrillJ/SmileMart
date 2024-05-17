@@ -11,6 +11,7 @@ import com.revature.models.OrderProduct;
 import com.revature.models.Status;
 import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class OrderService {
 
     private final OrderDAO orderDAO;
@@ -43,6 +45,7 @@ public class OrderService {
 
         //check if user exists
         if (userDAO.findById(userId).isEmpty()){
+            log.warn("User does not exist");
             throw new IllegalArgumentException("User does not exist");
         }
 
@@ -62,18 +65,21 @@ public class OrderService {
             );
             outgoingOrderDTOList.add(order);
         }
+        log.info("{} orders found for user {}", outgoingOrderDTOList.size(), userId);
         return outgoingOrderDTOList;
     }
 
-    // Create an order, Requires only a user
+    // Create an order, Requires only a user id
     public Order addOrder(int userId) {
         // Check if valid user
         Optional<User> optUser = userDAO.findById(userId);
         if (optUser.isEmpty()) {
+            log.warn("Invalid user.");
             throw new IllegalArgumentException("Invalid user.");
         }
         User u = optUser.get();
 
+        log.info("Creating new order for user {}", u.getUserId());
         return orderDAO.save(new Order (
                 u,
                 // TODO : Fix this >>
@@ -99,7 +105,13 @@ public class OrderService {
         // Check if valid user -- should never hit since we grab from session
         Optional<User> optUser = userDAO.findById(userId);
         if (optUser.isEmpty()) {
+            log.warn("Invalid user.");
             throw new IllegalArgumentException("Invalid user.");
+        }
+
+        if(productDAO.findById(orderProductDTO.getProductId()).isEmpty()) {
+            log.warn("Product does not exist in the inventory: {}", orderProductDTO.getProductId());
+            throw new IllegalArgumentException("Product does not exist in the inventory: " + orderProductDTO.getProductId());
         }
 
         // Save user as u
@@ -121,9 +133,6 @@ public class OrderService {
             // Order list is empty, create a list and add the item
             userOrder.setProducts(new HashSet<>());
             userOrder.getProducts().add(orderProductService.addOrderProduct(orderProductDTO));
-
-            // Save the userOrder
-            return orderDAO.save(userOrder);
         }
         else {
             // If the order is NOT empty, check for the item
@@ -135,6 +144,7 @@ public class OrderService {
                 // If the item is found, adjust the quantity
                 if (orderProductDTO.getProductId() == op.getProduct().getProductId()) {
                     found = 1;
+                    log.info("Updating quantity of product {} in order {}", op.getProduct().getProductId(), userOrder.getOrderId());
                     op.setQuantity(op.getQuantity() + orderProductDTO.getQuantity());
                     orderProductService.editOrderProductAmount(op);
                     break;
@@ -148,6 +158,26 @@ public class OrderService {
                 userOrder.getProducts().add(newOrderProduct);
             }
         }
-        return orderDAO.save(userOrder);
+        //return orderDAO.save(userOrder);
+        orderDAO.save(userOrder);
+        log.info("Product {} was added to order {} successfully", orderProductDTO.getProductId(), userOrder.getOrderId());
+        return userOrder;
     }
+
+    //add an order and its order-products
+    public int saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts) {
+        Optional<User> optionalUser = userDAO.findById(userId);
+        if (optionalUser.isEmpty()) {
+            log.warn("Invalid user");
+            throw new IllegalArgumentException("Invalid user.");
+        }
+        order.setUser(optionalUser.get());
+        Order o = orderDAO.save(order);
+        for(OrderProduct op : orderProducts) {
+            log.info("Adding product {} to order {}", op.getProduct().getProductId(), o.getOrderId());
+            orderProductService.addOrderProductsWithOrderId(op, o.getOrderId());
+        }
+        return o.getOrderId();
+    }
+
 }
