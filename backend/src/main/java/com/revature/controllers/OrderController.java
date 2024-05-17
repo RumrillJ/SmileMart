@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.auth.JwtFilter;
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
 import com.revature.models.Order;
@@ -9,6 +10,7 @@ import com.revature.models.Status;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +18,7 @@ import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,12 +29,14 @@ public class OrderController {
     private final OrderDAO orderDAO;
     private final StatusDAO statusDAO;
     private OrderService orderService;
+    private JwtFilter jwtFilter;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, JwtFilter jwtFilter) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
+        this.jwtFilter = jwtFilter;
     }
 
     @GetMapping
@@ -125,10 +130,12 @@ public class OrderController {
 
     //user checkout and return an orderId
     @PostMapping("/checkout")
-    public ResponseEntity<?> GetOrderIdCheckout(int userId, Order order, List<OrderProduct> orderProducts){
-        //saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts)
+    public ResponseEntity<?> GetOrderIdCheckout(@RequestBody List<OrderProductDTO> orderProducts, @RequestHeader("Authorization") String token){
+        String jwt = token.substring(7);
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = authenticatedUser.getUserId();
         try{
-            int orderId = orderService.saveOrderAndOrderProducts(userId, order, orderProducts);
+            int orderId = orderService.saveOrderAndOrderProducts(userId, orderProducts);
             return ResponseEntity.ok(orderId);
         }catch(Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());

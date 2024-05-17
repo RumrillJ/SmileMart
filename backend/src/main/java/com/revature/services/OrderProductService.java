@@ -62,12 +62,20 @@ public class OrderProductService {
     }
 
     //create an orderProduct with orderId
-    public OrderProduct addOrderProductsWithOrderId(OrderProduct orderProduct, int orderId){
+    public OrderProduct addOrderProductsWithOrderId(OrderProductDTO orderProduct, int orderId){
         Optional<Order> optionalOrder = orderDAO.findById(orderId);
         if(optionalOrder.isEmpty()) {
             throw new IllegalArgumentException("Order with id: " +orderId + " does not exist");
         }
-        orderProduct.setOrder(optionalOrder.get());
-        return orderProductDAO.save(orderProduct);
+        Optional<Product> optionalProduct = productDAO.findById(orderProduct.getProductId());
+        if(optionalProduct.isEmpty()) {
+            throw new IllegalArgumentException("Product with id: " +orderProduct.getProductId() + " does not exist");
+        }
+        OrderProduct op = new OrderProduct();
+        op.setOrder(optionalOrder.get());
+        op.setProduct(optionalProduct.get());
+        op.setQuantity(orderProduct.getQuantity());
+
+        return orderProductDAO.save(op);
     }
 }
