@@ -7,9 +7,12 @@ import com.revature.models.Order;
 import com.revature.models.OrderProduct;
 import com.revature.models.Product;
 import com.revature.models.dtos.OrderProductDTO;
+import com.revature.models.dtos.OutgoingOrderProductDTO;
+import com.revature.models.dtos.OutgoingProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +72,36 @@ public class OrderProductService {
         }
         orderProduct.setOrder(optionalOrder.get());
         return orderProductDAO.save(orderProduct);
+    }
+
+    //Aruna Changes
+    public List<OutgoingOrderProductDTO> findAllOrdProductByOrderId(int  orderId) {
+
+        List<OrderProduct> allordPrd = orderProductDAO.findAllByOrderOrderId(orderId);
+
+
+
+        List<OutgoingOrderProductDTO> outordprd = new ArrayList<>();
+
+        for(OrderProduct op : allordPrd)
+        {
+
+            OutgoingProductDTO outP= new OutgoingProductDTO(
+                    op.getProduct().getName(),
+                    op.getProduct().getCost(),
+                    op.getProduct().getDescription(),
+                    op.getProduct().getCategory());
+
+            OutgoingOrderProductDTO outR= new OutgoingOrderProductDTO(
+                    op.getQuantity(),
+                    outP,
+                    op.getOrderProductId()
+            );
+
+
+            outordprd.add(outR);
+        }
+
+        return outordprd;
     }
 }
