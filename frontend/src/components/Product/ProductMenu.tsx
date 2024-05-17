@@ -1,3 +1,10 @@
 
 // filtering by category, search by name, sort by price ? 
-export {}
+export const ProductMenu: React.FC = () => {
+
+	return (
+		<div>
+			<h5>Filter Options</h5>
+		</div>
+	)
+}
