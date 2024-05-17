@@ -4,9 +4,11 @@ import com.revature.daos.CategoryDAO;
 import com.revature.daos.ProductDAO;
 import com.revature.models.Category;
 import com.revature.models.Product;
+import com.revature.models.dtos.OutgoingProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,8 +59,69 @@ public class ProductService {
             return true;
         }
 
+//Aruna Changes
+    public List<OutgoingProductDTO>   findAllByProductName(String pname) {
+
+        List<Product> allPrd = productDAO.findAllByName(pname);
+
+        List<OutgoingProductDTO> outprd = new ArrayList<>();
+
+        for(Product p : allPrd)
+        {
+            OutgoingProductDTO outR= new OutgoingProductDTO(
+                    p.getName(),
+                    p.getCost(),
+                    p.getDescription(),
+                    p.getCategory());
+
+            outprd.add(outR);
+        }
+
+        return outprd;
+    }
+
+    public List<OutgoingProductDTO> showAllProductByPrice(double price) {
+
+        List<Product> allPrd = productDAO.findAllByCostLessThan(price);
+
+        List<OutgoingProductDTO> outprd = new ArrayList<>();
+
+        for(Product p : allPrd)
+        {
+            OutgoingProductDTO outR= new OutgoingProductDTO(
+                    p.getName(),
+                    p.getCost(),
+                    p.getDescription(),
+                    p.getCategory());
+
+            outprd.add(outR);
+        }
+
+        return outprd;
+
 
     }
+
+    public List<OutgoingProductDTO> findAllByCategoryCategoryId(int  cId) {
+
+        List<Product> allPrd = productDAO.findAllByCategoryCategoryId(cId);
+
+        List<OutgoingProductDTO> outprd = new ArrayList<>();
+
+        for(Product p : allPrd)
+        {
+            OutgoingProductDTO outR= new OutgoingProductDTO(
+                    p.getName(),
+                    p.getCost(),
+                    p.getDescription(),
+                    p.getCategory());
+
+            outprd.add(outR);
+        }
+
+        return outprd;
+    }
+}
 
 
 

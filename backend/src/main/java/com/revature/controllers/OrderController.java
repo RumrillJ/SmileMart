@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.revature.models.dtos.OrderProductDTO;
+import com.revature.models.dtos.OutgoingOrderProductDTO;
+import com.revature.services.OrderProductService;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import com.revature.services.OrderService;
@@ -26,12 +28,14 @@ public class OrderController {
     private final OrderDAO orderDAO;
     private final StatusDAO statusDAO;
     private OrderService orderService;
+    private final OrderProductService ordProductService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
+        this.ordProductService = ordProductService;
     }
 
     @GetMapping
@@ -133,5 +137,28 @@ public class OrderController {
         }catch(Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/order/{orderId}")
+
+    public ResponseEntity<Object> viewAllProductByOrderId(@PathVariable int orderId) {
+        System.out.println("    Inside viewAllProductByOrderId");
+        System.out.println(orderId);
+
+        Optional<Order>  ord = orderDAO.findById(orderId);
+
+
+
+        if (ord.isEmpty()) {
+            return ResponseEntity.badRequest().body("Order does not exist.");
+        }
+        Order r = ord.get();
+        System.out.println("OrderID:");
+        System.out.println(r.getOrderId());
+
+        List<OutgoingOrderProductDTO> outOrdPrdDTO  = ordProductService.findAllOrdProductByOrderId(orderId);
+
+                return ResponseEntity.ok().body(outOrdPrdDTO);
+
     }
 }
