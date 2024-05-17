@@ -1,5 +1,6 @@
 import { useCart } from "../../contexts/CartContext"
 import { ProductInterface } from "../../interfaces/ProductInterface"
+import  { Navbar, defaultLinks }  from "../Reusable/Navbar";
 
 interface Props {
 	product: ProductInterface
@@ -14,6 +15,9 @@ export const ProductItem: React.FC<Props> = ({ product }) => {
 
 	return (
 		<div>
+			<div>
+				<Navbar links={defaultLinks} />
+			</div>
 			<h5>{JSON.stringify(product)}</h5>
 			<h5>{cart[product.productId]?.quantity ?? ""}</h5>
 

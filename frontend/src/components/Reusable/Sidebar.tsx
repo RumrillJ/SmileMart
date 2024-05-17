@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { ProductInterface } from '../../interfaces/ProductInterface';
+import axios from "axios";
+import { backend } from "../../App";
 
 interface Category {
   id: number;
@@ -8,12 +11,14 @@ interface Category {
 interface SidebarProps {
   categories: Category[];
   categoryName: string;
-  minPrice: number;
-  maxPrice: number;
+  minPrice?: number;
+  maxPrice?: number;
   onCategoryChange: (selected: Category[]) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+//const categories
+
+export const Sidebar: React.FC<SidebarProps> = ({
   categories,
   categoryName,
   minPrice,

@@ -1,26 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-/* Mini interface NavbarProps allows for dynamic set of navbar paths*/
 
 interface NavbarProps {
   links: { title: string; path: string }[];
 }
 
+export const defaultLinks: { title: string; path: string }[] = [
+	{ title: "Products", path: '/' },
+	//{ title: "Profile", path: '/profile' },
+	{ title: "Cart", path: '/cart' },
+	{ title: "Checkout", path: '/checkout' },
+	{ title: "Login", path: '/login' },
+	{ title: "Register", path: '/register' },
+];
 
-const Navbar: React.FC<NavbarProps> = ({ links }) => {
+export const Navbar: React.FC<NavbarProps> = ({ links }) => {
   return (
     <nav>
         {links.map((link, index) => (
           <span key={index}>
-            <Link to={link.path}>{link.title}</Link> |
+            | <Link to={link.path}>{link.title}</Link> | 
           </span>
         ))}
     </nav>
   );
 };
 
-/* Original hardcoded navbar */
+
+/* 
+
+Original hardcoded navbar 
 
 export const NavbarStatic: React.FC<NavbarProps> = ({ links }) => {
 	return (
@@ -44,4 +54,5 @@ export const NavbarStatic: React.FC<NavbarProps> = ({ links }) => {
 	);
   };
 
+*/
 export default Navbar;
