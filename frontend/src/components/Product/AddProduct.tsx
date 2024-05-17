@@ -1,75 +1,75 @@
-import { useState } from "react"
-import { ProductInterface } from "../../interfaces/ProductInterface"
+import React, { useState } from "react";
+import { ProductInterface } from "../../interfaces/ProductInterface";
+import { CategoryInterface } from "../../interfaces/CategoryInterface";
 
 interface Props {
-	onSubmit?: (product: ProductInterface) => void
+  onSubmit?: (product: ProductInterface) => void;
 }
 
 export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
+  const initialProductState: ProductInterface = {
+    productId: 0,
+    name: "",
+    description: "",
+    category: { categoryId: 0, description: "" },
+    cost: 0,
+  };
 
-	const [product, setProduct] = useState({} as ProductInterface)
+  const [product, setProduct] = useState(initialProductState);
 
-	const handleSubmit = () => {
-		// send post request here or in parent?
-		if (onSubmit) {
-			onSubmit({...product})
-		}
-		setProduct({} as ProductInterface)
-	}
+  const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit({ ...product });
+    }
+    setProduct(initialProductState);
+  };
 
-	return (
-		<div className="add-product">
-			<label className="add-product-name">
-				Name:
-				<input
-					type="text"
-					value={product.name ?? ""}
-					onChange={(input) =>
-						setProduct({ ...product, name: input.target.value })
-					}
-				/>
-			</label>
-			<label className="add-product-description">
-				Description:
-				<input
-					type="text"
-					value={product.description ?? ""}
-					onChange={(input) =>
-						setProduct({
-							...product,
-							description: input.target.value,
-						})
-					}
-				/>
-			</label>
-			<label className="add-product-category">
-				Category:
-				<input
-					type="text"
-					value={product.category ?? ""}
-					onChange={(input) =>
-						setProduct({ ...product, category: input.target.value })
-					}
-				/>
-			</label>
-			<label className="add-product-price">
-				Price:
-				<input
-					type="number"
-					value={product.price ?? ""}
-					onChange={(input) =>
-						setProduct({
-							...product,
-							price: input.target.valueAsNumber,
-						})
-					}
-				/>
-			</label>
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    propertyName: string
+  ) => {
+    const value =
+      propertyName === "cost"
+        ? Number(event.target.value)
+        : event.target.value;
+    setProduct({ ...product, [propertyName]: value });
+  };
 
-			<button onClick={handleSubmit}>Submit</button>
-
-			{/* For testing.. remove later */}
-			<h3>{JSON.stringify(product)}</h3>
-		</div>
-	)
-}
+  return (
+    <div className="add-product">
+      <label className="add-product-name">
+        Name:
+        <input
+          type="text"
+          value={product.name}
+          onChange={(e) => handleInputChange(e, "name")}
+        />
+      </label>
+      <label className="add-product-description">
+        Description:
+        <input
+          type="text"
+          value={product.description}
+          onChange={(e) => handleInputChange(e, "description")}
+        />
+      </label>
+      <label className="add-product-category">
+        Category:
+        <input
+          type="text"
+          value={product.category.description}
+          onChange={(e) => handleInputChange(e, "category")}
+        />
+      </label>
+      <label className="add-product-cost">
+        Price:
+        <input
+          type="number"
+          value={product.cost}
+          onChange={(e) => handleInputChange(e, "cost")}
+        />
+      </label>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+};

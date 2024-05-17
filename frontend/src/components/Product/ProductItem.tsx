@@ -15,9 +15,6 @@ export const ProductItem: React.FC<Props> = ({ product }) => {
 
 	return (
 		<div>
-			<div>
-				<Navbar links={defaultLinks} />
-			</div>
 			<h5>{JSON.stringify(product)}</h5>
 			<h5>{cart[product.productId]?.quantity ?? ""}</h5>
 

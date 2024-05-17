@@ -8,7 +8,7 @@ interface NavbarProps {
 
 export const defaultLinks: { title: string; path: string }[] = [
 	{ title: "Products", path: '/' },
-	//{ title: "Profile", path: '/profile' },
+	{ title: "Profile", path: '/profile' },
 	{ title: "Cart", path: '/cart' },
 	{ title: "Checkout", path: '/checkout' },
 	{ title: "Login", path: '/login' },
