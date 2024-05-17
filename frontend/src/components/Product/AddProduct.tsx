@@ -1,20 +1,25 @@
 import { useState } from "react"
 import { ProductInterface } from "../../interfaces/ProductInterface"
+import { insertProduct } from "../../api/productsAPI"
 
 interface Props {
-	onSubmit?: (product: ProductInterface) => void
+	onSubmit?: () => void
 }
 
 export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
 
 	const [product, setProduct] = useState({} as ProductInterface)
 
-	const handleSubmit = () => {
-		// send post request here or in parent?
-		if (onSubmit) {
-			onSubmit({...product})
+	async function handleSubmit() {
+		try {
+			const response = await insertProduct(product)
+			setProduct({} as ProductInterface)
+		} catch (e: any) {
+			console.log(e)
 		}
-		setProduct({} as ProductInterface)
+		if (onSubmit) {
+			onSubmit()
+		}
 	}
 
 	return (
@@ -56,11 +61,11 @@ export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
 				Price:
 				<input
 					type="number"
-					value={product.price ?? ""}
+					value={product.cost ?? ""}
 					onChange={(input) =>
 						setProduct({
 							...product,
-							price: input.target.valueAsNumber,
+							cost: input.target.valueAsNumber,
 						})
 					}
 				/>

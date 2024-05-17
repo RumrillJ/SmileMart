@@ -12,7 +12,7 @@ const Logout: React.FC = () => {
         
         // Reset the global user state
         if (setUser) {
-            setUser({ username: '', password: '' });
+            setUser(null);
         }
 
         // Redirect to login or home page
