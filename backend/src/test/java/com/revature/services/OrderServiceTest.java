@@ -66,23 +66,24 @@ public class OrderServiceTest {
 
     @Test
     public void testAddToOrder_ValidUser() {
-        int userId = 1;
+        String username = "test";
         Product product = new Product();
         User user = new User();
+        user.setUsername(username);
         Order expectedOrder = new Order();
         OrderProductDTO orderProductDTO = new OrderProductDTO();
         OrderProduct orderProduct = new OrderProduct();
 
-        when(userDAO.findById(userId)).thenReturn(Optional.of(user));
+        when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
         when(productDAO.findById(orderProductDTO.getProductId())).thenReturn(Optional.of(product));
-        when(orderDAO.findByUserUserIdAndStatusStatusId(userId, "SHOPPING")).thenReturn(expectedOrder);
+        when(orderDAO.findByUserUserIdAndStatusStatusId(user.getUserId(), "SHOPPING")).thenReturn(expectedOrder);
         when(orderProductService.addOrderProduct(orderProductDTO)).thenReturn(orderProduct);
 
-        Order actualOrder = orderService.addToOrder(orderProductDTO, userId);
+        Order actualOrder = orderService.addToOrder(orderProductDTO, user.getUsername());
 
         assertEquals(expectedOrder, actualOrder);
-        verify(userDAO, times(1)).findById(userId);
-        verify(orderDAO, times(1)).findByUserUserIdAndStatusStatusId(userId, "SHOPPING");
+        verify(userDAO, times(1)).findByUsername(user.getUsername());
+        verify(orderDAO, times(1)).findByUserUserIdAndStatusStatusId(user.getUserId(), "SHOPPING");
         verify(orderProductService, times(1)).addOrderProduct(orderProductDTO);
     }
 
@@ -98,18 +99,19 @@ public class OrderServiceTest {
 
     @Test
     public void testAddToOrder_InvalidProduct() {
-        int userId = 1;
+        String username = "test";
         Product product = new Product();
         User user = new User();
+        user.setUsername(username);
         Order expectedOrder = new Order();
         OrderProductDTO orderProductDTO = new OrderProductDTO();
         OrderProduct orderProduct = new OrderProduct();
 
-        when(userDAO.findById(userId)).thenReturn(Optional.of(user));
+        when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
         when(productDAO.findById(orderProductDTO.getProductId())).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> {
-            orderService.addToOrder(orderProductDTO, userId);
+            orderService.addToOrder(orderProductDTO, user.getUsername());
         });
     }
 }

@@ -2,24 +2,18 @@ package com.revature.controllers;
 
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
-import com.revature.daos.UserDAO;
 import com.revature.models.Order;
-import com.revature.models.OrderProduct;
 import com.revature.models.Status;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
+import com.revature.models.dtos.OutgoingOrderDTO;
 import com.revature.models.dtos.OutgoingOrderProductDTO;
 import com.revature.services.OrderProductService;
 import com.revature.services.OrderService;
-import com.revature.services.UserService;
 import com.revature.services.JwtService;
-import jakarta.servlet.http.HttpSession;
-import com.revature.services.OrderService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,22 +76,21 @@ public class OrderController {
 
 
     //get orders by User Id
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId){
+    @GetMapping
+    public ResponseEntity<?> getOrdersByUser(@RequestHeader("Authorization") String token){
         // SecurityConfig's
         // .requestMatchers("/orders/**").authenticated()
         // is requiring endpoints under /orders to require authentication
         // Accessing this endpoint without valid token is automatic 403
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = jwtService.extractUsername(token.substring(7));
 
-        if(user.getUserId() != userId && !user.getRole().name().equals("Manager")) {
-            return ResponseEntity.status(401).body("Not authorized");
+       try{
+              List<OutgoingOrderDTO> outOrdPrdDTO  = orderService.getOrdersByUser(username);
+                return ResponseEntity.ok().body(outOrdPrdDTO);
+       }catch(Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         }
-
-        System.out.println("in getOrdersByUserId, user = " + user.toString());
-
-        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 
     /*  ================================
@@ -124,18 +117,12 @@ public class OrderController {
     // TODO: Endpoint subject to change
     @PostMapping
     public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, @RequestHeader("Authorization") String token) {
-        /*
-        // Check if logged in
-        if (session.getAttribute("userId") == null) {
-            return ResponseEntity.status(401).body("You must be logged in to do this");
-        }*/
-
         // Try to catch errors
         try {
             String jwt = token.substring(7);
-            User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            int userId = authenticatedUser.getUserId();
-            Order o = orderService.addToOrder(orderProductDTO, userId);
+            String username = jwtService.extractUsername(jwt);
+
+            Order o = orderService.addToOrder(orderProductDTO, username);
             return ResponseEntity.ok(o);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
@@ -150,7 +137,7 @@ public class OrderController {
         String username = jwtService.extractUsername(jwt);
       
         try{
-            int orderId = orderService.saveOrderAndOrderProducts(userId, orderProducts);
+            int orderId = orderService.saveOrderAndOrderProducts(username, orderProducts);
             return ResponseEntity.ok(orderId);
         }catch(Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());

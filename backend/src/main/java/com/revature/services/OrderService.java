@@ -41,19 +41,24 @@ public class OrderService {
     }
 
     //get orders by user id
-    public List<OutgoingOrderDTO> getOrdersByUserId(int userId) throws IllegalArgumentException{
+    public List<OutgoingOrderDTO> getOrdersByUser(String username) throws IllegalArgumentException{
+        // Find user by username
+        Optional<User> optUser = userDAO.findByUsername(username);
 
-        //check if user exists
-        if (userDAO.findById(userId).isEmpty()){
-            log.warn("User does not exist");
-            throw new IllegalArgumentException("User does not exist");
+        if (optUser.isEmpty()) {
+            log.warn("Invalid user.");
+            throw new IllegalArgumentException("Invalid user.");
+        }
+        if (optUser.get().getRole().equals(User.ROLE.ADMIN) || optUser.get().getUsername() != username){
+            log.warn("User does not have permission to view orders.");
+            throw new IllegalArgumentException("User does not have permission to view orders.");
         }
 
         //list to hold return
         List<OutgoingOrderDTO> outgoingOrderDTOList = new ArrayList<>();
 
         //list to hold orders from DB
-        List<Order> allOrdersByUser = orderDAO.findByUserUserId(userId);
+        List<Order> allOrdersByUser = orderDAO.findByUserUserId(optUser.get().getUserId());
 
         for(Order o : allOrdersByUser){
             OutgoingOrderDTO order = new OutgoingOrderDTO(
@@ -65,7 +70,7 @@ public class OrderService {
             );
             outgoingOrderDTOList.add(order);
         }
-        log.info("{} orders found for user {}", outgoingOrderDTOList.size(), userId);
+        log.info("{} orders found for user {}", outgoingOrderDTOList.size(), optUser.get().getUserId());
         return outgoingOrderDTOList;
     }
 
@@ -100,10 +105,10 @@ public class OrderService {
         If the user has an order, we add the product to the order
         If the product is already in the order, we adjust the quantity
      */
-    public Order addToOrder(OrderProductDTO orderProductDTO, int userId) throws IllegalArgumentException {
+    public Order addToOrder(OrderProductDTO orderProductDTO, String username) throws IllegalArgumentException {
 
         // Check if valid user -- should never hit since we grab from session
-        Optional<User> optUser = userDAO.findById(userId);
+        Optional<User> optUser = userDAO.findByUsername(username);
         if (optUser.isEmpty()) {
             log.warn("Invalid user.");
             throw new IllegalArgumentException("Invalid user.");
@@ -118,10 +123,10 @@ public class OrderService {
         User u = optUser.get();
 
         // Check if user has an open order TODO: Fix this >>>
-        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(userId, "SHOPPING");
+        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(optUser.get().getUserId(), "SHOPPING");
         if (userOrder == null) {
             // instead of throwing an error, we make a new order
-            userOrder = addOrder(userId);
+            userOrder = addOrder(optUser.get().getUserId());
         }
 
         // We should now have an Order called userOrder
@@ -165,8 +170,8 @@ public class OrderService {
     }
 
     //add an order and its order-products
-    public int saveOrderAndOrderProducts(int userId, List<OrderProductDTO> orderProducts) {
-        Optional<User> optionalUser = userDAO.findById(userId);
+    public int saveOrderAndOrderProducts(String username, List<OrderProductDTO> orderProducts) {
+        Optional<User> optionalUser = userDAO.findByUsername(username);
         if (optionalUser.isEmpty()) {
             log.warn("Invalid user");
             throw new IllegalArgumentException("Invalid user.");
@@ -175,8 +180,8 @@ public class OrderService {
         order.setUser(optionalUser.get());
         Order o = orderDAO.save(order);
 
-        for(OrderProduct op : orderProducts) {
-            log.info("Adding product {} to order {}", op.getProduct().getProductId(), o.getOrderId());
+        for(OrderProductDTO op : orderProducts) {
+            log.info("Adding product {} to order {}", op.getProductId(), o.getOrderId());
             orderProductService.addOrderProductsWithOrderId(op, o.getOrderId());
         }
         return o.getOrderId();

@@ -80,6 +80,7 @@ public class OrderProductService {
 
         Optional<Product> optionalProduct = productDAO.findById(orderProduct.getProductId());
         if(optionalProduct.isEmpty()) {
+            log.warn("Product {} does not exist", orderProduct.getProductId());
             throw new IllegalArgumentException("Product with id: " +orderProduct.getProductId() + " does not exist");
         }
         OrderProduct op = new OrderProduct();
