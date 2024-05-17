@@ -3,10 +3,12 @@ package com.revature.services;
 
 import com.revature.daos.CategoryDAO;
 import com.revature.daos.ProductDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.Category;
 import com.revature.models.Product;
 
 
+import com.revature.models.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,6 +34,8 @@ class ProductServiceTest {
     @Mock
     private CategoryDAO categoryDAO;
 
+    @Mock
+    private UserDAO userDAO;
 
     @InjectMocks
     private ProductService productService;
@@ -50,12 +54,16 @@ class ProductServiceTest {
 
     @Test
     public void testAddProductShouldReturnTrueAfterProductIsAdded() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setRole(User.ROLE.ADMIN);
+        user.get().setUsername("admin");
+        when(userDAO.findByUsername("admin")).thenReturn(user);
 
         Product product = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.empty());
         when(categoryDAO.findById(anyInt())).thenReturn(Optional.of(new Category()));
 
-        boolean isAdded = productService.addProduct(product, 1, 1, "fruits");
+        boolean isAdded = productService.addProduct(product, 1, 1, "fruits", "admin");
 
         assertTrue(isAdded);
         verify(productDAO, times(1)).findById(1);
@@ -69,7 +77,7 @@ class ProductServiceTest {
         Product existingProduct = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.of(existingProduct));
 
-        boolean isAdded = productService.addProduct(new Product(), 1, 1, "fruits");
+        boolean isAdded = productService.addProduct(new Product(), 1, 1, "fruits", "admin");
 
         assertFalse(isAdded);
         verify(productDAO, times(1)).findById(1);

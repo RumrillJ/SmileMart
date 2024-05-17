@@ -2,8 +2,10 @@ package com.revature.services;
 
 import com.revature.daos.CategoryDAO;
 import com.revature.daos.ProductDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.Category;
 import com.revature.models.Product;
+import com.revature.models.User;
 import com.revature.models.dtos.OutgoingProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ public class ProductService {
 
     private final ProductDAO productDAO;
     private final CategoryDAO categoryDAO;
+    private final UserDAO userDAO;
 
     @Autowired
-    public ProductService(ProductDAO productDAO, CategoryDAO categoryDAO) {
+    public ProductService(ProductDAO productDAO, CategoryDAO categoryDAO, UserDAO userDAO){
         this.productDAO = productDAO;
         this.categoryDAO = categoryDAO;
+        this.userDAO = userDAO;
     }
 
 
@@ -33,10 +37,15 @@ public class ProductService {
     }
 
 
-    public boolean addProduct(Product product, int productId, int categoryId, String categoryDesc) {
+    public boolean addProduct(Product product, int productId, int categoryId, String categoryDesc, String username) {
         Optional<Product> products = productDAO.findById(productId);
         Optional<Category> categories = categoryDAO.findById(categoryId);
+        Optional<User> user = userDAO.findByUsername(username);
 
+        if(user.get().getRole().equals(User.ROLE.USER)) {
+            log.warn("User does not have permission to add product");
+            return false;
+        }
         if (products.isPresent()) {
             log.warn("Product already exists");
             return false;
