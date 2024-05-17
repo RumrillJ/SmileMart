@@ -3,8 +3,6 @@ package com.revature.controllers;
 import com.revature.daos.ProductDAO;
 import com.revature.models.Product;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +11,7 @@ import com.revature.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @RequestMapping(value = "/products")
 @RestController
 @CrossOrigin
@@ -46,9 +45,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
 
-
             return ResponseEntity.ok().body(productService.getAllProducts());
-
     }
 
     @DeleteMapping("/{productId}")
@@ -78,7 +75,7 @@ public class ProductController {
         }
     }
 
-    //Aruna Changes
+    // Filtering Searches
 
     @GetMapping(value ="/{pname}")
     public ResponseEntity<?> filterAllProductsByName(@PathVariable String pname) {
@@ -90,7 +87,6 @@ public class ProductController {
             return ResponseEntity.status(400).body("Product "+ pname + " not found");
         }
         return ResponseEntity.ok().body(allprdbyname);
-
     }
 
     @GetMapping(value ="/price/{pvalue}")
@@ -109,9 +105,7 @@ public class ProductController {
             return ResponseEntity.status(400).body(" No product found with price less than "+pvalue);
         }
 
-
         return ResponseEntity.ok().body(productService.showAllProductByPrice(pvalue));
-
     }
 
 
@@ -125,10 +119,7 @@ public class ProductController {
             return ResponseEntity.status(400).body("Product with category id "+ cid + " not found");
         }
 
-
         return ResponseEntity.ok().body(allprdbycid);
-
     }
-
 
 }

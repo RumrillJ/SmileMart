@@ -1,7 +1,6 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
-import com.revature.models.Order;
 import com.revature.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-
 @Service
 @Slf4j
 public class UserService {
@@ -24,12 +18,10 @@ public class UserService {
     private final UserDAO userDAO;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final JwtService jwtService;
 
     @Autowired
-    public UserService(UserDAO userDAO, JwtService jwtService){
+    public UserService(UserDAO userDAO){
         this.userDAO = userDAO;
-        this.jwtService = jwtService;
     }
 
     // Update User Information
@@ -84,6 +76,4 @@ public class UserService {
         log.info("user {} {}'s profile was updated successfully!", u.get().getFirstName(), u.get().getLastName());
         return "User " + u.get().getFirstName() + " " + u.get().getLastName() + "'s profile was updated successfully!";
     }
-
-
 }
