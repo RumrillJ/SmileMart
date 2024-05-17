@@ -47,13 +47,15 @@ export const Settings: React.FC = () => {
         }
 
         // Add additional validation checks as needed
-		/*
+		
         // Verify passwords match
         if (password !== confirmPassword) {
+			//console.log(password)
+			//console.log(confirmPassword)
             toast.error("Passwords do not match!");
             return false;
         }
-		*/
+		
 
         return true;
     };
@@ -68,7 +70,7 @@ export const Settings: React.FC = () => {
         } else if(input.target.name === "password"){
             setUser((user) => ({...user, password:input.target.value}))
         } else if(input.target.name === "confirmPassword"){
-            setUser((user) => ({...user, password:input.target.value}))
+            setUser((user) => ({...user, confirmPassword:input.target.value}))
         } else if(input.target.name === "firstName"){
             setUser((user) => ({...user, firstName:input.target.value}))
         } else if(input.target.name === "lastName"){
@@ -90,6 +92,7 @@ export const Settings: React.FC = () => {
 		}
 
     }
+	
 
 	//function to submit new user information
 	const updateSettings = async () => {
