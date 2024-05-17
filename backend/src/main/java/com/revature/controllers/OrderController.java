@@ -3,24 +3,19 @@ package com.revature.controllers;
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
 import com.revature.models.Order;
-import com.revature.models.OrderProduct;
 import com.revature.models.Status;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
+import com.revature.models.dtos.OutgoingOrderDTO;
 import com.revature.models.dtos.OutgoingOrderProductDTO;
 import com.revature.services.OrderProductService;
 import com.revature.services.OrderService;
-import com.revature.services.UserService;
-import jakarta.servlet.http.HttpSession;
-import com.revature.services.OrderService;
-import jakarta.servlet.http.HttpSession;
+import com.revature.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,15 +27,15 @@ public class OrderController {
     private final StatusDAO statusDAO;
     private OrderService orderService;
     private final OrderProductService ordProductService;
-    private final UserService userService;
+    private final JwtService jwtService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, UserService userService) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, JwtService jwtService) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
         this.ordProductService = ordProductService;
-        this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -81,22 +76,21 @@ public class OrderController {
 
 
     //get orders by User Id
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId){
+    @GetMapping("/user")
+    public ResponseEntity<?> getOrdersByUser(@RequestHeader("Authorization") String token){
         // SecurityConfig's
         // .requestMatchers("/orders/**").authenticated()
         // is requiring endpoints under /orders to require authentication
         // Accessing this endpoint without valid token is automatic 403
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = jwtService.extractUsername(token.substring(7));
 
-        if(user.getUserId() != userId && !user.getRole().name().equals("Manager")) {
-            return ResponseEntity.status(401).body("Not authorized");
+       try{
+              List<OutgoingOrderDTO> outOrdPrdDTO  = orderService.getOrdersByUser(username);
+                return ResponseEntity.ok().body(outOrdPrdDTO);
+       }catch(Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         }
-
-        System.out.println("in getOrdersByUserId, user = " + user.toString());
-
-        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 
     /*  ================================
@@ -122,16 +116,13 @@ public class OrderController {
 
     // TODO: Endpoint subject to change
     @PostMapping
-    public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, HttpSession session) {
-        /*
-        // Check if logged in
-        if (session.getAttribute("userId") == null) {
-            return ResponseEntity.status(401).body("You must be logged in to do this");
-        }*/
-
+    public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, @RequestHeader("Authorization") String token) {
         // Try to catch errors
         try {
-            Order o = orderService.addToOrder(orderProductDTO, (int)session.getAttribute("userId"));
+            String jwt = token.substring(7);
+            String username = jwtService.extractUsername(jwt);
+
+            Order o = orderService.addToOrder(orderProductDTO, username);
             return ResponseEntity.ok(o);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
@@ -141,10 +132,12 @@ public class OrderController {
 
     //user checkout and return an orderId
     @PostMapping("/checkout")
-    public ResponseEntity<?> GetOrderIdCheckout(int userId, Order order, List<OrderProduct> orderProducts){
-        //saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts)
+    public ResponseEntity<?> GetOrderIdCheckout(@RequestBody List<OrderProductDTO> orderProducts, @RequestHeader("Authorization") String token){
+        String jwt = token.substring(7);
+        String username = jwtService.extractUsername(jwt);
+      
         try{
-            int orderId = orderService.saveOrderAndOrderProducts(userId, order, orderProducts);
+            int orderId = orderService.saveOrderAndOrderProducts(username, orderProducts);
             return ResponseEntity.ok(orderId);
         }catch(Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());

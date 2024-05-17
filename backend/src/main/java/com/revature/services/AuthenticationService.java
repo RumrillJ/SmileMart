@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.daos.UserDAO;
 import com.revature.models.User;
+import com.revature.models.dtos.OutgoingUserDTO;
 import com.revature.models.dtos.UserLoginDTO;
 import com.revature.models.dtos.UserRegistrationDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -109,7 +110,7 @@ public class AuthenticationService {
     }
 
     // Login Service
-    public String login (UserLoginDTO userLoginDTO) throws NoSuchElementException {
+    public Object login (UserLoginDTO userLoginDTO) throws NoSuchElementException {
 
         // Custom DAO Method to find the user by username and password.
         Optional<User> optionalUser = userDAO.findByUsername(userLoginDTO.getUsername());
@@ -120,8 +121,26 @@ public class AuthenticationService {
             if ( passwordEncoder.matches(userLoginDTO.getPassword(), optionalUser.get().getPassword()) ) {
                 // Success login log.
                 log.info("{} logged in successfully!", userLoginDTO.getUsername());
+                User u = optionalUser.get();
+                String token = jwtService.generateToken(u);
+                OutgoingUserDTO outgoingUserDTO = new OutgoingUserDTO(
+                        u.getUserId(),
+                        u.getFirstName(),
+                        u.getLastName(),
+                        u.getRole(),
+                        u.getUsername(),
+                        u.getEmail(),
+                        u.getAddress(),
+                        u.getCity(),
+                        u.getState(),
+                        u.getZip(),
+                        u.getCountry(),
+                        u.getPhoneNumber(),
+                        token
+                );
+                outgoingUserDTO.setToken(token);
 
-                return jwtService.generateToken(optionalUser.get());
+                return outgoingUserDTO;
             } else {
                 // Incorrect password log
                 log.warn("Invalid password");

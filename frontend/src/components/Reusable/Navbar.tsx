@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
+
+
 interface NavbarProps {
   links: { title: string; path: string }[];
 }
+
 
 export const defaultLinks: { title: string; path: string }[] = [
 	{ title: "Products", path: '/' },
@@ -20,12 +23,14 @@ export const Navbar: React.FC<NavbarProps> = ({ links }) => {
     <nav>
         {links.map((link, index) => (
           <span key={index}>
-            | <Link to={link.path}>{link.title}</Link> | 
+            <Link to={link.path}>{link.title}</Link> |
+
           </span>
         ))}
     </nav>
   );
 };
+
 
 
 /* 
@@ -54,5 +59,7 @@ export const NavbarStatic: React.FC<NavbarProps> = ({ links }) => {
 	);
   };
 
+
 */
+
 export default Navbar;

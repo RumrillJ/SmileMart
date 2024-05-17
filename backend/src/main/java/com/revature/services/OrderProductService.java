@@ -71,15 +71,28 @@ public class OrderProductService {
     }
 
     //create an orderProduct with orderId
-    public OrderProduct addOrderProductsWithOrderId(OrderProduct orderProduct, int orderId){
+    public OrderProduct addOrderProductsWithOrderId(OrderProductDTO orderProduct, int orderId){
         Optional<Order> optionalOrder = orderDAO.findById(orderId);
         if(optionalOrder.isEmpty()) {
             log.warn("Order with ID {} does not exist", orderId);
             throw new IllegalArgumentException("Order with id: " +orderId + " does not exist");
         }
-        orderProduct.setOrder(optionalOrder.get());
-        log.info("Adding Product {} to Order {}", orderProduct.getProduct().getProductId(), orderProduct.getOrder().getOrderId());
-        return orderProductDAO.save(orderProduct);
+
+        Optional<Product> optionalProduct = productDAO.findById(orderProduct.getProductId());
+        if(optionalProduct.isEmpty()) {
+            log.warn("Product {} does not exist", orderProduct.getProductId());
+            throw new IllegalArgumentException("Product with id: " +orderProduct.getProductId() + " does not exist");
+        }
+        OrderProduct op = new OrderProduct();
+        op.setOrder(optionalOrder.get());
+        op.setProduct(optionalProduct.get());
+        op.setQuantity(orderProduct.getQuantity());
+
+        return orderProductDAO.save(op);
+      
+        //orderProduct.setOrder(optionalOrder.get());
+        //log.info("Adding Product {} to Order {}", orderProduct.getProduct().getProductId(), orderProduct.getOrder().getOrderId());
+        //return orderProductDAO.save(orderProduct);
     }
 
     public List<OutgoingOrderProductDTO> findAllOrdProductByOrderId(int  orderId) {

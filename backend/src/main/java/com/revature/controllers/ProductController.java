@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.revature.models.dtos.OutgoingProductDTO;
+import com.revature.services.JwtService;
 import com.revature.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductDAO productDAO;
     private final ProductService productService;
+    private final JwtService jwtService;
 
     public enum PRICE_RANGE {
         MIN_PRICE(0),
@@ -35,10 +37,10 @@ public class ProductController {
     }
 
     @Autowired
-    public ProductController(ProductDAO productDAO, ProductService productService) {
-
+    public ProductController(ProductDAO productDAO, ProductService productService, JwtService jwtService) {
         this.productDAO = productDAO;
         this.productService = productService;
+        this.jwtService = jwtService;
     }
 
 
@@ -63,14 +65,13 @@ public class ProductController {
 
 
     @PostMapping("{productId}/{categoryId}/{categoryDesc}")
-    public ResponseEntity<Object> addProduct(@RequestBody Product product, @PathVariable int productId, @PathVariable int categoryId, @PathVariable String categoryDesc) {
+    public ResponseEntity<Object> addProduct(@RequestHeader("Authorization") String token, @RequestBody Product product, @PathVariable int productId, @PathVariable int categoryId, @PathVariable String categoryDesc) {
+        String username = jwtService.extractUsername(token.substring(7));
 
-        if (productService.addProduct(product, productId, categoryId, categoryDesc)) {
-
+        if (productService.addProduct(product, productId, categoryId, categoryDesc, username)) {
             return ResponseEntity.ok().body(product.getName() + " has been added");
 
         } else {
-
             return ResponseEntity.status(404).body(product.getName() + " already exists");
         }
     }

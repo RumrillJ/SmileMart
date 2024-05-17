@@ -17,11 +17,14 @@ public class UserService {
 
     private final UserDAO userDAO;
 
+    private final JwtService jwtService;
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public UserService(UserDAO userDAO){
+    public UserService(UserDAO userDAO, JwtService jwtService) {
         this.userDAO = userDAO;
+        this.jwtService = jwtService;
     }
 
     public Optional<User> getUserByUsername(String username) {
@@ -29,14 +32,13 @@ public class UserService {
     }
 
     // Update User Information
-    public String updateUser(int userId, User user) {
-        // Checks if user exists in database
-        Optional<User> u = userDAO.findById(userId);
-
+    public String updateUser(String username, User user) {
+        // Find user by username
+        Optional<User> u = userDAO.findByUsername(username);
         if (u.isEmpty()) {
-            // Fail log
-            log.warn("The user does not exist!");
-            throw new NoSuchElementException("Please register!");
+            // Error log
+            log.error("User {} does not exist", username);
+            throw new NoSuchElementException("User does not exist: " + username);
         }
 
         // Determines which field(s) to update

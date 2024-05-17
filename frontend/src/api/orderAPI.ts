@@ -12,7 +12,7 @@ export async function getAllOrders() {
     }
 }
 
-export async function getUserOrders(userId: number){
+export async function getUserOrders(userId: any){ //can't feed it just numbers due to interface having it be optional
     try{
         const response = await axios.get(backend("/orders/" + userId))
         return response.data

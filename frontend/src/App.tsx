@@ -18,6 +18,7 @@ import { CartPage } from './components/Pages/CartPage';
 import { CheckoutPage } from './components/Pages/CheckoutPage';
 import { ProfilePage } from './components/Pages/ProfilePage';
 import { AddProductPage } from './components/Pages/AddProductPage';
+import { OrdersPage } from './components/Pages/OrdersPage';
 
 export const backend = (path?: string) => "http://localhost:8080" + (path ?? "");
 
@@ -44,7 +45,7 @@ function App() {
 								element={<CheckoutPage />}
 							/>
 							<Route path="/profile" element={<ProfilePage />} />
-
+							<Route path="/orders" element={<OrdersPage/>}/>
 							<Route
 								path="/add-product"
 								element={<AddProductPage />}
