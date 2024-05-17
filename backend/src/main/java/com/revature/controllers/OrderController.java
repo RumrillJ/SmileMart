@@ -80,16 +80,20 @@ public class OrderController {
 
 
     //get orders by User Id
-    @GetMapping("/user")
-    public ResponseEntity<?> getOrdersByUserId( @RequestHeader("Authorization") String token){
-        String jwt = token.substring(7);
-        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int userId = authenticatedUser.getUserId();
-        Optional<User> optionalUser = userDAO.findById(userId);
-        //login check
-        if(optionalUser.isEmpty()) {
-            return ResponseEntity.status(401).body("User not logged in!");
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId){
+        // SecurityConfig's
+        // .requestMatchers("/orders/**").authenticated()
+        // is requiring endpoints under /orders to require authentication
+        // Accessing this endpoint without valid token is automatic 403
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(user.getUserId() != userId && !user.getRole().name().equals("Manager")) {
+            return ResponseEntity.status(401).body("Not authorized");
         }
+
+        System.out.println("in getOrdersByUserId, user = " + user.toString());
 
         return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
