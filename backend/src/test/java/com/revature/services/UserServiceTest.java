@@ -26,18 +26,18 @@ public class UserServiceTest {
     //generate a test for the updateUser method that will test if the method returns true after a successful update
     @Test
     public void testUpdateUser_SuccessfulUpdate() {
-        int userId = 1;
+        String username = "johndoe";
         User user = new User();
-        user.setUserId(userId);
+        user.setUsername(username);
         user.setFirstName("John");
         user.setLastName("Doe");
 
         User updatedInfo = new User();
         updatedInfo.setEmail("test@gmai.com");
 
-        when(userDAO.findById(userId)).thenReturn(Optional.of(user));
+        when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
 
-        String isUpdated = userService.updateUser(userId, updatedInfo);
+        String isUpdated = userService.updateUser(username, updatedInfo);
 
 
         String expected = "User " + user.getFirstName() + " " + user.getLastName() + "'s profile was updated successfully!";
@@ -48,12 +48,12 @@ public class UserServiceTest {
     //generate a test for the updateUser method that will test if the method throws a NoSuchElementException when the user does not exist
     @Test
     public void testUpdateUser_UserDoesNotExist(){
-        int userId = 1;
+        String username = "johndoe";
         User updatedInfo = new User();
-        when(userDAO.findById(userId)).thenReturn(Optional.empty());
+        when(userDAO.findByUsername(username)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> {
-            userService.updateUser(userId, updatedInfo);
+            userService.updateUser(username, updatedInfo);
         });
     }
 }
