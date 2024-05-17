@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import com.revature.models.User;
+import com.revature.services.JwtService;
 import com.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,12 @@ import java.util.NoSuchElementException;
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
     private final UserService userService;
+    private final JwtService jwtService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -25,10 +28,13 @@ public class UserController {
     }
 
     // Update user information
-    @PutMapping("/{userId}")
-    public ResponseEntity<String> updateUser(@PathVariable int userId, @RequestBody User userInfo){
+    @PutMapping
+    public ResponseEntity<String> updateUser(@RequestHeader("Authorization") String token, @RequestBody User userInfo){
+        // Extracting username from token
+        String username = jwtService.extractUsername(token.substring(7));
+
         try{
-            String message = userService.updateUser(userId, userInfo);
+            String message = userService.updateUser(username, userInfo);
             return ResponseEntity.status(201).body(message);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(401).body(e.getMessage());
