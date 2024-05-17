@@ -24,6 +24,10 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
+    public Optional<User> getUserByUsername(String username) {
+        return userDAO.findByUsername(username);
+    }
+
     // Update User Information
     public String updateUser(int userId, User user) {
         // Checks if user exists in database

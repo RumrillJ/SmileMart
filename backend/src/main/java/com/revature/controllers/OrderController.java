@@ -9,15 +9,18 @@ import com.revature.models.Status;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
 import com.revature.models.dtos.OutgoingOrderProductDTO;
 import com.revature.services.OrderProductService;
 import com.revature.services.OrderService;
+import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,13 +32,15 @@ public class OrderController {
     private final StatusDAO statusDAO;
     private OrderService orderService;
     private final OrderProductService ordProductService;
+    private final UserService userService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, UserService userService) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
         this.ordProductService = ordProductService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -77,12 +82,19 @@ public class OrderController {
 
     //get orders by User Id
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId, HttpSession session){
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable int userId){
+        // SecurityConfig's
+        // .requestMatchers("/orders/**").authenticated()
+        // is requiring endpoints under /orders to require authentication
+        // Accessing this endpoint without valid token is automatic 403
 
-        //login check
-        if(session.getAttribute("userId") == null) {
-            return ResponseEntity.status(401).body("User not logged in!");
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(user.getUserId() != userId && !user.getRole().name().equals("Manager")) {
+            return ResponseEntity.status(401).body("Not authorized");
         }
+
+        System.out.println("in getOrdersByUserId, user = " + user.toString());
 
         return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
