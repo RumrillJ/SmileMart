@@ -165,19 +165,20 @@ public class OrderService {
     }
 
     //add an order and its order-products
-    public int saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts) {
+    public int saveOrderAndOrderProducts(int userId, List<OrderProductDTO> orderProducts) {
         Optional<User> optionalUser = userDAO.findById(userId);
         if (optionalUser.isEmpty()) {
             log.warn("Invalid user");
             throw new IllegalArgumentException("Invalid user.");
         }
+        Order order = new Order();
         order.setUser(optionalUser.get());
         Order o = orderDAO.save(order);
+
         for(OrderProduct op : orderProducts) {
             log.info("Adding product {} to order {}", op.getProduct().getProductId(), o.getOrderId());
             orderProductService.addOrderProductsWithOrderId(op, o.getOrderId());
         }
         return o.getOrderId();
     }
-
 }

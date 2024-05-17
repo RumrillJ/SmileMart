@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.Order;
 import com.revature.models.OrderProduct;
 import com.revature.models.Status;
@@ -15,12 +16,12 @@ import com.revature.models.dtos.OutgoingOrderProductDTO;
 import com.revature.services.OrderProductService;
 import com.revature.services.OrderService;
 import com.revature.services.UserService;
+import com.revature.services.JwtService;
 import jakarta.servlet.http.HttpSession;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,15 +33,15 @@ public class OrderController {
     private final StatusDAO statusDAO;
     private OrderService orderService;
     private final OrderProductService ordProductService;
-    private final UserService userService;
+    private final JwtService jwtService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, UserService userService) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, JwtService jwtService) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
         this.ordProductService = ordProductService;
-        this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -122,7 +123,7 @@ public class OrderController {
 
     // TODO: Endpoint subject to change
     @PostMapping
-    public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, HttpSession session) {
+    public ResponseEntity<Object> addToOrder(@RequestBody OrderProductDTO orderProductDTO, @RequestHeader("Authorization") String token) {
         /*
         // Check if logged in
         if (session.getAttribute("userId") == null) {
@@ -131,7 +132,10 @@ public class OrderController {
 
         // Try to catch errors
         try {
-            Order o = orderService.addToOrder(orderProductDTO, (int)session.getAttribute("userId"));
+            String jwt = token.substring(7);
+            User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            int userId = authenticatedUser.getUserId();
+            Order o = orderService.addToOrder(orderProductDTO, userId);
             return ResponseEntity.ok(o);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
@@ -141,10 +145,12 @@ public class OrderController {
 
     //user checkout and return an orderId
     @PostMapping("/checkout")
-    public ResponseEntity<?> GetOrderIdCheckout(int userId, Order order, List<OrderProduct> orderProducts){
-        //saveOrderAndOrderProducts(int userId, Order order, List<OrderProduct> orderProducts)
+    public ResponseEntity<?> GetOrderIdCheckout(@RequestBody List<OrderProductDTO> orderProducts, @RequestHeader("Authorization") String token){
+        String jwt = token.substring(7);
+        String username = jwtService.extractUsername(jwt);
+      
         try{
-            int orderId = orderService.saveOrderAndOrderProducts(userId, order, orderProducts);
+            int orderId = orderService.saveOrderAndOrderProducts(userId, orderProducts);
             return ResponseEntity.ok(orderId);
         }catch(Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
