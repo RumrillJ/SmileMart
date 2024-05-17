@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -46,12 +47,13 @@ public class JwtFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // Ensure user exists in database
-            User user = new User(); //userService.getUserByUsername(username));
+            Optional<User> user = userService.getUserByUsername(username);
 
-            if (jwtService.validateToken(jwt, user)) {
+            //if (jwtService.validateToken(jwt) &&) { // if you wanted to check expiration etc
+            if (user.isPresent()) {
 
                 // Sets the principal to user, or whatever object you want
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, null);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user.get(), null, null);
 
                 // i dont know what this does. probably unnecessary
                 // probably related to implementing the UserDetails interface

@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthenticationController {
     private AuthenticationService authenticationService;
 
@@ -34,7 +34,7 @@ public class AuthenticationController {
 
     // User login controller
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         try {
             // Returns the JWT token on success
             return ResponseEntity.ok(authenticationService.login(userLoginDTO));

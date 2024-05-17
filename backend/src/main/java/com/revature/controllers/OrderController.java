@@ -1,6 +1,5 @@
 package com.revature.controllers;
 
-import com.revature.auth.JwtFilter;
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
 import com.revature.daos.UserDAO;
@@ -13,33 +12,36 @@ import java.util.Optional;
 
 import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
+import com.revature.models.dtos.OutgoingOrderProductDTO;
+import com.revature.services.OrderProductService;
 import com.revature.services.OrderService;
+import com.revature.services.UserService;
+import com.revature.services.JwtService;
 import jakarta.servlet.http.HttpSession;
 import com.revature.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/orders")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class OrderController {
 
     private final OrderDAO orderDAO;
     private final StatusDAO statusDAO;
     private OrderService orderService;
-    private UserDAO userDAO;
-    private JwtFilter jwtFilter;
+    private final OrderProductService ordProductService;
+    private final JwtService jwtService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, UserDAO userDAO, JwtFilter jwtFilter) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, JwtService jwtService) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
-        this.userDAO = userDAO;
-        this.jwtFilter = jwtFilter;
+        this.ordProductService = ordProductService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -145,13 +147,36 @@ public class OrderController {
     @PostMapping("/checkout")
     public ResponseEntity<?> GetOrderIdCheckout(@RequestBody List<OrderProductDTO> orderProducts, @RequestHeader("Authorization") String token){
         String jwt = token.substring(7);
-        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int userId = authenticatedUser.getUserId();
+        String username = jwtService.extractUsername(jwt);
+      
         try{
             int orderId = orderService.saveOrderAndOrderProducts(userId, orderProducts);
             return ResponseEntity.ok(orderId);
         }catch(Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/order/{orderId}")
+
+    public ResponseEntity<Object> viewAllProductByOrderId(@PathVariable int orderId) {
+        System.out.println("    Inside viewAllProductByOrderId");
+        System.out.println(orderId);
+
+        Optional<Order>  ord = orderDAO.findById(orderId);
+
+
+
+        if (ord.isEmpty()) {
+            return ResponseEntity.badRequest().body("Order does not exist.");
+        }
+        Order r = ord.get();
+        System.out.println("OrderID:");
+        System.out.println(r.getOrderId());
+
+        List<OutgoingOrderProductDTO> outOrdPrdDTO  = ordProductService.findAllOrdProductByOrderId(orderId);
+
+                return ResponseEntity.ok().body(outOrdPrdDTO);
+
     }
 }

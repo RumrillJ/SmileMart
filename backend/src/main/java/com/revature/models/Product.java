@@ -12,15 +12,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
-    // user likes? ManyToMany?
-
-    // category foreign key?
-    // what about multiple categories? ManyToMany?
-    // some categories preclude others
-    // clothing types: shoes, tops, headware, etc
-    // demographic: men, women, kids
-    // material: cotton, polyester, etc
-
     private String name;
 
     private double cost;

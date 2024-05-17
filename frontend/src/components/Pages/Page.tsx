@@ -21,6 +21,14 @@ export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 
 	return (
 		<div>
+			<button onClick={() => navigate("/register")}>Register</button>
+			<button onClick={() => navigate("/login")}>Login</button>
+			<button onClick={() => navigate("/")}>Products</button>
+			<button onClick={() => navigate("/add-product")}>AddProduct</button>
+			<button onClick={() => navigate("/cart")}>Cart</button>
+			<button onClick={() => navigate("/checkout")}>Checkout</button>
+			<button onClick={() => navigate("/orders")}>Orders</button>
+			<button onClick={() => navigate("/profile")}>Profile</button>
 			<main>{children}</main>
 		</div>
 	)

@@ -1,68 +1,30 @@
-package com.revature.models;
+package com.revature.models.dtos;
 
-import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
+import com.revature.models.User;
+import jakarta.persistence.Column;
 
-@Entity
-@Table(name = "users")
-@Component
-public class User {
-
-    public enum ROLE {
-        USER,
-        ADMIN
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class OutgoingUserDTO {
     private int userId;
 
-    @Column(nullable = false)
     private String firstName;
-
-    @Column(nullable = false)
     private String lastName;
-
-    @Column(nullable = false)
-    private ROLE role;
-
-    @Column(nullable = false, unique = true)
+    private User.ROLE role;
     private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private String address;
-
-    @Column(nullable = false)
     private String city;
-
-    @Column(nullable = false)
     private String state;
-
-    @Column(nullable = false)
     private long zip;
-
-    @Column(nullable = false)
     private String country;
-
     private long phoneNumber;
+    private String token;
 
-
-    // generate getters and setters and constructor
-
-
-    public User(int userId, String firstName, String lastName, ROLE role, String username, String password, String email, String address, String city, String state, long zip, String country, long phoneNumber) {
+    public OutgoingUserDTO(int userId, String firstName, String lastName, User.ROLE role, String username, String email, String address, String city, String state, long zip, String country, long phoneNumber, String token) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.username = username;
-        this.password = password;
         this.email = email;
         this.address = address;
         this.city = city;
@@ -70,16 +32,10 @@ public class User {
         this.zip = zip;
         this.country = country;
         this.phoneNumber = phoneNumber;
+        this.token = token;
     }
 
-    public User(String firstName, String lastName, String password, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-    }
-
-    public User() {
+    public OutgoingUserDTO() {
     }
 
     public int getUserId() {
@@ -106,11 +62,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public ROLE getRole() {
+    public User.ROLE getRole() {
         return role;
     }
 
-    public void setRole(ROLE role) {
+    public void setRole(User.ROLE role) {
         this.role = role;
     }
 
@@ -120,14 +76,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -186,15 +134,22 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
+        return "OutgoingUserDTO{" +
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role=" + role +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
@@ -202,6 +157,7 @@ public class User {
                 ", zip=" + zip +
                 ", country='" + country + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
