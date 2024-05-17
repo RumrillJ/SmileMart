@@ -122,6 +122,7 @@ public class AuthenticationService {
                 // Success login log.
                 log.info("{} logged in successfully!", userLoginDTO.getUsername());
                 User u = optionalUser.get();
+                String token = jwtService.generateToken(u);
                 OutgoingUserDTO outgoingUserDTO = new OutgoingUserDTO(
                         u.getUserId(),
                         u.getFirstName(),
@@ -135,8 +136,9 @@ public class AuthenticationService {
                         u.getZip(),
                         u.getCountry(),
                         u.getPhoneNumber(),
-                        jwtService.generateToken(u)
+                        token
                 );
+                outgoingUserDTO.setToken(token);
 
                 return outgoingUserDTO;
             } else {

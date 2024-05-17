@@ -15,7 +15,7 @@ public class JwtService {
     public String generateToken(User user) {
         return Jwts.builder()
                 // subject = username, email, userid or something we can look up a unique user
-                //.subject(user.getEmail())
+                .subject(user.getUsername())
                 .issuedAt(new Date())
                 .signWith(KEY)
                 .compact();
