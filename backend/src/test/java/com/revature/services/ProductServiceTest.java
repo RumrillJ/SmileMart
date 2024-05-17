@@ -73,6 +73,10 @@ class ProductServiceTest {
 
     @Test
     public void testAddProductShouldReturnFalseWhenProductExists() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setRole(User.ROLE.ADMIN);
+        user.get().setUsername("admin");
+        when(userDAO.findByUsername("admin")).thenReturn(user);
 
         Product existingProduct = new Product();
         when(productDAO.findById(anyInt())).thenReturn(Optional.of(existingProduct));
@@ -83,6 +87,4 @@ class ProductServiceTest {
         verify(productDAO, times(1)).findById(1);
         verify(productDAO, never()).save(any());
     }
-
-
 }
