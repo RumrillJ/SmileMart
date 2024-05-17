@@ -47,12 +47,15 @@ export const Settings: React.FC = () => {
         }
 
         // Add additional validation checks as needed
-
+		
         // Verify passwords match
         if (password !== confirmPassword) {
+			//console.log(password)
+			//console.log(confirmPassword)
             toast.error("Passwords do not match!");
             return false;
         }
+		
 
         return true;
     };
@@ -67,7 +70,7 @@ export const Settings: React.FC = () => {
         } else if(input.target.name === "password"){
             setUser((user) => ({...user, password:input.target.value}))
         } else if(input.target.name === "confirmPassword"){
-            setUser((user) => ({...user, password:input.target.value}))
+            setUser((user) => ({...user, confirmPassword:input.target.value}))
         } else if(input.target.name === "firstName"){
             setUser((user) => ({...user, firstName:input.target.value}))
         } else if(input.target.name === "lastName"){
@@ -89,6 +92,7 @@ export const Settings: React.FC = () => {
 		}
 
     }
+	
 
 	//function to submit new user information
 	const updateSettings = async () => {
@@ -98,7 +102,7 @@ export const Settings: React.FC = () => {
 				const response = await updateUser(user);
 				toast.success("User information has been updated successfully!");
 				//navigate back to the main page //TODO: change endpoint if needed
-				navigate("/main-page")
+				navigate("/")
 			} catch (error) {
 				toast.error("User information failed to update!");
 				console.error(error);
@@ -163,7 +167,7 @@ export const Settings: React.FC = () => {
 				<div className="button-container">
                     <button className="settings-button" onClick={updateSettings}>Update</button>
 					{/* button to navigate back to previous page (//navigate back to the main page //TODO: change endpoint if needed */}
-                    <button className="settings-button" onClick={() => navigate("/main-page")}>Back</button>
+                    <button className="settings-button" onClick={() => navigate("/")}>Back</button>
                 </div>
 
 

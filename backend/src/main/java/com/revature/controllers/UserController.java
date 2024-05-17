@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(value = "/users")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
     private final UserService userService;
 

@@ -1,19 +1,15 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
-import com.revature.models.Order;
 import com.revature.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 
 @Service
 @Slf4j
@@ -21,8 +17,10 @@ public class UserService {
 
     private final UserDAO userDAO;
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Autowired
-    public UserService(UserDAO userDAO) {
+    public UserService(UserDAO userDAO){
         this.userDAO = userDAO;
     }
 
@@ -52,7 +50,7 @@ public class UserService {
             u.get().setUsername(user.getUsername());
         }
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            u.get().setPassword(user.getPassword());
+            u.get().setPassword(passwordEncoder.encode(user.getPassword()));
         }
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {
             u.get().setEmail(user.getEmail());
@@ -82,6 +80,4 @@ public class UserService {
         log.info("user {} {}'s profile was updated successfully!", u.get().getFirstName(), u.get().getLastName());
         return "User " + u.get().getFirstName() + " " + u.get().getLastName() + "'s profile was updated successfully!";
     }
-
-
 }
