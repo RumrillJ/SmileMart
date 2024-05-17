@@ -31,7 +31,8 @@ export async function loginUser(user: UserInterface) {
 }
 
 export async function updateUser(user: SettingsInterface) {
-	const response = await axios.patch(backend("/users/" + user.userId), user)
+	//removed userId from endpoint since JWT token is used to identify user
+	const response = await axios.patch(backend("/users"), user)
 	console.log(response)
 	return response
 }
