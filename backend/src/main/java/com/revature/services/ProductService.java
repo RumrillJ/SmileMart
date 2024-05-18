@@ -46,21 +46,25 @@ public class ProductService {
             return false;
         }
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if(user.getRole().equals(User.ROLE.USER)) {
             log.warn("User does not have permission to add product");
             return false;
         }
 
-        //Optional<Product> products = productDAO.findById(productId);  // Find by name if you want unique product names
+        Optional<Product> optProduct = productDAO.findByNameAndCategoryCategoryDescription(productDTO.getName(), productDTO.getCategory().getDescription());
+        if(optProduct.isPresent()) {
+            log.warn("Product already exists");
+            return false;
+        }
 
         Product product = new Product();
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
         product.setCost(productDTO.getCost());
 
-        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory());
+        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory().getDescription());
 
         if (categories.isPresent()) {
             log.info("Adding product to category {}", categories.get().getDescription());
@@ -69,8 +73,8 @@ public class ProductService {
         } else {
             log.info("Creating new category");
             Category c = new Category();
-            c.setDescription(productDTO.getCategory());
-            c = categoryDAO.save(c);
+            c.setDescription(productDTO.getCategory().getDescription());
+            categoryDAO.save(c);
             product.setCategory(c);
         }
 
