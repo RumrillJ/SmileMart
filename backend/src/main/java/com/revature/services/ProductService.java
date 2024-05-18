@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class ProductService {
             return false;
         }
 
-        Optional<Product> optProduct = productDAO.findByNameAndCategoryDescription(productDTO.getName(), productDTO.getCategoryDescription());
+        Optional<Product> optProduct = productDAO.findByNameAndCategoryDescription(productDTO.getName(), productDTO.getCategory().getDescription());
         if(optProduct.isPresent()) {
             log.warn("Product already exists");
             return false;
@@ -63,7 +64,7 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setCost(productDTO.getCost());
 
-        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategoryDescription());
+        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory().getDescription());
 
         if (categories.isPresent()) {
             log.info("Adding product to category {}", categories.get().getDescription());
@@ -72,7 +73,7 @@ public class ProductService {
         } else {
             log.info("Creating new category");
             Category c = new Category();
-            c.setDescription(productDTO.getCategoryDescription());
+            c.setDescription(productDTO.getCategory().getDescription());
             categoryDAO.save(c);
             product.setCategory(c);
         }
