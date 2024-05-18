@@ -1,3 +1,85 @@
+
+import React, { useEffect, useState } from 'react';
+import { ProductInterface } from '../../interfaces/ProductInterface';
+import axios from "axios";
+import { backend } from "../../App";
+
+interface CategoryInterface {
+	id: number;
+	description: string;
+  }
+  
+
+
+export const Sidebar: React.FC = () => {
+
+	// Search filter
+	const [searchQuery, setSearchQuery] = useState('');
+	// Price range filter
+	const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+	// Category filter
+	const [categories, setCategories] = useState([] as CategoryInterface[])
+	const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+
+	const [hideProducts, setHideProducts] = useState<boolean>(false);
+
+	async function getAllCategories() {
+		try
+		{
+		const response = await axios.get(backend("/categories"))
+		setCategories(() => response.data)
+	}
+		catch (e: any) 
+		{
+			console.log(e)
+		}
+	}
+
+	useEffect(() => {
+		getAllCategories()
+	}, [])
+
+	const filterProductsByCategory = (id: number) => {
+		setSelectedCategories(prev =>
+		  prev.includes(id) ? prev.filter(categoryId => categoryId !== id) : [...prev, id]
+		);
+		setHideProducts(!hideProducts);
+	  };
+
+	return (
+		<div>
+			<div/* class="searchbox"*/>
+			<h2>Search</h2>
+			<input type="text"/>
+		</div>
+
+			<div/* class="categorybox"*/>
+			<h2>Categories</h2>
+			{categories.map(category => (
+			<li key={category.id}>
+				<label>
+				<input
+					type="checkbox"
+					//checked={selectedCategories.includes(category.id)}
+					onChange={() => filterProductsByCategory(category.id)}
+				/>
+				{category.description}
+				</label>
+			</li>
+			))}
+		</div>
+			<div/* class="pricebox"*/>
+			<h2>Price</h2>
+				<input type="range"/>
+		</div>
+
+	  </div>
+	)
+}
+
+export default Sidebar;
+
+=======
 import React, { useState } from 'react';
 
 interface Category {
