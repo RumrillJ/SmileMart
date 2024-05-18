@@ -40,7 +40,7 @@ public class OrderService {
         this.orderProductService = orderProductService;
     }
 
-    //get orders by user id
+    //get orders by user
     public List<OutgoingOrderDTO> getOrdersByUser(String username) throws IllegalArgumentException{
         // Find user by username
         Optional<User> optUser = userDAO.findByUsername(username);
@@ -179,6 +179,8 @@ public class OrderService {
         Order order = new Order();
         order.setUser(optionalUser.get());
         Order o = orderDAO.save(order);
+        log.info("Created new order {} for user {}", o.getOrderId(), order.getUser().getUserId());
+
 
         for(OrderProductDTO op : orderProducts) {
             log.info("Adding product {} to order {}", op.getProductId(), o.getOrderId());
