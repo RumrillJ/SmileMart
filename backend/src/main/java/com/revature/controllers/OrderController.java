@@ -2,12 +2,14 @@ package com.revature.controllers;
 
 import com.revature.daos.OrderDAO;
 import com.revature.daos.StatusDAO;
+import com.revature.daos.UserDAO;
 import com.revature.models.Order;
 import com.revature.models.Status;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
 import com.revature.models.dtos.OutgoingOrderDTO;
 import com.revature.models.dtos.OutgoingOrderProductDTO;
@@ -26,14 +28,16 @@ public class OrderController {
     private final OrderDAO orderDAO;
     private final StatusDAO statusDAO;
     private OrderService orderService;
+    private final UserDAO userDAO;
     private final OrderProductService ordProductService;
     private final JwtService jwtService;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, JwtService jwtService) {
+    public OrderController(OrderService orderService, OrderDAO orderDAO, StatusDAO statusDAO, OrderProductService ordProductService, JwtService jwtService, UserDAO userDAO) {
         this.orderService = orderService;
         this.orderDAO = orderDAO;
         this.statusDAO = statusDAO;
+        this.userDAO = userDAO;
         this.ordProductService = ordProductService;
         this.jwtService = jwtService;
     }
@@ -146,17 +150,27 @@ public class OrderController {
 
     @GetMapping("/order/{orderId}")
 
-    public ResponseEntity<Object> viewAllProductByOrderId(@PathVariable int orderId) {
+    public ResponseEntity<Object> viewAllProductByOrderId(@PathVariable int orderId, @RequestHeader("Authorization") String token){
+        String username = jwtService.extractUsername(token.substring(7));
+
+        Optional<User> optUser = userDAO.findByUsername(username);
+
+        if (optUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User does not exist.");
+        }
+
         System.out.println("    Inside viewAllProductByOrderId");
         System.out.println(orderId);
 
         Optional<Order>  ord = orderDAO.findById(orderId);
 
-
-
         if (ord.isEmpty()) {
             return ResponseEntity.badRequest().body("Order does not exist.");
         }
+        if (ord.get().getUser().getUserId() != optUser.get().getUserId()) {
+            return ResponseEntity.badRequest().body("Order does not belong to user!");
+        }
+
         Order r = ord.get();
         System.out.println("OrderID:");
         System.out.println(r.getOrderId());

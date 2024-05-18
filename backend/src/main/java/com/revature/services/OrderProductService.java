@@ -65,8 +65,10 @@ public class OrderProductService {
 
     public OrderProduct editOrderProductAmount(OrderProduct op) {
         if (op == null) {
+            log.warn("OrderProduct is null.");
             throw new IllegalArgumentException("OrderProduct is null.");
         }
+        log.info("Editing OrderProduct {} with new quantity {}", op.getOrderProductId(), op.getQuantity());
         return orderProductDAO.save(op);
     }
 
@@ -83,10 +85,14 @@ public class OrderProductService {
             log.warn("Product {} does not exist", orderProduct.getProductId());
             throw new IllegalArgumentException("Product with id: " +orderProduct.getProductId() + " does not exist");
         }
+
         OrderProduct op = new OrderProduct();
+        log.info("Creating new OrderProduct for Order {}", orderId);
         op.setOrder(optionalOrder.get());
         op.setProduct(optionalProduct.get());
         op.setQuantity(orderProduct.getQuantity());
+
+        log.info("Adding Product {} to Order {}", op.getProduct().getProductId(), op.getOrder().getOrderId());
 
         return orderProductDAO.save(op);
       
