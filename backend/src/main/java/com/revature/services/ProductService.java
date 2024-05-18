@@ -53,7 +53,7 @@ public class ProductService {
             return false;
         }
 
-        Optional<Product> optProduct = productDAO.findByNameAndCategoryDescription(productDTO.getName(), productDTO.getCategory().getDescription());
+        Optional<Product> optProduct = productDAO.findByNameAndCategoryDescription(productDTO.getName(), productDTO.getCategory());
         if(optProduct.isPresent()) {
             log.warn("Product already exists");
             return false;
@@ -64,7 +64,7 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setCost(productDTO.getCost());
 
-        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory().getDescription());
+        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory());
 
         if (categories.isPresent()) {
             log.info("Adding product to category {}", categories.get().getDescription());
@@ -73,7 +73,7 @@ public class ProductService {
         } else {
             log.info("Creating new category");
             Category c = new Category();
-            c.setDescription(productDTO.getCategory().getDescription());
+            c.setDescription(productDTO.getCategory());
             categoryDAO.save(c);
             product.setCategory(c);
         }
