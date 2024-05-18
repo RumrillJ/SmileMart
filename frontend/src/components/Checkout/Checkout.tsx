@@ -4,6 +4,7 @@ import { postOrder } from "../../api/orderAPI";
 import { toast } from 'react-toastify';
 import { useUser } from "../../contexts/UserContext";
 
+
 export const Checkout: React.FC = () => {
 
     //TODO: have the order return on confirmation to database and set it in useState here or in useContext

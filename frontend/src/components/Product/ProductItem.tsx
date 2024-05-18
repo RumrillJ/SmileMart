@@ -2,6 +2,7 @@ import { deleteProduct } from "../../api/productsAPI"
 import { useCart } from "../../contexts/CartContext"
 import { useUser } from "../../contexts/UserContext"
 import { ProductInterface } from "../../interfaces/ProductInterface"
+import  { Navbar, defaultLinks }  from "../Reusable/Navbar";
 
 interface Props {
 	product: ProductInterface
