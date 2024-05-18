@@ -12,5 +12,4 @@ export interface UserInterface {
     firstName?: string
     lastName?: string
     phoneNumber?: number,
-    token?: string
 }
