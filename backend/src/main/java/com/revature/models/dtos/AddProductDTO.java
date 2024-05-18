@@ -6,12 +6,13 @@ public class AddProductDTO {
     private String name;
     private double cost;
     private String description;
-    private String categoryDescription;
+    private String category;
 
     public AddProductDTO() {
     }
 
-    public AddProductDTO(String name, double cost, String description, String categoryDescription) {
+
+    public AddProductDTO(String name, double cost, String description, String category) {
         this.name = name;
         this.cost = cost;
         this.description = description;
@@ -42,12 +43,12 @@ public class AddProductDTO {
         this.description = description;
     }
 
-    public String getCategoryDescription() {
-        return categoryDescription;
+    public String getCategory() {
+        return category;
     }
 
     public void setCategory(String category) {
-        this.categoryDescription = categoryDescription;
+        this.category = category;
     }
 
     @Override
