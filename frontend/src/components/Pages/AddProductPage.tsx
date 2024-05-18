@@ -5,7 +5,7 @@ export const AddProductPage: React.FC = () => {
 
 	return (
 		<Page>
-			<AddProduct onSubmit={(p) => console.log(p)} />
+			<AddProduct/>
 		</Page>
 	)
 }
