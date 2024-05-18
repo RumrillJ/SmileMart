@@ -42,6 +42,7 @@ export const Login: React.FC = () => {
     const login = async () => {
         try {
             const response = await loginUser(user as UserInterface);
+            setUser(response.data)
             // TODO: THe response only returns the token not the user data.
             //const { role, userId, username } = response.data;
             

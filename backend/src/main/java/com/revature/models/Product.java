@@ -12,13 +12,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     private double cost;
 
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // cascadetype.all prevents deletion of products
+    @ManyToOne(fetch= FetchType.EAGER) //cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryId")
     private Category category;
 

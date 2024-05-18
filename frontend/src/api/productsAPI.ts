@@ -8,7 +8,7 @@ export async function getProducts() {
 	return response
 }
 
-async function getProduct(productId: number) { //}: ProductInterface | string {
+export async function getProduct(productId: number) { //}: ProductInterface | string {
 	try {
 		const response = await axios.get(backend("/products/" + productId))
 		return response.data as ProductInterface
@@ -17,12 +17,13 @@ async function getProduct(productId: number) { //}: ProductInterface | string {
 	}
 }
 
-async function insertProduct(product: ProductInterface) {
-	try {
-		const response = await axios.post(backend("/products"), product)
-		return response.data
-	}
-	catch (e: any) {
 
-	}
+export async function insertProduct(product: ProductInterface) {
+	const response = await axios.post(backend("/products"), product)
+	return response.data
+}
+
+export async function deleteProduct(product: ProductInterface) {
+	const response = await axios.delete(backend("/products/" + product.productId))
+	return response.data
 }

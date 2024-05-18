@@ -6,11 +6,14 @@ import com.revature.daos.UserDAO;
 import com.revature.models.Category;
 import com.revature.models.Product;
 import com.revature.models.User;
+import com.revature.models.dtos.AddProductDTO;
 import com.revature.models.dtos.OutgoingProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,32 +40,44 @@ public class ProductService {
     }
 
 
-    public boolean addProduct(Product product, int productId, int categoryId, String categoryDesc, String username) {
-        Optional<Product> products = productDAO.findById(productId);
-        Optional<Category> categories = categoryDAO.findById(categoryId);
-        Optional<User> user = userDAO.findByUsername(username);
+    public boolean addProduct(AddProductDTO productDTO) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            log.warn("You are not logged in");
+            return false;
+        }
 
-        if(user.get().getRole().equals(User.ROLE.USER)) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(user.getRole().equals(User.ROLE.USER)) {
             log.warn("User does not have permission to add product");
             return false;
         }
-        if (products.isPresent()) {
-            log.warn("Product already exists");
-            return false;
 
-        } else if (categories.isPresent()) {
+        //Optional<Product> products = productDAO.findById(productId);  // Find by name if you want unique product names
+
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setCost(productDTO.getCost());
+
+        Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory());
+
+        if (categories.isPresent()) {
             log.info("Adding product to category {}", categories.get().getDescription());
             product.setCategory(categories.get());
 
         } else {
             log.info("Creating new category");
-            product.setCategory(new Category(categoryId, categoryDesc));
+            Category c = new Category();
+            c.setDescription(productDTO.getCategory());
+            c = categoryDAO.save(c);
+            product.setCategory(c);
         }
 
-           productDAO.save(product);
-            log.info("New product added");
-            return true;
-        }
+        productDAO.save(product);
+        log.info("New product added");
+        return true;
+    }
 
     public List<OutgoingProductDTO>   findAllByProductName(String pname) {
         List<Product> allPrd = productDAO.findAllByName(pname);

@@ -27,8 +27,8 @@ export const ProductsPage: React.FC = () => {
 		<Page>
 			<h2>SmileMart</h2>
 
-			<ProductMenu/>
-			<ProductsContainer products={products}/>
+			<ProductMenu />
+			<ProductsContainer products={products} onChange={getAllProducts} />
 		</Page>
 	)
 }

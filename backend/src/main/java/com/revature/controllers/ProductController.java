@@ -6,6 +6,7 @@ import com.revature.models.Product;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.models.dtos.AddProductDTO;
 import com.revature.models.dtos.OutgoingProductDTO;
 import com.revature.services.JwtService;
 import com.revature.services.ProductService;
@@ -64,15 +65,15 @@ public class ProductController {
     }
 
 
-    @PostMapping("{productId}/{categoryId}/{categoryDesc}")
-    public ResponseEntity<Object> addProduct(@RequestHeader("Authorization") String token, @RequestBody Product product, @PathVariable int productId, @PathVariable int categoryId, @PathVariable String categoryDesc) {
-        String username = jwtService.extractUsername(token.substring(7));
+    @PostMapping
+    public ResponseEntity<Object> addProduct(@RequestBody AddProductDTO productDTO) {
 
-        if (productService.addProduct(product, productId, categoryId, categoryDesc, username)) {
-            return ResponseEntity.ok().body(product.getName() + " has been added");
+        if (productService.addProduct(productDTO)) {
+            return ResponseEntity.ok().body(productDTO.getName() + " has been added");
+
 
         } else {
-            return ResponseEntity.status(404).body(product.getName() + " already exists");
+            return ResponseEntity.status(400).body(productDTO.getName() + " could not be added");
         }
     }
 
