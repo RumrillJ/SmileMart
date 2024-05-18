@@ -8,12 +8,12 @@ public class AddProductDTO {
     private String name;
     private double cost;
     private String description;
-    private Category category;
+    private String category;
 
     public AddProductDTO() {
     }
 
-    public AddProductDTO(String name, double cost, String description, Category category) {
+    public AddProductDTO(String name, double cost, String description, String category) {
         this.name = name;
         this.cost = cost;
         this.description = description;
@@ -44,11 +44,11 @@ public class AddProductDTO {
         this.description = description;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
