@@ -53,7 +53,7 @@ public class ProductService {
             return false;
         }
 
-        Optional<Product> optProduct = productDAO.findByNameAndCategoryCategoryDescription(productDTO.getName(), productDTO.getCategory().getDescription());
+        Optional<Product> optProduct = productDAO.findByNameAndCategoryDescription(productDTO.getName(), productDTO.getCategory().getDescription());
         if(optProduct.isPresent()) {
             log.warn("Product already exists");
             return false;
