@@ -66,14 +66,13 @@ class ProductServiceTest {
         when(principal.getRole()).thenReturn(User.ROLE.ADMIN);
 
         AddProductDTO newProduct = new AddProductDTO();
-        newProduct.setCategory(new Category());
 
-        when(categoryDAO.findByDescription(newProduct.getCategory().getDescription())).thenReturn(Optional.ofNullable(null));
+        when(categoryDAO.findByDescription(newProduct.getCategory())).thenReturn(Optional.ofNullable(null));
 
         boolean isAdded = productService.addProduct(newProduct);
 
         assertTrue(isAdded);
-        verify(categoryDAO, times(1)).findByDescription(newProduct.getCategory().getDescription());
+        verify(categoryDAO, times(1)).findByDescription(newProduct.getCategory());
     }
 
     @Test
@@ -84,15 +83,14 @@ class ProductServiceTest {
         when(principal.getRole()).thenReturn(User.ROLE.ADMIN);
 
         AddProductDTO newProduct = new AddProductDTO();
-        newProduct.setCategory(new Category());
 
         Product existingProduct = new Product();
-        when(productDAO.findByNameAndCategoryCategoryDescription(newProduct.getName(), newProduct.getCategory().getDescription())).thenReturn(Optional.of(existingProduct));
+        when(productDAO.findByNameAndCategoryDescription(newProduct.getName(), newProduct.getCategory())).thenReturn(Optional.of(existingProduct));
 
         boolean isAdded = productService.addProduct(newProduct);
 
         assertFalse(isAdded);
-        verify(productDAO, times(1)).findByNameAndCategoryCategoryDescription(newProduct.getName(), newProduct.getCategory().getDescription());
+        verify(productDAO, times(1)).findByNameAndCategoryDescription(newProduct.getName(), newProduct.getCategory());
         verify(productDAO, never()).save(any());
     }
 
