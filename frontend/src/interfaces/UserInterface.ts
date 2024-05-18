@@ -5,11 +5,12 @@ export interface UserInterface {
     role?: string
 
     address?: string
-    city: string
-    state: string
-    country: string
-    zip: number
-    firstName: string
-    lastName: string
-    phoneNumber: number
+    city?: string
+    state?: string
+    country?: string
+    zip?: number
+    firstName?: string
+    lastName?: string
+    phoneNumber?: number,
+    token?: string
 }

@@ -36,7 +36,7 @@ public class AuthenticationController {
 
     // User login controller
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         try {
             // Returns the JWT token on success
             return ResponseEntity.ok(authenticationService.login(userLoginDTO));

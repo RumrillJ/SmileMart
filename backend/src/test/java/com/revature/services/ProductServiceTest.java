@@ -87,12 +87,12 @@ class ProductServiceTest {
         newProduct.setCategory(new Category());
 
         Product existingProduct = new Product();
-        when(productDAO.findByNameAndCategoryCategoryDescription(newProduct.getName(), newProduct.getCategory().getDescription())).thenReturn(Optional.of(existingProduct));
+        when(productDAO.findByNameAndCategoryDescription(newProduct.getName(), newProduct.getCategory().getDescription())).thenReturn(Optional.of(existingProduct));
 
         boolean isAdded = productService.addProduct(newProduct);
 
         assertFalse(isAdded);
-        verify(productDAO, times(1)).findByNameAndCategoryCategoryDescription(newProduct.getName(), newProduct.getCategory().getDescription());
+        verify(productDAO, times(1)).findByNameAndCategoryDescription(newProduct.getName(), newProduct.getCategory().getDescription());
         verify(productDAO, never()).save(any());
     }
 

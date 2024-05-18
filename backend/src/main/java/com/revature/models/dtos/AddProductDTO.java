@@ -1,23 +1,21 @@
 package com.revature.models.dtos;
 
 
-import com.revature.models.Category;
-
 public class AddProductDTO {
 
     private String name;
     private double cost;
     private String description;
-    private Category category;
+    private String categoryDescription;
 
     public AddProductDTO() {
     }
 
-    public AddProductDTO(String name, double cost, String description, Category category) {
+    public AddProductDTO(String name, double cost, String description, String categoryDescription) {
         this.name = name;
         this.cost = cost;
         this.description = description;
-        this.category = category;
+        this.categoryDescription = categoryDescription;
     }
 
     public String getName() {
@@ -44,12 +42,12 @@ public class AddProductDTO {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryDescription() {
+        return categoryDescription;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.categoryDescription = categoryDescription;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class AddProductDTO {
                 "name='" + name + '\'' +
                 ", cost=" + cost +
                 ", description='" + description + '\'' +
-                ", category=" + category +
+                ", category=" + categoryDescription +
                 '}';
     }
 }

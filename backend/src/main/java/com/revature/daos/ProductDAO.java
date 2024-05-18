@@ -10,11 +10,12 @@ import java.util.Optional;
 @Repository
 public interface ProductDAO extends JpaRepository<Product, Integer> {
 
-    public Optional<Product> findByNameAndCategoryCategoryDescription(String pname, String description);
+    public Optional<Product> findByNameAndCategoryDescription(String pname, String description);
 
     public List<Product> findAllByCategoryCategoryId(int cId);
 
     public List<Product> findAllByName(String pname);
 
     public List<Product> findAllByCostLessThan(double price);
+
 }
