@@ -3,7 +3,7 @@ export interface UserInterface {
     username: string
     password: string
     role?: string
-
+    token?: string
     address?: string
     city: string
     state: string
