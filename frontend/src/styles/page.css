@@ -1,0 +1,35 @@
+.nav-container {
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: full;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem;
+  margin-top: 3px;
+}
+
+.links {
+  display: flex;
+  gap: 2px;
+}
+
+.links button {
+  background-color: inherit;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.links button:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.link h3 {
+  font-weight: bolder;
+  letter-spacing: -1px;
+}

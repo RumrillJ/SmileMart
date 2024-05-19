@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ProductInterface } from "../../interfaces/ProductInterface";
 import { CategoryInterface } from "../../interfaces/CategoryInterface";
 import { insertProduct } from "../../api/productsAPI";
+import "../../styles/addproduct.css"
 
 interface Props {
   onSubmit?: (product: ProductInterface) => void;
