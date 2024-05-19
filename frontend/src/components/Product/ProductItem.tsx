@@ -24,7 +24,7 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 			<h6 className="category-section">Category: {product.category.description}</h6>
 			<p className="product-details"><b>Product Details: </b>{product.description}</p>
 		
-			{true ? (
+			{user && user.role == "USER" ? (
 				<div className="quantity">
 					<h6>Quantity: </h6>
 					<button onClick={() => addToCart(product)}>
