@@ -30,7 +30,7 @@ public class Order {
     Set<OrderProduct> products;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "statusId")
     private Status status;
 
