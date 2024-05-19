@@ -3,7 +3,7 @@ import { useCart } from "../../contexts/CartContext";
 import { postOrder } from "../../api/orderAPI";
 import { toast } from 'react-toastify';
 import { useUser } from "../../contexts/UserContext";
-
+import "../../styles/checkout.css"
 
 export const Checkout: React.FC = () => {
 
@@ -12,6 +12,7 @@ export const Checkout: React.FC = () => {
     const {user} = useUser()
     const navigate = useNavigate();
     const {clearCart} = useCart();
+    let total = 0;
 
 
     async function purchaseCart() {
@@ -41,13 +42,36 @@ export const Checkout: React.FC = () => {
     return(
         <div>
             <h2>Your Cart: </h2>
-			{Object.values(cart).map((product, index) => {
-				return (<div key={index}>
-                    <h5>{JSON.stringify(product)}</h5>
-                    <h5>{cart[product.productId]?.quantity ?? ""}</h5>
-                    </div>
+            <table className="checkout-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.values(cart).map((product, index) => {
+                        const quantity = product.quantity || 1;
+                        total += (product.cost * quantity)
+				return (
+                    <tr>
+                        <th>{index+1}</th>
+                        <td>{product.name}</td>
+                        <td>${product.cost}</td>
+                        <td>{product.category.description}</td>
+                        <td>{product.description}</td>
+                        <td>{product.quantity}</td>
+                    </tr>
                     )
 			})}
+                </tbody>
+            </table>
+            <h4>Total: ${total.toFixed(2)}</h4>
+			
             <button onClick={() => purchaseCart()}>Confirm Purchase</button>
         </div>
     )

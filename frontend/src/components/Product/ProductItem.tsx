@@ -22,6 +22,7 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 		<div className="item-container">
 			<h3>{product.name}</h3>
 			<h6 className="category-section">Category: {product.category.description}</h6>
+			<h6 className="category-section">Price: ${product.cost}</h6>
 			<p className="product-details"><b>Product Details: </b>{product.description}</p>
 		
 			{user && user.role == "USER" ? (
