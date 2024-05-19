@@ -9,6 +9,7 @@ import com.revature.models.Product;
 
 
 import com.revature.models.User;
+import com.revature.models.dtos.OutgoingProductDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +52,159 @@ class ProductServiceTest {
 
         assertEquals(expectedProducts, actualProducts);
         verify(productDAO, times(1)).findAll();
+    }
+
+    @Test
+    public void testGetAllProductsByProductName() {
+        Optional<Product> product1 = Optional.of(new Product());
+        product1.get().setName("nike");
+        product1.get().setDescription("shoes");
+        product1.get().setCost(100);
+
+        Optional<Product> product2 = Optional.of(new Product());
+
+        product2.get().setName("nike");
+        product2.get().setDescription("tshirt");
+        product2.get().setCost(200);
+
+        List<Product> expectedPrd = new ArrayList<>();
+        expectedPrd.add(product1.get());// = Collections.singletonList(product1.get());
+        expectedPrd.add(product2.get());
+
+        List<OutgoingProductDTO> expectedProducts = new ArrayList<>();
+
+        for(Product p : expectedPrd) {
+            OutgoingProductDTO outR= new OutgoingProductDTO(
+                    p.getName(),
+                    p.getCost(),
+                    p.getDescription(),
+                    p.getCategory());
+
+            expectedProducts.add(outR);
+        }
+
+        when(productDAO.findAllByName("nike")).thenReturn(expectedPrd);
+
+        List<OutgoingProductDTO> actualProducts = productService.findAllByProductName("nike");
+
+        assertEquals(expectedProducts.size() , actualProducts.size());
+
+        //assertEquals(expectedProducts.get(0).getName(),actualProducts.);
+        for(int i=0;i<actualProducts.size(); i++) {
+
+            //assertEquals(expectedProducts, actualProducts);
+            assertEquals(expectedProducts.get(i).getName() , actualProducts.get(i).getName());
+            assertEquals(expectedProducts.get(i).getDescription() , actualProducts.get(i).getDescription());
+            assertEquals(expectedProducts.get(i).getCost() , actualProducts.get(i).getCost());
+
+        }
+
+        verify(productDAO, times(1)).findAllByName("nike");
+    }
+
+
+    @Test
+    public void testShowAllProductByPrice() {
+        Optional<Product> product1 = Optional.of(new Product());
+        product1.get().setName("nike");
+        product1.get().setDescription("shoes");
+        product1.get().setCost(100);
+
+        Optional<Product> product2 = Optional.of(new Product());
+
+        product2.get().setName("nike");
+        product2.get().setDescription("tshirt");
+        product2.get().setCost(200);
+
+        List<Product> expectedPrd = new ArrayList<>();
+        expectedPrd.add(product1.get());// = Collections.singletonList(product1.get());
+        expectedPrd.add(product2.get());
+
+        List<OutgoingProductDTO> expectedProducts = new ArrayList<>();
+
+        for(Product p : expectedPrd) {
+            OutgoingProductDTO outR= new OutgoingProductDTO(
+                    p.getName(),
+                    p.getCost(),
+                    p.getDescription(),
+                    p.getCategory());
+
+            expectedProducts.add(outR);
+        }
+
+        when(productDAO.findAllByCostLessThan(300)).thenReturn(expectedPrd);
+
+        List<OutgoingProductDTO> actualProducts = productService.showAllProductByPrice(300);
+
+        assertEquals(expectedProducts.size() , actualProducts.size());
+
+        //assertEquals(expectedProducts.get(0).getName(),actualProducts.);
+        for(int i=0;i<actualProducts.size(); i++) {
+
+            //assertEquals(expectedProducts, actualProducts);
+            assertEquals(expectedProducts.get(i).getName() , actualProducts.get(i).getName());
+            assertEquals(expectedProducts.get(i).getDescription() , actualProducts.get(i).getDescription());
+            assertEquals(expectedProducts.get(i).getCost() , actualProducts.get(i).getCost());
+
+        }
+
+        verify(productDAO, times(1)).findAllByCostLessThan(300);
+    }
+
+    @Test
+    public void testFindAllByCategoryCategoryId() {
+
+        Optional<Category> category1 = Optional.of(new Category());
+        category1.get().setCategoryId(1);
+
+        Optional<Product> product1 = Optional.of(new Product());
+
+        product1.get().setName("nike");
+        product1.get().setDescription("shoes");
+        product1.get().setCost(100);
+        product1.get().setCategory(category1.get());
+
+        Optional<Product> product2 = Optional.of(new Product());
+
+        product2.get().setName("nike");
+        product2.get().setDescription("tshirt");
+        product2.get().setCost(200);
+        product2.get().setCategory(category1.get());
+
+        List<Product> expectedPrd = new ArrayList<>();
+        expectedPrd.add(product1.get());// = Collections.singletonList(product1.get());
+        expectedPrd.add(product2.get());
+
+        List<OutgoingProductDTO> expectedProducts = new ArrayList<>();
+
+        for(Product p : expectedPrd) {
+            OutgoingProductDTO outR= new OutgoingProductDTO(
+                    p.getName(),
+                    p.getCost(),
+                    p.getDescription(),
+                    p.getCategory());
+
+            expectedProducts.add(outR);
+        }
+
+        when(productDAO.findAllByCategoryCategoryId(1)).thenReturn(expectedPrd);
+
+        List<OutgoingProductDTO> actualProducts = productService.findAllByCategoryCategoryId(1);
+
+        assertEquals(expectedProducts.size() , actualProducts.size());
+
+        //assertEquals(expectedProducts.get(0).getName(),actualProducts.);
+        for(int i=0;i<actualProducts.size(); i++) {
+
+            //assertEquals(expectedProducts, actualProducts);
+            assertEquals(expectedProducts.get(i).getName() , actualProducts.get(i).getName());
+            assertEquals(expectedProducts.get(i).getDescription() , actualProducts.get(i).getDescription());
+            assertEquals(expectedProducts.get(i).getCost() , actualProducts.get(i).getCost());
+            assertEquals(expectedProducts.get(i).getCategory().getCategoryId() , actualProducts.get(i).getCategory().getCategoryId());
+
+        }
+
+        verify(productDAO, times(1)).findAllByCategoryCategoryId(1);
     }
 
     @Test
