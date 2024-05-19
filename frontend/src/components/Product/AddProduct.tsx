@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ProductInterface } from "../../interfaces/ProductInterface";
 import { CategoryInterface } from "../../interfaces/CategoryInterface";
+import { insertProduct } from "../../api/productsAPI";
 
 interface Props {
   onSubmit?: (product: ProductInterface) => void;
@@ -21,6 +22,7 @@ export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
     if (onSubmit) {
       onSubmit({ ...product });
     }
+    insertProduct(product)
     setProduct(initialProductState);
   };
 
