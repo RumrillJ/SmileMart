@@ -8,6 +8,7 @@ import { CategoryInterface } from "../../interfaces/CategoryInterface"
 import { Page } from "./Page";
 import { Navbar, defaultLinks } from "../Reusable/Navbar";
 import { backend } from "../../App";
+import "../../styles/productspage.css"
 
 export const ProductsPage: React.FC = () => {
 	const [products, setProducts] = useState([] as ProductInterface[]);
@@ -97,44 +98,52 @@ export const ProductsPage: React.FC = () => {
 	};
 
 	return (
-		<div>
+		<div className="productspage">
 			<Page>
-				<h2>SmileMart</h2>
-				<ProductMenu />
-				{renderProductList()}
-				<div>
+				<div className="container">
+				<div className="sidebar">
 					<div>
-						<h2>Search</h2>
-						<input type="text" value={searchQuery} onChange={handleSearchChange} />
-						<button onClick={toggleFilterBySearch}>{filterBySearch ? 'Disable' : 'Enable'} Search Filter</button>
-					</div>
-					<div>
-						<h2>Categories</h2>
+						<h4>Categories</h4>
+						<ul className="categories">
 						{categories.map(category => (
 							<li key={category.categoryId}>
-								<label>
+								<label className="list-item">
+									<span>{category.description}</span>
 									<input
 										type="checkbox"
 										checked={selectedCategories.includes(category.categoryId)}
 										onChange={() => handleCategoryChange(category.categoryId)}
 									/>
-									{category.description}
+									
 								</label>
 							</li>
 						))}
+						</ul>
 						<button onClick={toggleFilterByCategory}>{filterByCategory ? 'Disable' : 'Enable'} Category Filter</button>
 					</div>
 					<div>
-						<h2>Price</h2>
+						<h4>Price</h4>
 						<input
 							type="range"
 							min={0}
 							max={250}
+							step={25}
 							value={priceRange.max}
 							onChange={handlePriceChange}
+							className="range"
 						/>
 						<p>Price: ${priceRange.max}.00</p>
 						<button onClick={toggleFilterByPrice}>{filterByPrice ? 'Disable' : 'Enable'} Price Filter</button>
+					</div>
+					</div>
+					<div className="main-part">
+					<div className="search-container">
+						<h4>Search</h4>
+						<input type="text" value={searchQuery} onChange={handleSearchChange} />
+						<button onClick={toggleFilterBySearch}>{filterBySearch ? 'Disable' : 'Enable'} Search Filter</button>
+					</div>
+				<ProductMenu />
+				{renderProductList()}
 					</div>
 				</div>
 			</Page>

@@ -4,7 +4,6 @@ export const ProductMenu: React.FC = () => {
 
 	return (
 		<div>
-			<h5>Filter Options</h5>
 		</div>
 	)
 }

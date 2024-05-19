@@ -3,6 +3,7 @@ import { useCart } from "../../contexts/CartContext"
 import { useUser } from "../../contexts/UserContext"
 import { ProductInterface } from "../../interfaces/ProductInterface"
 import  { Navbar, defaultLinks }  from "../Reusable/Navbar";
+import "../../styles/productitem.css"
 
 interface Props {
 	product: ProductInterface
@@ -18,18 +19,22 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 	const { user } = useUser()
 
 	return (
-		<div>
-			<h5>{JSON.stringify(product)}</h5>
-			<h5>{cart[product.productId]?.quantity ?? ""}</h5>
+		<div className="item-container">
+			<h3>{product.name}</h3>
+			<h6 className="category-section">Category: {product.category.description}</h6>
+			<p className="product-details"><b>Product Details: </b>{product.description}</p>
+		
 			{user && user.role == "USER" ? (
-				<>
+				<div className="quantity">
+					<h6>Quantity: </h6>
 					<button onClick={() => addToCart(product)}>
-						Increase Quantity
+						+
 					</button>
+					{cart[product.productId]?.quantity ?? 0}
 					<button onClick={() => removeFromCart(product)}>
-						Decrease Quantity
+						-
 					</button>
-				</>
+				</div>
 			) : null}
 
 			{user && user.role == "ADMIN" ? (

@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useUser } from "../../contexts/UserContext"
+import"../../styles/page.css"
 
 
 interface Props {
@@ -20,7 +21,10 @@ export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 	}, [user])
 
 	return (
-		<div>
+		<div >
+			<div className="nav-container">
+				<Link to="/" className="link"><h3>SmileMart</h3></Link>
+				<div className="links">
 			<button onClick={() => navigate("/register")}>Register</button>
 			<button onClick={() => navigate("/login")}>Login</button>
 			<button onClick={() => navigate("/")}>Products</button>
@@ -29,6 +33,8 @@ export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 			<button onClick={() => navigate("/checkout")}>Checkout</button>
 			<button onClick={() => navigate("/orders")}>Orders</button>
 			<button onClick={() => navigate("/profile")}>Profile</button>
+			</div>
+			</div>
 			<main>{children}</main>
 		</div>
 	)
