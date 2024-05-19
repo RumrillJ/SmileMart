@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from "react-toastify"
 import { SettingsInterface } from "../../interfaces/SettingsInterface"
 import { updateUser } from "../../api/authAPI"
+import "../../styles/settings.css"
 
 
 export const Settings: React.FC = () => {
