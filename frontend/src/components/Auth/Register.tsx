@@ -45,6 +45,7 @@ export const Register: React.FC = () => {
     // Validates user credentials based on defined rules
     const validateCredentials = () => {
         const { username, password, confirmPassword } = userData;
+        const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
         // Check for minimum username length
         if (username.length < 8) {
@@ -52,13 +53,11 @@ export const Register: React.FC = () => {
             return false;
         }
 
-        // Check for the presence of a number or punctuation in the password
-        if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(password)) {
-            toast.error("Password must contain a number or punctuation.");
+        // Check for password strength
+        if (!passwordRegex.test(password)) {
+            toast.error("Password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.");
             return false;
         }
-
-        // Add additional validation checks as needed
 
         // Verify passwords match
         if (password !== confirmPassword) {
