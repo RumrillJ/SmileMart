@@ -2,11 +2,9 @@ package com.revature.services;
 
 import com.revature.daos.ProductDAO;
 import com.revature.daos.OrderDAO;
+import com.revature.daos.StatusDAO;
 import com.revature.daos.UserDAO;
-import com.revature.models.Order;
-import com.revature.models.OrderProduct;
-import com.revature.models.Product;
-import com.revature.models.User;
+import com.revature.models.*;
 import com.revature.models.dtos.OrderProductDTO;
 import com.revature.models.dtos.OutgoingOrderDTO;
 import org.junit.jupiter.api.Test;
@@ -36,6 +34,9 @@ public class OrderServiceTest {
     private ProductDAO productDAO;
 
     @Mock
+    private StatusDAO statusDAO;
+
+    @Mock
     private OrderProductService orderProductService;
 
     @InjectMocks
@@ -46,9 +47,11 @@ public class OrderServiceTest {
         int userId = 1;
         User user = new User();
         Order expectedOrder = new Order();
+        Status status = new Status();
 
         when(userDAO.findById(userId)).thenReturn(Optional.of(user));
         when(orderDAO.save(any(Order.class))).thenReturn(expectedOrder);
+        when(statusDAO.findByStatusId("SHOPPING")).thenReturn(Optional.of(status));
 
         Order actualOrder = orderService.addOrder(userId);
 
@@ -161,6 +164,9 @@ public class OrderServiceTest {
 
         Order order = new Order();
         order.setOrderId(1);
+        order.setUser(user);
+        order.setStatus(new Status());
+
         List<OrderProductDTO> orderProducts = new ArrayList<>();
         OrderProductDTO orderProductDTO = new OrderProductDTO(1, 3);
         orderProductDTO.setOrderId(1);
@@ -174,6 +180,7 @@ public class OrderServiceTest {
 
         when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
         when(orderDAO.save(any(Order.class))).thenReturn(order);
+        when(statusDAO.findByStatusId("Processing")).thenReturn(Optional.of(new Status()));
         when(orderProductService.addOrderProductsWithOrderId(orderProductDTO, order.getOrderId())).thenReturn(orderProduct);
 
         int actualOrder = orderService.saveOrderAndOrderProducts(username, orderProducts);

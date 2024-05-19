@@ -5,8 +5,7 @@ import com.revature.daos.UserDAO;
 import com.revature.models.Order;
 import com.revature.models.dtos.OutgoingOrderDTO;
 import com.revature.daos.ProductDAO;
-import com.revature.daos.UserDAO;
-import com.revature.models.Order;
+import com.revature.daos.StatusDAO;
 import com.revature.models.OrderProduct;
 import com.revature.models.Status;
 import com.revature.models.User;
@@ -30,13 +29,15 @@ public class OrderService {
     private final OrderDAO orderDAO;
     private final UserDAO userDAO;
     private final ProductDAO productDAO;
+    private final StatusDAO statusDAO;
     private final OrderProductService orderProductService;
 
     @Autowired
-    public OrderService(OrderDAO orderDAO, UserDAO userDAO, ProductDAO productDAO, OrderProductService orderProductService) {
+    public OrderService(OrderDAO orderDAO, UserDAO userDAO, ProductDAO productDAO, StatusDAO statusDAO, OrderProductService orderProductService) {
         this.orderDAO = orderDAO;
         this.userDAO = userDAO;
         this.productDAO = productDAO;
+        this.statusDAO = statusDAO;
         this.orderProductService = orderProductService;
     }
 
@@ -49,7 +50,7 @@ public class OrderService {
             log.warn("Invalid user.");
             throw new IllegalArgumentException("Invalid user.");
         }
-        if (optUser.get().getRole().equals(User.ROLE.ADMIN) || optUser.get().getUsername() != username){
+        if (optUser.get().getRole().equals(User.ROLE.ADMIN) || !optUser.get().getUsername().equals(username)){
             log.warn("User does not have permission to view orders.");
             throw new IllegalArgumentException("User does not have permission to view orders.");
         }
@@ -88,7 +89,7 @@ public class OrderService {
         return orderDAO.save(new Order (
                 u,
                 // TODO : Fix this >>
-                new Status("SHOPPING"),
+                statusDAO.findByStatusId("SHOPPING").get(),
                 new Date()
 
         ));
@@ -178,8 +179,10 @@ public class OrderService {
         }
         Order order = new Order();
         order.setUser(optionalUser.get());
+        order.setStatus(statusDAO.findByStatusId("Processing").get());
+        order.setDate(new Date());
         Order o = orderDAO.save(order);
-        log.info("Created new order {} for user {}", o.getOrderId(), order.getUser().getUserId());
+        log.info("Created new order {} for user {}", o.getOrderId(), o.getUser().getUserId());
 
 
         for(OrderProductDTO op : orderProducts) {

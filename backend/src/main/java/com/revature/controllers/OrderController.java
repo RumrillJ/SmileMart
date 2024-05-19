@@ -44,7 +44,7 @@ public class OrderController {
 
     @GetMapping
     ResponseEntity<List<Order>> getAllOrders() {
-        System.out.println(orderDAO.findAll());
+
         return ResponseEntity.ok().body(orderDAO.findAll());
     }
     // @DeleteMapping("/{orderId}")
