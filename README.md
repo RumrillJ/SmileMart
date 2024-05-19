@@ -145,7 +145,7 @@ We welcome contributions to SmileMart! Please read [CONTRIBUTING.md](CONTRIBUTIN
 - **[John Rumrill](https://github.com/RumrillJ)**
 - **[Jonathan Tackett](https://github.com/JonCTack)**
 - **[Mcantony Benson Okey](https://github.com/CPTNTBS)**
-- **[Sidney Bowe](https://github.com/bowe1)**
+- **[Sidney Bowe](https://github.com/sbowe1)**
 - **[ThomasHarding](https://github.com/ThomHarding)**
 - **[Ward Alhadid](https://github.com/wardalhadid)**
 - **[Yanyan Jiang](https://github.com/Yanyan07)**
