@@ -98,9 +98,6 @@ export const ProductsPage: React.FC = () => {
 
 	return (
 		<div>
-			<div>
-				<Navbar links={defaultLinks} />
-			</div>
 			<Page>
 				<h2>SmileMart</h2>
 				<ProductMenu />

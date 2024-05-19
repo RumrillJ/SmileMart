@@ -1,10 +1,16 @@
 import axios from "axios";
 import { ProductInterface } from "../interfaces/ProductInterface";
 import { backend } from "../App";
+import { UserInterface } from "../interfaces/UserInterface";
 
-export async function getAllOrders() {
+export async function getAllOrders(user: UserInterface) {
     try{
-        const response = await axios.get(backend("/orders"))
+        const response = await axios.get(backend("/orders"), {
+            withCredentials:true,
+            headers: {
+                Authorization: "Bearer " + user.token
+            }
+        })
         return response.data
     } 
     catch (e:any) {
@@ -12,9 +18,15 @@ export async function getAllOrders() {
     }
 }
 
-export async function getUserOrders(userId: any){ //can't feed it just numbers due to interface having it be optional
+export async function getUserOrders(user: UserInterface){ //can't feed it just numbers due to interface having it be optional
     try{
-        const response = await axios.get(backend("/orders/" + userId))
+        console.log(user.token)
+        const response = await axios.get(backend("/orders/user"), {
+            withCredentials: true,
+            headers: {
+                Authorization: "Bearer " + user.token
+            }
+        })
         return response.data
     }
     catch (e:any) {
@@ -32,9 +44,10 @@ export async function updateOrderStatus(orderId: number, status: string){
     }
 }
 
-export async function postOrder(orderCheckout: Record<number, ProductInterface>) {
+export async function postOrder(orderCheckout: Object[]) {
     try {
-        const response = await axios.post(backend("/orders/checkout"))
+        console.log({...orderCheckout})
+        const response = await axios.post(backend("/orders/checkout"), orderCheckout)
         return response.data
     }
     catch (e:any) {

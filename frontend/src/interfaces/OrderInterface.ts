@@ -1,6 +1,14 @@
+import { ProductInterface } from "./ProductInterface"
+import { UserInterface } from "./UserInterface"
+
 export interface OrderInterface {
-    order_id: number,
+    orderId: number,
     date: Date,
-    status_id: string,
-    user_id: number
+    status: {
+        statusId: number
+    },
+    products: Array<{
+        product: ProductInterface
+    }>,
+    user: UserInterface
 }

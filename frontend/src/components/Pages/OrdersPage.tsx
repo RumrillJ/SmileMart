@@ -8,30 +8,15 @@ import { useNavigate } from "react-router-dom"
 
 export const OrdersPage: React.FC = () => {
 
-    const [orders, setOrders] = useState([] as OrderInterface[])
+
     const {user} = useUser()
     const navigate = useNavigate()
     
-    async function getOrders() {
-        if(user != null){
-        if(user.role == "USER"){
-            const response = await getUserOrders(user.userId)
-            setOrders(() => response.data)
-        } else if (user.role == "ADMIN"){
-            const response = await getAllOrders()
-            setOrders(() => response.data)
-        }
-    }
-    }
 
-
-    useEffect(() => {
-		getOrders()
-	}, [])
 
 	return user !== null? (
 		<Page>
-            <Orders orders={orders}/>
+            <Orders/>
 		</Page>
 	) 
     :

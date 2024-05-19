@@ -13,14 +13,21 @@ export const Checkout: React.FC = () => {
     const navigate = useNavigate();
     const {clearCart} = useCart();
 
-    console.log(user)
 
     async function purchaseCart() {
         if(user == null || user.username == ""){
             toast.error("You must be logged in!")
         } else {
             try{
-            const response = await postOrder(cart)
+            let finalCart:Object[] = Object.values(cart).map((product, index) => {
+                return {
+                    productId: product.productId,
+                    quantity: product.quantity
+                }
+            })
+            console.log(finalCart)
+            const response = await postOrder(finalCart)
+            console.log(response)
             clearCart()
             toast.done("Checkout Complete!")
             navigate("/")
