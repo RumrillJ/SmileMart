@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FaUser, FaLock } from 'react-icons/fa';
 import './Auth.css';
 import { UserInterface } from '../../interfaces/UserInterface';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUser } from '../../contexts/UserContext';
 import { loginUser } from '../../api/authAPI';
 
 export const Login: React.FC = () => {
-    //const [user, setUser] = useState<UserInterface>({ username: "", password: "" });
-    const {user, setUser} = useUser()
+    const { user, setUser } = useUser();
     const navigate = useNavigate();
-    
 
     useEffect(() => {
         document.body.style.backgroundImage = "url('/images/login-background.png')";
@@ -29,10 +26,6 @@ export const Login: React.FC = () => {
             document.body.style.backgroundAttachment = '';
         };
     }, []);
-    
-    
-    
-    
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -42,11 +35,8 @@ export const Login: React.FC = () => {
     const login = async () => {
         try {
             const response = await loginUser(user as UserInterface);
-            // TODO: THe response only returns the token not the user data.
-            //const { role, userId, username } = response.data;
-            
-            // Logic to manage user role and navigation
-            navigate("/main-page");
+            toast.success("Login Successful!");
+            navigate("/products");
         } catch (error) {
             console.error("Login failed: ", error);
             toast.error("Login Failed!");
@@ -55,9 +45,10 @@ export const Login: React.FC = () => {
 
     return (
         <div className="login">
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <div className="text-container">
-            <h1>Welcome to SmileMart!</h1>
-            <h3>Sign in now and fill your cart with joy</h3>
+                <h1>Welcome to SmileMart!</h1>
+                <h3>Sign in now and fill your cart with joy</h3>
             </div>
             <div className="input-container">
                 <FaUser className="icon" />
