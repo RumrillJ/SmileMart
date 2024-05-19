@@ -14,6 +14,11 @@ import { CartProvider } from './contexts/CartContext';
 import { ProductItem } from './components/Product/ProductItem';
 import { Cart } from './components/Checkout/Cart';
 import { ProductsPage } from './components/Pages/ProductsPage';
+import { CartPage } from './components/Pages/CartPage';
+import { CheckoutPage } from './components/Pages/CheckoutPage';
+import { ProfilePage } from './components/Pages/ProfilePage';
+import { AddProductPage } from './components/Pages/AddProductPage';
+import { OrdersPage } from './components/Pages/OrdersPage';
 
 export const backend = (path?: string) => "http://localhost:8080" + (path ?? "");
 
@@ -27,64 +32,23 @@ function App() {
 				<UserProvider>
 					<CartProvider>
 						<Routes>
-							<Route
-								path=""
-								element={
-									<Page>
-										<h2>Welcome</h2>
-										<h4>Click here to shop with us!</h4>
-										<h5>Click here to manage products.</h5>
-										{/* we should discuss if we want a landing page or just straight to products */}
-									</Page>
-								}
-							/>
+							<Route path="" element={<ProductsPage />} />
 							<Route path="/register" element={<Register />} />
 							<Route path="/login" element={<Login />} />
-							<Route path="/products" element={<ProductsPage/>}/>
 							<Route
 								path="/product/:productId"
 								element={<ProductDetail />}
 							/>
-							<Route path="/cart" />
-							<Route path="/checkout" element={<Checkout />} />
-							<Route path="/profile" />
-
-							{/* Just testing components here...*/}
+							<Route path="/cart" element={<CartPage />} />
 							<Route
-								path="/testAddProduct"
-								element={
-									<AddProduct
-										onSubmit={(p) => console.log(p)}
-									/>
-								}
+								path="/checkout"
+								element={<CheckoutPage />}
 							/>
-
+							<Route path="/profile" element={<ProfilePage />} />
+							<Route path="/orders" element={<OrdersPage/>}/>
 							<Route
-								path="/testCart"
-								element={
-									<Page>
-										<ProductItem
-											product={{
-												productId: 5,
-												name: "big shoes",
-												description:
-													"comically large shoes",
-												category: "shoes",
-												price: 19.99,
-											}}
-										/>
-										<ProductItem
-											product={{
-												productId: 6,
-												name: "big hat",
-												description: "a funny hat",
-												category: "headwear",
-												price: 9.99,
-											}}
-										/>
-										<Cart />
-									</Page>
-								}
+								path="/add-product"
+								element={<AddProductPage />}
 							/>
 						</Routes>
 					</CartProvider>

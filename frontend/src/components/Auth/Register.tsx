@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from "react-router-dom";
-import Select from 'react-select';
+import axios from 'axios';
 import { RegistrationInterface } from '../../interfaces/RegistrationInterface';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Auth.css';
 import { FaRegUserCircle, FaRegIdBadge, FaUser, FaLock, FaCheckDouble, FaEnvelope, FaHome, FaCity, FaMapMarkerAlt, FaEnvelopeOpenText, FaGlobeAmericas, FaPhone } from 'react-icons/fa';
 import { registerUser } from '../../api/authAPI';
-import { countries } from '../../countries';
-import { states } from '../../states';
 
 export const Register: React.FC = () => {
     const [userData, setUserData] = useState<RegistrationInterface>({
@@ -22,7 +20,7 @@ export const Register: React.FC = () => {
         city: '',
         state: '',
         zip: '',
-        country: 'United States', // Default to United States
+        country: '',
         phoneNumber: ''
     });
 
@@ -43,6 +41,7 @@ export const Register: React.FC = () => {
         };
     }, []);
     
+
     // Validates user credentials based on defined rules
     const validateCredentials = () => {
         const { username, password, confirmPassword } = userData;
@@ -89,16 +88,6 @@ export const Register: React.FC = () => {
         setUserData({ ...userData, [name]: value });
     };
 
-    // Handles changes for the state dropdown
-    const handleStateChange = (selectedOption: any) => {
-        setUserData({ ...userData, state: selectedOption.value });
-    };
-
-    // Handles changes for the country dropdown
-    const handleCountryChange = (selectedOption: any) => {
-        setUserData({ ...userData, country: selectedOption.value });
-    };
-
     // Component layout
     return (
         <div className="login register-form">
@@ -141,12 +130,7 @@ export const Register: React.FC = () => {
             </div>
             <div className="input-container">
                 <FaMapMarkerAlt />
-                <Select
-                    className="state-dropdown"
-                    options={states}
-                    onChange={handleStateChange}
-                    placeholder="State"
-                />
+                <input type="text" name="state" placeholder="State" onChange={handleChange} />
             </div>
             <div className="input-container">
                 <FaEnvelopeOpenText />
@@ -154,13 +138,7 @@ export const Register: React.FC = () => {
             </div>
             <div className="input-container">
                 <FaGlobeAmericas />
-                <Select
-                    className="country-dropdown"
-                    options={countries}
-                    defaultValue={{ value: 'United States', label: 'United States' }}
-                    onChange={handleCountryChange}
-                    placeholder="Country"
-                />
+                <input type="text" name="country" placeholder="Country" onChange={handleChange} />
             </div>
             <div className="input-container">
                 <FaPhone />

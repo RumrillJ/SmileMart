@@ -29,10 +29,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/login").permitAll() // this will allow unauthenticated requests to /login
-                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/auth/login").permitAll() // this will allow unauthenticated requests to /login
+                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/orders/**").authenticated()
                         //.anyRequest().authenticated()) // this will close all other endpoints to unauthenticated requests
-                        .anyRequest().permitAll()) // temporarily lets allow all requests
+                        .anyRequest().permitAll()) // temporarily lets allow all other requests
+                .anonymous((anonymous) -> anonymous.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // add the JWT filter to authenticate incoming requests

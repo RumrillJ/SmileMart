@@ -11,6 +11,7 @@ import com.revature.models.OrderProduct;
 import com.revature.models.Status;
 import com.revature.models.User;
 import com.revature.models.dtos.OrderProductDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class OrderService {
 
     private final OrderDAO orderDAO;
@@ -38,19 +40,25 @@ public class OrderService {
         this.orderProductService = orderProductService;
     }
 
-    //get orders by user id
-    public List<OutgoingOrderDTO> getOrdersByUserId(int userId) throws IllegalArgumentException{
+    //get orders by user
+    public List<OutgoingOrderDTO> getOrdersByUser(String username) throws IllegalArgumentException{
+        // Find user by username
+        Optional<User> optUser = userDAO.findByUsername(username);
 
-        //check if user exists
-        if (userDAO.findById(userId).isEmpty()){
-            throw new IllegalArgumentException("User does not exist");
+        if (optUser.isEmpty()) {
+            log.warn("Invalid user.");
+            throw new IllegalArgumentException("Invalid user.");
+        }
+        if (optUser.get().getRole().equals(User.ROLE.ADMIN) || optUser.get().getUsername() != username){
+            log.warn("User does not have permission to view orders.");
+            throw new IllegalArgumentException("User does not have permission to view orders.");
         }
 
         //list to hold return
         List<OutgoingOrderDTO> outgoingOrderDTOList = new ArrayList<>();
 
         //list to hold orders from DB
-        List<Order> allOrdersByUser = orderDAO.findByUserUserId(userId);
+        List<Order> allOrdersByUser = orderDAO.findByUserUserId(optUser.get().getUserId());
 
         for(Order o : allOrdersByUser){
             OutgoingOrderDTO order = new OutgoingOrderDTO(
@@ -62,6 +70,7 @@ public class OrderService {
             );
             outgoingOrderDTOList.add(order);
         }
+        log.info("{} orders found for user {}", outgoingOrderDTOList.size(), optUser.get().getUserId());
         return outgoingOrderDTOList;
     }
 
@@ -70,10 +79,12 @@ public class OrderService {
         // Check if valid user
         Optional<User> optUser = userDAO.findById(userId);
         if (optUser.isEmpty()) {
+            log.warn("Invalid user.");
             throw new IllegalArgumentException("Invalid user.");
         }
         User u = optUser.get();
 
+        log.info("Creating new order for user {}", u.getUserId());
         return orderDAO.save(new Order (
                 u,
                 // TODO : Fix this >>
@@ -94,15 +105,17 @@ public class OrderService {
         If the user has an order, we add the product to the order
         If the product is already in the order, we adjust the quantity
      */
-    public Order addToOrder(OrderProductDTO orderProductDTO, int userId) throws IllegalArgumentException {
+    public Order addToOrder(OrderProductDTO orderProductDTO, String username) throws IllegalArgumentException {
 
         // Check if valid user -- should never hit since we grab from session
-        Optional<User> optUser = userDAO.findById(userId);
+        Optional<User> optUser = userDAO.findByUsername(username);
         if (optUser.isEmpty()) {
+            log.warn("Invalid user.");
             throw new IllegalArgumentException("Invalid user.");
         }
 
         if(productDAO.findById(orderProductDTO.getProductId()).isEmpty()) {
+            log.warn("Product does not exist in the inventory: {}", orderProductDTO.getProductId());
             throw new IllegalArgumentException("Product does not exist in the inventory: " + orderProductDTO.getProductId());
         }
 
@@ -110,10 +123,10 @@ public class OrderService {
         User u = optUser.get();
 
         // Check if user has an open order TODO: Fix this >>>
-        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(userId, "SHOPPING");
+        Order userOrder = orderDAO.findByUserUserIdAndStatusStatusId(optUser.get().getUserId(), "SHOPPING");
         if (userOrder == null) {
             // instead of throwing an error, we make a new order
-            userOrder = addOrder(userId);
+            userOrder = addOrder(optUser.get().getUserId());
         }
 
         // We should now have an Order called userOrder
@@ -136,6 +149,7 @@ public class OrderService {
                 // If the item is found, adjust the quantity
                 if (orderProductDTO.getProductId() == op.getProduct().getProductId()) {
                     found = 1;
+                    log.info("Updating quantity of product {} in order {}", op.getProduct().getProductId(), userOrder.getOrderId());
                     op.setQuantity(op.getQuantity() + orderProductDTO.getQuantity());
                     orderProductService.editOrderProductAmount(op);
                     break;
@@ -151,6 +165,27 @@ public class OrderService {
         }
         //return orderDAO.save(userOrder);
         orderDAO.save(userOrder);
+        log.info("Product {} was added to order {} successfully", orderProductDTO.getProductId(), userOrder.getOrderId());
         return userOrder;
+    }
+
+    //add an order and its order-products
+    public int saveOrderAndOrderProducts(String username, List<OrderProductDTO> orderProducts) {
+        Optional<User> optionalUser = userDAO.findByUsername(username);
+        if (optionalUser.isEmpty()) {
+            log.warn("Invalid user");
+            throw new IllegalArgumentException("Invalid user.");
+        }
+        Order order = new Order();
+        order.setUser(optionalUser.get());
+        Order o = orderDAO.save(order);
+        log.info("Created new order {} for user {}", o.getOrderId(), order.getUser().getUserId());
+
+
+        for(OrderProductDTO op : orderProducts) {
+            log.info("Adding product {} to order {}", op.getProductId(), o.getOrderId());
+            orderProductService.addOrderProductsWithOrderId(op, o.getOrderId());
+        }
+        return o.getOrderId();
     }
 }
