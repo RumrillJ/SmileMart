@@ -21,7 +21,7 @@ export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 	}, [user])
 
 	return (
-		<div >
+		<div className="page-container">
 			<div className="nav-container">
 				<Link to="/" className="link"><h3>SmileMart</h3></Link>
 				<div className="links">
