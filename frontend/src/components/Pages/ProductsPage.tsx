@@ -92,7 +92,7 @@ export const ProductsPage: React.FC = () => {
 		if (filteredProducts.length === 0) {
 			return <p>No Products Found</p>;
 		} else {
-			return <ProductsContainer products={filteredProducts} />;
+			return <ProductsContainer products={filteredProducts} onChange={getAllProducts}/>;
 		}
 	};
 

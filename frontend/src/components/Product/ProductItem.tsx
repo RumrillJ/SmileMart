@@ -35,8 +35,8 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 			{user && user.role == "ADMIN" ? (
 				<>
 					<button
-						onClick={() => {
-							deleteProduct(product)
+						onClick={async () => {
+							await deleteProduct(product)
 							if (onDelete) {
 								onDelete()
 							}
