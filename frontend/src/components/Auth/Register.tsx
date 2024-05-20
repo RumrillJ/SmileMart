@@ -31,7 +31,7 @@ export const Register: React.FC = () => {
 
     useEffect(() => {
         document.body.style.backgroundImage = "url('/images/register-background.png')";
-        document.body.style.backgroundSize = "60%";
+        document.body.style.backgroundSize = "55%";
         document.body.style.backgroundPosition = "left bottom";
         document.body.style.backgroundRepeat = "no-repeat";
         document.body.style.backgroundAttachment = "fixed";
