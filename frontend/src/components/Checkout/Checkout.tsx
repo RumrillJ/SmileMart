@@ -58,7 +58,7 @@ export const Checkout: React.FC = () => {
                         const quantity = product.quantity || 1;
                         total += (product.cost * quantity)
 				return (
-                    <tr>
+                    <tr key={index}>
                         <th>{index+1}</th>
                         <td>{product.name}</td>
                         <td>${product.cost}</td>

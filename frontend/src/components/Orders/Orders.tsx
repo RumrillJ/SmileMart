@@ -78,10 +78,10 @@ export const Orders: React.FC = () => {
   const ordersTsx =
     user!.role !== "ADMIN"
       ? orders.map((order, index) => {
-          let productTsx = order.products.map((product) => {
+          let productTsx = order.products.map((product, key) => {
             console.log(JSON.stringify(product.product));
             return (
-              <tr>
+              <tr key={key}>
                 <td>{product.product.name}</td>
                 <td>${product.product.cost}</td>
                 <td>{product.product.category.description}</td>
