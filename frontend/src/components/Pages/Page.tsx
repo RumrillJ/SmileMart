@@ -23,17 +23,35 @@ export const Page: React.FC<Props> = ({ children, requireAuth = false }) => {
 	return (
 		<div className="page-container">
 			<div className="nav-container">
-				<Link to="/" className="link"><h3>SmileMart</h3></Link>
+				<Link to="/" className="link">
+					<h3>SmileMart</h3>
+				</Link>
 				<div className="links">
-			<button onClick={() => navigate("/register")}>Register</button>
-			<button onClick={() => navigate("/login")}>Login</button>
-			<button onClick={() => navigate("/")}>Products</button>
-			<button onClick={() => navigate("/add-product")}>AddProduct</button>
-			<button onClick={() => navigate("/cart")}>Cart</button>
-			<button onClick={() => navigate("/checkout")}>Checkout</button>
-			<button onClick={() => navigate("/orders")}>Orders</button>
-			<button onClick={() => navigate("/profile")}>Profile</button>
-			</div>
+					<button onClick={() => navigate("/register")}>
+						Register
+					</button>
+					<button onClick={() => navigate("/login")}>Login</button>
+					<button onClick={() => navigate("/")}>Products</button>
+					{user && user.role == "ADMIN" && (
+						<button onClick={() => navigate("/add-product")}>
+							AddProduct
+						</button>
+					)}
+					{!user || user.role == "USER" ? (
+						<>
+							<button onClick={() => navigate("/cart")}>
+								Cart
+							</button>
+							<button onClick={() => navigate("/checkout")}>
+								Checkout
+							</button>
+						</>
+					) : null}
+					<button onClick={() => navigate("/orders")}>Orders</button>
+					<button onClick={() => navigate("/profile")}>
+						Profile
+					</button>
+				</div>
 			</div>
 			<main>{children}</main>
 		</div>
