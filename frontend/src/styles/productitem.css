@@ -31,3 +31,8 @@
   margin-top: 0px;
   line-height: normal;
 }
+
+.quantity button {
+  width: 25px;
+  height: 25px;
+}
