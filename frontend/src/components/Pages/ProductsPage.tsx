@@ -122,7 +122,7 @@ export const ProductsPage: React.FC = () => {
 						<button onClick={toggleFilterByCategory}>{filterByCategory ? 'Disable' : 'Enable'} Category Filter</button>
 					</div>
 					<div>
-						<h4>Price</h4>
+						<h4>Max Price</h4>
 						<input
 							type="range"
 							min={0}
