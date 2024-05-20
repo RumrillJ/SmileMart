@@ -24,6 +24,8 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 			<h6 className="category-section">Category: {product.category.description}</h6>
 			<h6 className="category-section">Price: ${product.cost}</h6>
 			<p className="product-details"><b>Product Details: </b>{product.description}</p>
+
+			<img src={product.image ?? "https://rankbell.com/wp-content/uploads/2023/02/Amazon-Box-350x350.png"} className="product-image"/>
 		
 			{user && user.role == "USER" ? (
 				<div className="quantity">

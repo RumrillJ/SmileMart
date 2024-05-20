@@ -12,14 +12,17 @@ public class OutgoingProductDTO {
 
     private Category category;
 
+    private String image;
+
     public OutgoingProductDTO() {
     }
 
-    public OutgoingProductDTO(String name, double cost, String description, Category category) {
+    public OutgoingProductDTO(String name, double cost, String description, Category category, String image) {
         this.name = name;
         this.cost = cost;
         this.description = description;
         this.category = category;
+        this.image = image;
     }
 
 
@@ -53,5 +56,13 @@ public class OutgoingProductDTO {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
