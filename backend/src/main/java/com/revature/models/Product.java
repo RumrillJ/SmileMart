@@ -19,6 +19,8 @@ public class Product {
 
     private String description;
 
+    private String image;
+
     // cascadetype.all prevents deletion of products
     @ManyToOne(fetch= FetchType.EAGER) //cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryId")
@@ -26,12 +28,13 @@ public class Product {
 
     // Constructors
 
-    public Product(int productId, String name, double cost, Category category, String description) {
+    public Product(int productId, String name, double cost, Category category, String description, String image) {
         this.productId = productId;
         this.name = name;
         this.cost = cost;
         this.category = category;
         this.description = description;
+        this.image = image;
     }
 
     public Product(String name, double cost, Category category) {
@@ -85,6 +88,14 @@ public class Product {
         this.description = description;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     // To String
     @Override
     public String toString() {
@@ -93,6 +104,8 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", cost=" + cost +
                 ", category=" + category +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }

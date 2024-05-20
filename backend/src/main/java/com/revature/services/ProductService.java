@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +62,7 @@ public class ProductService {
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
         product.setCost(productDTO.getCost());
+        product.setImage(productDTO.getImage());
 
         Optional<Category> categories = categoryDAO.findByDescription(productDTO.getCategory());
 
@@ -92,7 +92,8 @@ public class ProductService {
                     p.getName(),
                     p.getCost(),
                     p.getDescription(),
-                    p.getCategory());
+                    p.getCategory(),
+                    p.getImage());
             log.info("Product found by name");
             outprd.add(outR);
         }
@@ -109,7 +110,8 @@ public class ProductService {
                     p.getName(),
                     p.getCost(),
                     p.getDescription(),
-                    p.getCategory());
+                    p.getCategory(),
+                    p.getImage());
             log.info("Product found by price");
             outprd.add(outR);
         }
@@ -126,7 +128,8 @@ public class ProductService {
                     p.getName(),
                     p.getCost(),
                     p.getDescription(),
-                    p.getCategory());
+                    p.getCategory(),
+                    p.getImage());
             log.info("Product found by category");
             outprd.add(outR);
         }

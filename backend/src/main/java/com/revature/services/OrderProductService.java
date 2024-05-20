@@ -111,7 +111,8 @@ public class OrderProductService {
                     op.getProduct().getName(),
                     op.getProduct().getCost(),
                     op.getProduct().getDescription(),
-                    op.getProduct().getCategory());
+                    op.getProduct().getCategory(),
+                    op.getProduct().getImage());
 
             OutgoingOrderProductDTO outR= new OutgoingOrderProductDTO(
                     op.getQuantity(),
