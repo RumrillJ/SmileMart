@@ -179,7 +179,7 @@ public class OrderService {
         }
         Order order = new Order();
         order.setUser(optionalUser.get());
-        order.setStatus(statusDAO.findByStatusId("Processing").get());
+                order.setStatus(statusDAO.findByStatusId("Processing").get());
         order.setDate(new Date());
         Order o = orderDAO.save(order);
         log.info("Created new order {} for user {}", o.getOrderId(), o.getUser().getUserId());

@@ -79,7 +79,7 @@ export const Orders: React.FC = () => {
     user!.role !== "ADMIN"
       ? orders.map((order, index) => {
           let productTsx = order.products.map((product, key) => {
-            console.log(JSON.stringify(product.product));
+            console.log("user orders", JSON.stringify(product.product));
             return (
               <tr key={key}>
                 <td>{product.product.name}</td>
@@ -132,7 +132,6 @@ export const Orders: React.FC = () => {
             </div>
           );
         });
-  console.log(ordersTsx);
 
   //I cannot return the time/date as we have it
   return <div>{ordersTsx}</div>;
