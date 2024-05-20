@@ -38,7 +38,6 @@ export const Orders: React.FC = () => {
           },
         });
         setOrders(response.data);
-        console.log(response.data);
       }
     }
   }
@@ -79,7 +78,6 @@ export const Orders: React.FC = () => {
     user!.role !== "ADMIN"
       ? orders.map((order, index) => {
           let productTsx = order.products.map((product, key) => {
-            console.log("user orders", JSON.stringify(product.product));
             return (
               <tr key={key}>
                 <td>{product.product.name}</td>
@@ -111,7 +109,6 @@ export const Orders: React.FC = () => {
           );
         })
       : orders.map((order, index) => {
-          console.log(order);
           return (
             <div key={index} className="admin-order-container">
               <h4>Order ID: {order.orderId}</h4>
