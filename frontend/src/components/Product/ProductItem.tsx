@@ -44,9 +44,13 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 				<>
 					<button
 						onClick={async () => {
-							await deleteProduct(product)
-							if (onDelete) {
-								onDelete()
+							try {
+								await deleteProduct(product)
+								if (onDelete) {
+									onDelete()
+								}
+							} catch (e: any) {
+								alert("Cannot delete product that exists in orders.")
 							}
 						}}
 					>
