@@ -20,7 +20,7 @@ import { ProfilePage } from './components/Pages/ProfilePage';
 import { AddProductPage } from './components/Pages/AddProductPage';
 import { OrdersPage } from './components/Pages/OrdersPage';
 
-export const backend = (path?: string) => "http://localhost:8080" + (path ?? "");
+export const backend = (path?: string) => "http://54.219.166.32:8080" + (path ?? "");
 
 function App() {
 
