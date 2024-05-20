@@ -15,6 +15,7 @@ export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
     description: "",
     category: { categoryId: 0, description: "" },
     cost: 0,
+    image: ""
   };
 
   const [product, setProduct] = useState(initialProductState);
@@ -71,7 +72,15 @@ export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
           onChange={(e) => handleInputChange(e, "cost")}
         />
       </label>
-      <button onClick={handleSubmit}>Add Product</button>
+      <label className="add-product-image">
+        <input
+          type="text"
+          placeholder="Image URL"
+          value={product.image}
+          onChange={(e) => handleInputChange(e, "image")}
+        />
+      </label>
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 };

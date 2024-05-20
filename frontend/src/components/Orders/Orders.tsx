@@ -122,9 +122,9 @@ export const Orders: React.FC = () => {
                 value={order.status.statusId}
                 onChange={storeStatus}
               >
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
                 <option value="Processing">Processing</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Refunded">Refunded</option>
               </select>
               <button onClick={() => changeStatus(order, status)}>
                 Change Status
