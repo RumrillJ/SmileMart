@@ -9,21 +9,26 @@
 .sidebar {
   margin-top: 0;
   width: 300px;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items:center;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  height: 200vh;
+  background-color: rgb(146, 142, 142);
+  border-right: solid 1px ;
+
   
 }
 
 .main-part {
   width: calc(100vw - 300px);
-  height: 100vh;
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  background-color: rgb(165, 163, 163);
+  height:200vh;
 }
 
 .categories {
@@ -76,4 +81,14 @@ button:hover {
 
 .sidebar span {
   width: 80px;
+}
+
+.main-part button {
+  background-color: rgba(246, 182, 59, 0.8); 
+  ;
+}
+
+.main-part button:hover {
+  background-color: rgba(0, 0, 0, 0.8); 
+  ;
 }

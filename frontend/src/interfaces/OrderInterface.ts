@@ -5,7 +5,7 @@ export interface OrderInterface {
     orderId: number,
     date: Date,
     status: {
-        statusId: number
+        statusId: string
     },
     products: Array<{
         product: ProductInterface
