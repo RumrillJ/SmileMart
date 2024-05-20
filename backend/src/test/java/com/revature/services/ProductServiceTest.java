@@ -108,7 +108,7 @@ class ProductServiceTest {
         List<Product> expectedProducts = new ArrayList<>();
         expectedProducts.add(product);
 
-        OutgoingProductDTO productDTO = new OutgoingProductDTO(productName, 0, "test description", category);
+        OutgoingProductDTO productDTO = new OutgoingProductDTO(productName, 0, "test description", category, "");
         List<OutgoingProductDTO> expectedProductsDTO = new ArrayList<>();
         expectedProductsDTO.add(productDTO);
 
@@ -148,7 +148,7 @@ class ProductServiceTest {
         List<Product> expectedProducts = new ArrayList<>();
         expectedProducts.add(product);
 
-        OutgoingProductDTO productDTO = new OutgoingProductDTO("test", 50.0, "test description", category);
+        OutgoingProductDTO productDTO = new OutgoingProductDTO("test", 50.0, "test description", category, "");
         List<OutgoingProductDTO> expectedProductsDTO = new ArrayList<>();
         expectedProductsDTO.add(productDTO);
 
@@ -189,7 +189,7 @@ class ProductServiceTest {
         List<Product> expectedProducts = new ArrayList<>();
         expectedProducts.add(product);
 
-        OutgoingProductDTO productDTO = new OutgoingProductDTO("test", 50.0, "test description", category);
+        OutgoingProductDTO productDTO = new OutgoingProductDTO("test", 50.0, "test description", category, "");
         List<OutgoingProductDTO> expectedProductsDTO = new ArrayList<>();
         expectedProductsDTO.add(productDTO);
 

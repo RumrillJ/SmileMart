@@ -14,6 +14,7 @@ public class OutProductDTO {
     private double cost;
     private String description;
     private String category;
+    private String image;
 
     public OutProductDTO() {
     }
@@ -23,6 +24,7 @@ public class OutProductDTO {
         this.cost = product.getCost();
         this.description = product.getDescription();
         this.category = product.getCategory().getDescription();
+        this.image = product.getImage();
     }
 
     public int getProductId() {
@@ -65,6 +67,14 @@ public class OutProductDTO {
         this.category = category;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "OutProductDTO{" +
@@ -73,6 +83,7 @@ public class OutProductDTO {
                 ", cost=" + cost +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }
