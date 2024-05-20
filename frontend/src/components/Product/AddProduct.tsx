@@ -73,9 +73,9 @@ export const AddProduct: React.FC<Props> = ({ onSubmit }) => {
         />
       </label>
       <label className="add-product-image">
-        Image URL:
         <input
           type="text"
+          placeholder="Image URL"
           value={product.image}
           onChange={(e) => handleInputChange(e, "image")}
         />
