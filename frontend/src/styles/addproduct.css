@@ -3,3 +3,14 @@
   margin: 0 auto;
   margin-top: 20px;
 }
+
+.add-product button {
+  width: 100px;
+  height: 40px;
+  margin-top: 10px;
+}
+
+.add-product button:hover {
+  background-color: black;
+  color: #fff;
+}
