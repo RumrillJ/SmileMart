@@ -6,5 +6,6 @@ export interface ProductInterface {
 	description: string
 	category: CategoryInterface
 	cost: number
+	image?: string
 	quantity?: number
 }
