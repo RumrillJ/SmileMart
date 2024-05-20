@@ -21,11 +21,14 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 	return (
 		<div className="item-container">
 			<h3>{product.name}</h3>
+			<div className="image-container">
+			<img src={product.image ?? "https://rankbell.com/wp-content/uploads/2023/02/Amazon-Box-350x350.png"} className="product-image"/>
+			</div>
 			<h6 className="category-section">Category: {product.category.description}</h6>
 			<h6 className="category-section">Price: ${product.cost}</h6>
 			<p className="product-details"><b>Product Details: </b>{product.description}</p>
 
-			<img src={product.image ?? "https://rankbell.com/wp-content/uploads/2023/02/Amazon-Box-350x350.png"} className="product-image"/>
+		
 		
 			{user && user.role == "USER" ? (
 				<div className="quantity">
@@ -44,9 +47,13 @@ export const ProductItem: React.FC<Props> = ({ product, onDelete }) => {
 				<>
 					<button
 						onClick={async () => {
-							await deleteProduct(product)
-							if (onDelete) {
-								onDelete()
+							try {
+								await deleteProduct(product)
+								if (onDelete) {
+									onDelete()
+								}
+							} catch (e: any) {
+								alert("Cannot delete product that exists in orders.")
 							}
 						}}
 					>

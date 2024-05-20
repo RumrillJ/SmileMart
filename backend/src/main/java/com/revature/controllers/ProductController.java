@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "/products")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://smilemarts3.s3-website.us-east-2.amazonaws.com/"}, allowCredentials = "true")
 public class ProductController {
     private final ProductDAO productDAO;
     private final ProductService productService;

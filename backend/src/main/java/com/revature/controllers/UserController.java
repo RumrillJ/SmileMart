@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(value = "/users")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://smilemarts3.s3-website.us-east-2.amazonaws.com/"}, allowCredentials = "true")
 public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
