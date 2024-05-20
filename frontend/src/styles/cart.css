@@ -7,9 +7,9 @@
   margin-bottom: 25px;
 }
 
-.cart button {
+.checkout-btn {
+  height: 25px;
   width: 160px;
-  height: 40px;
   margin-top: 10px;
 }
 

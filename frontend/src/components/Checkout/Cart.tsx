@@ -16,7 +16,7 @@ export const Cart: React.FC = () => {
 				return <ProductItem product={product} key={"prd" + index}/>
 			})}
 			</div>
-			<button onClick={() => navigate("/checkout")}>Continue to checkout</button>
+			<button className="checkout-btn" onClick={() => navigate("/checkout")}>Continue to checkout</button>
 		</div>
 	)
 }
