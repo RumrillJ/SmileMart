@@ -20,8 +20,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 .admin-order-container select {
   max-width: 200px;
+}
+
+.admin-order-container h4 {
+  width: 400px;
 }

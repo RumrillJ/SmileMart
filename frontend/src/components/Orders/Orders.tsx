@@ -14,7 +14,8 @@ import "../../styles/orders.css";
 
 export const Orders: React.FC = () => {
   const [orders, setOrders] = useState([] as OrderInterface[]);
-  const [status, setStatus] = useState<string>("Shipped");
+  const [status, setStatus] = useState<string>("");
+  let statusValue: string;
 
   const navigate = useNavigate();
 
@@ -63,7 +64,8 @@ export const Orders: React.FC = () => {
   }
 
   const storeStatus = (input: any) => {
-    setStatus(input.target.value);
+    setStatus(input.target.value)
+
   };
 
   const { user } = useUser();
@@ -111,13 +113,12 @@ export const Orders: React.FC = () => {
       : orders.map((order, index) => {
           return (
             <div key={index} className="admin-order-container">
-              <h4>Order ID: {order.orderId}</h4>
+              <h4>Order ID: {order.orderId}  Current Status: {order.status.statusId}</h4>
               
               <select
                 name="Status Filter"
                 id="status-filter"
-                value={order.status.statusId}
-                onChange={storeStatus}
+                onChange={(input) => storeStatus(input)}
               >
                 <option value="Processing">Processing</option>
                 <option value="Shipped">Shipped</option>
